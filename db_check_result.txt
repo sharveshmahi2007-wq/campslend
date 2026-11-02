@@ -1,0 +1,14 @@
+=== Available Databases ===
+  * admin
+  * campuslend_db
+  * config
+  * local
+
+=== Collections in campuslend_db ===
+  * items: 6 records
+  * loans: 2 records
+  * students: 3 records
+  * notifications: 2 records
+
+=== Verification Result ===
+SUCCESS: campuslend_db exists campuslend_db does not exist yet.

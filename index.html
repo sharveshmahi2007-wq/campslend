@@ -15,6 +15,8 @@
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Centralized Multilingual Translations -->
+  <script src="translations.js"></script>
   <script>
     tailwind.config = {
       darkMode: "class",
@@ -119,18 +121,28 @@
             <span class="font-display text-xl sm:text-2xl font-extrabold tracking-tight text-primary leading-none">
               Lend<span class="text-emerald-brand">Loop</span>
             </span>
-            <span class="text-[10px] font-semibold text-secondary tracking-wider uppercase mt-0.5">Campus P2P Sharing Network</span>
+            <span class="text-[10px] font-semibold text-secondary tracking-wider uppercase mt-0.5" data-i18n="brand.network">Campus P2P Sharing Network</span>
           </div>
         </div>
 
         <div class="flex items-center gap-3">
           <div class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container text-primary text-xs font-semibold">
             <span class="material-symbols-outlined text-[15px] text-secondary">verified_user</span>
-            <span>Stanford • Berkeley • MIT • Harvard</span>
+            <span data-i18n="brand.verified_colleges">Stanford • Berkeley • MIT • Harvard</span>
           </div>
-          <button onclick="handleGatewayLogin()" class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-secondary text-xs font-bold transition-all border border-blue-200/60 shadow-sm cursor-pointer" title="Instant access with preloaded demo student account">
+
+          <!-- Language Selector for Gateway -->
+          <div class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-white border border-surface-container text-primary text-xs font-semibold shadow-xs">
+            <span class="material-symbols-outlined text-[16px] text-secondary">language</span>
+            <select id="gatewayLangSelect" onchange="switchLanguage(this.value)" class="bg-transparent text-primary text-xs font-bold outline-none cursor-pointer pr-1" aria-label="Language Selector">
+              <option value="en">English</option>
+              <option value="ta">தமிழ் (Tamil)</option>
+            </select>
+          </div>
+
+          <button onclick="handleGatewayLogin()" class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-secondary text-xs font-bold transition-all border border-blue-200/60 shadow-sm cursor-pointer" title="Instant access with preloaded demo student account" data-i18n-title="brand.demo_access_title">
             <span class="material-symbols-outlined text-[16px]">bolt</span>
-            <span>Quick Demo Access</span>
+            <span data-i18n="brand.demo_access">Quick Demo Access</span>
           </button>
         </div>
       </div>
@@ -152,14 +164,14 @@
           <div class="relative z-10 space-y-4">
             <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-blue-100 text-xs font-semibold border border-white/10">
               <span class="material-symbols-outlined text-[15px] text-emerald-400">verified_user</span>
-              <span>Official Campus P2P Network</span>
+              <span data-i18n="gateway.official_badge">Official Campus P2P Network</span>
             </div>
 
             <div class="space-y-1">
               <h2 class="font-display font-extrabold text-2xl sm:text-3xl text-white tracking-tight leading-tight">
-                Borrow Smart.<br><span class="text-emerald-400">Share More.</span>
+                <span data-i18n="gateway.hero_h2_part1">Borrow Smart.</span><br><span class="text-emerald-400" data-i18n="gateway.hero_h2_part2">Share More.</span>
               </h2>
-              <p class="text-xs text-blue-200 leading-relaxed">
+              <p class="text-xs text-blue-200 leading-relaxed" data-i18n="gateway.hero_desc">
                 Connect with verified classmates at Stanford to borrow graphing calculators, textbooks, tech gear, and camera kits safely.
               </p>
             </div>
@@ -178,11 +190,11 @@
                       <span class="material-symbols-outlined text-[18px]">school</span>
                     </div>
                     <div class="flex flex-col">
-                      <span class="text-xs font-bold leading-tight">4,800+ Students Active</span>
-                      <span class="text-[10px] text-blue-200">Stanford, Berkeley, MIT & more</span>
+                      <span class="text-xs font-bold leading-tight" data-i18n="gateway.students_active">4,800+ Students Active</span>
+                      <span class="text-[10px] text-blue-200" data-i18n="gateway.colleges_list">Stanford, Berkeley, MIT & more</span>
                     </div>
                   </div>
-                  <span class="px-2.5 py-1 rounded-full bg-white/20 backdrop-blur-md text-white text-[11px] font-bold">
+                  <span class="px-2.5 py-1 rounded-full bg-white/20 backdrop-blur-md text-white text-[11px] font-bold" data-i18n="gateway.trust_rating">
                     98% Trust Rating
                   </span>
                 </div>
@@ -197,10 +209,10 @@
                   <span class="material-symbols-outlined text-[14px]">star</span>
                   <span class="material-symbols-outlined text-[14px]">star</span>
                 </div>
-                <p class="text-blue-100 text-[11px] italic leading-tight">
+                <p class="text-blue-100 text-[11px] italic leading-tight" data-i18n="gateway.testimonial_quote">
                   "Saved $120 on a TI-84 Plus CE for my Math midterm. Picked it up 10 mins later at Wilbur Hall!"
                 </p>
-                <span class="text-[10px] text-blue-300 block font-semibold">— Maya L., Sophomore CS</span>
+                <span class="text-[10px] text-blue-300 block font-semibold" data-i18n="gateway.testimonial_author">— Maya L., Sophomore CS</span>
               </div>
             </div>
 
@@ -214,7 +226,7 @@
                 <div class="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-transparent flex items-end p-3">
                   <div class="flex items-center gap-1.5 bg-white/90 backdrop-blur-md px-2.5 py-1 rounded-full text-primary shadow-sm">
                     <span class="material-symbols-outlined text-secondary text-[16px]">verified</span>
-                    <span class="text-xs font-bold">Verified Student Network</span>
+                    <span class="text-xs font-bold" data-i18n="gateway.verified_network_badge">Verified Student Network</span>
                   </div>
                 </div>
               </div>
@@ -225,8 +237,8 @@
                   <span class="material-symbols-outlined text-[18px]">groups</span>
                 </div>
                 <div class="flex flex-col min-w-0">
-                  <span class="text-[10px] text-emerald-300 font-bold uppercase tracking-wider">Campus Community</span>
-                  <p class="text-[11px] text-white font-medium leading-tight">
+                  <span class="text-[10px] text-emerald-300 font-bold uppercase tracking-wider" data-i18n="gateway.campus_community">Campus Community</span>
+                  <p class="text-[11px] text-white font-medium leading-tight" data-i18n="gateway.social_proof">
                     Join 4,200+ verified students borrowing & earning safely.
                   </p>
                 </div>
@@ -238,11 +250,11 @@
           <div class="relative z-10 pt-4 mt-4 border-t border-white/10 grid grid-cols-2 gap-2 text-[11px]">
             <div class="flex items-center gap-2">
               <span class="material-symbols-outlined text-emerald-400 text-[18px]">verified_user</span>
-              <span class="text-blue-100 font-semibold">100% ID Verified</span>
+              <span class="text-blue-100 font-semibold" data-i18n="gateway.id_verified">100% ID Verified</span>
             </div>
             <div class="flex items-center gap-2">
               <span class="material-symbols-outlined text-emerald-400 text-[18px]">shield</span>
-              <span class="text-blue-100 font-semibold">$1,000 Deposit Shield</span>
+              <span class="text-blue-100 font-semibold" data-i18n="gateway.deposit_shield">$1,000 Deposit Shield</span>
             </div>
           </div>
         </div>
@@ -259,17 +271,17 @@
                 <div class="flex items-center gap-2">
                   <img src="assets/logo.svg" alt="LendLoop" class="w-7 h-7 object-contain">
                   <h1 class="font-display font-extrabold text-2xl text-primary tracking-tight">
-                    Welcome to Lend<span class="text-emerald-brand">Loop</span>
+                    <span data-i18n="gateway.welcome_title">Welcome to Lend</span><span class="text-emerald-brand">Loop</span>
                   </h1>
                 </div>
-                <p class="text-xs text-on-surface-variant font-medium mt-0.5">
+                <p class="text-xs text-on-surface-variant font-medium mt-0.5" data-i18n="gateway.welcome_sub">
                   Official Campus Peer-to-Peer Sharing Network
                 </p>
               </div>
 
               <div class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-bold self-start sm:self-auto">
                 <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                <span>Active Network Gateway</span>
+                <span data-i18n="gateway.active_gateway">Active Network Gateway</span>
               </div>
             </div>
 
@@ -277,11 +289,11 @@
             <div class="w-full bg-surface-container-low p-1.5 rounded-2xl flex items-center shadow-inner">
               <button onclick="switchGatewayTab('login')" id="gatewayTabLogin" class="flex-1 py-2.5 text-center font-bold text-xs sm:text-sm rounded-xl bg-primary text-white shadow-sm transition-all flex items-center justify-center gap-1.5 cursor-pointer">
                 <span class="material-symbols-outlined text-[18px]">login</span>
-                <span>Log In</span>
+                <span data-i18n="gateway.tab_login">Log In</span>
               </button>
               <button onclick="switchGatewayTab('register')" id="gatewayTabRegister" class="flex-1 py-2.5 text-center font-semibold text-xs sm:text-sm rounded-xl text-on-surface-variant hover:text-primary transition-all flex items-center justify-center gap-1.5 cursor-pointer">
                 <span class="material-symbols-outlined text-[18px]">person_add</span>
-                <span>Register</span>
+                <span data-i18n="gateway.tab_register">Register</span>
               </button>
             </div>
 
@@ -294,9 +306,9 @@
               <div class="flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-blue-50 text-primary border border-blue-100">
                 <div class="flex items-center gap-2 min-w-0">
                   <span class="material-symbols-outlined text-[20px] text-secondary flex-shrink-0">check_circle</span>
-                  <span class="text-xs font-semibold truncate">.edu verified student network</span>
+                  <span class="text-xs font-semibold truncate" data-i18n="gateway.edu_verified_badge">.edu verified student network</span>
                 </div>
-                <span class="text-[11px] text-secondary bg-white px-2 py-0.5 rounded-md font-bold shadow-xs">100% ID Safe</span>
+                <span class="text-[11px] text-secondary bg-white px-2 py-0.5 rounded-md font-bold shadow-xs" data-i18n="gateway.id_safe">100% ID Safe</span>
               </div>
 
               <!-- Main Login Form -->
@@ -305,12 +317,12 @@
                 <!-- Email Field -->
                 <div class="space-y-1.5">
                   <div class="flex items-center justify-between">
-                    <label class="text-xs font-bold text-primary" for="gatewayLoginEmail">
+                    <label class="text-xs font-bold text-primary" for="gatewayLoginEmail" data-i18n="login.email_label">
                       College Email (.edu)
                     </label>
                     <span class="text-[11px] text-secondary flex items-center gap-1 font-semibold">
                       <span class="material-symbols-outlined text-[14px]">domain_verification</span>
-                      Verified campus domain
+                      <span data-i18n="login.campus_domain">Verified campus domain</span>
                     </span>
                   </div>
                   <div class="relative flex items-center">
@@ -327,10 +339,10 @@
                 <!-- Password Field -->
                 <div class="space-y-1.5">
                   <div class="flex items-center justify-between">
-                    <label class="text-xs font-bold text-primary" for="gatewayLoginPassword">
+                    <label class="text-xs font-bold text-primary" for="gatewayLoginPassword" data-i18n="login.password_label">
                       Password
                     </label>
-                    <a href="#" onclick="showToast('Password reset link sent to registered .edu email', 'info'); return false;" class="text-[11px] text-secondary hover:underline font-semibold">
+                    <a href="#" onclick="showToast('Password reset link sent to registered .edu email', 'info'); return false;" class="text-[11px] text-secondary hover:underline font-semibold" data-i18n="login.forgot_password">
                       Forgot password?
                     </a>
                   </div>
@@ -349,13 +361,13 @@
                 <div class="flex items-center justify-between pt-1">
                   <label class="flex items-center gap-2 cursor-pointer select-none">
                     <input type="checkbox" checked id="gatewayRememberMe" class="w-4 h-4 rounded text-secondary border-gray-300 focus:ring-secondary">
-                    <span class="text-xs text-on-surface-variant font-medium">Remember me on this campus device</span>
+                    <span class="text-xs text-on-surface-variant font-medium" data-i18n="login.remember_me">Remember me on this campus device</span>
                   </label>
                 </div>
 
                 <!-- Primary Submit Action Button -->
                 <button type="submit" id="gatewayLoginSubmitBtn" class="w-full h-12 px-4 rounded-xl bg-primary hover:bg-primary-hover text-white text-sm font-bold flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all active:scale-[0.99] cursor-pointer">
-                  <span>Log In to LendLoop</span>
+                  <span data-i18n="login.submit_btn">Log In to LendLoop</span>
                   <span class="material-symbols-outlined text-[19px]">arrow_forward</span>
                 </button>
               </form>
@@ -365,7 +377,7 @@
                 <div class="absolute inset-0 flex items-center">
                   <div class="w-full h-[1px] bg-surface-container"></div>
                 </div>
-                <div class="relative px-3 bg-white text-outline text-[11px] uppercase tracking-wider font-semibold">
+                <div class="relative px-3 bg-white text-outline text-[11px] uppercase tracking-wider font-semibold" data-i18n="login.sso_divider">
                   Or continue with campus SSO
                 </div>
               </div>
@@ -378,7 +390,7 @@
                   <path d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z" fill="#FBBC05"></path>
                   <path d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z" fill="#EA4335"></path>
                 </svg>
-                <span class="text-xs sm:text-sm font-bold text-primary">
+                <span class="text-xs sm:text-sm font-bold text-primary" data-i18n="login.google_sso">
                   Continue with Google Student Account
                 </span>
               </button>
@@ -386,7 +398,7 @@
               <!-- University Security / Trust Badge -->
               <div class="flex items-center justify-center gap-1.5 pt-2 text-center text-on-surface-variant text-[11px]">
                 <span class="material-symbols-outlined text-[16px] text-secondary">lock_person</span>
-                <span>Secured with University 2FA & Campus ID Protection</span>
+                <span data-i18n="login.security_notice">Secured with University 2FA & Campus ID Protection</span>
               </div>
             </div>
 
@@ -403,7 +415,7 @@
                   <!-- Legal Name -->
                   <div class="space-y-1">
                     <label class="text-xs font-bold text-primary flex items-center gap-1" for="reg-name">
-                      <span>Full Legal / Campus Name</span>
+                      <span data-i18n="reg.name_label">Full Legal / Campus Name</span>
                       <span class="text-error">*</span>
                     </label>
                     <div class="relative flex items-center">
@@ -416,7 +428,7 @@
                   <div class="space-y-1">
                     <div class="flex items-center justify-between">
                       <label class="text-xs font-bold text-primary flex items-center gap-1" for="reg-studentid">
-                        <span>Student ID Number</span>
+                        <span data-i18n="reg.studentid_label">Student ID Number</span>
                         <span class="text-error">*</span>
                       </label>
                     </div>
@@ -431,10 +443,10 @@
                 <div class="space-y-1">
                   <div class="flex items-center justify-between">
                     <label class="text-xs font-bold text-primary flex items-center gap-1" for="reg-email">
-                      <span>College Email Address</span>
+                      <span data-i18n="reg.email_label">College Email Address</span>
                       <span class="text-error">*</span>
                     </label>
-                    <span class="text-[10px] text-secondary font-semibold">Ends in .edu</span>
+                    <span class="text-[10px] text-secondary font-semibold" data-i18n="reg.email_hint">Ends in .edu</span>
                   </div>
                   <div class="relative flex items-center">
                     <span class="material-symbols-outlined absolute left-3.5 text-outline text-[18px] pointer-events-none">mail</span>
@@ -446,17 +458,17 @@
                 <!-- Field 4: Department / Major Selection -->
                 <div class="space-y-1">
                   <label class="text-xs font-bold text-primary flex items-center gap-1" for="reg-dept">
-                    <span>Department / Major</span>
+                    <span data-i18n="reg.dept_label">Department / Major</span>
                     <span class="text-error">*</span>
                   </label>
                   <div class="relative flex items-center">
                     <span class="material-symbols-outlined absolute left-3.5 text-outline text-[18px] pointer-events-none">history_edu</span>
                     <select id="reg-dept" class="w-full h-11 pl-10 pr-10 rounded-xl bg-surface-container-low text-on-surface text-xs border border-transparent focus:border-secondary focus:bg-white outline-none appearance-none cursor-pointer">
-                      <option selected value="cs">Computer Science & Engineering</option>
-                      <option value="bio">Biological Sciences & Pre-Med</option>
-                      <option value="business">Business & Economics</option>
-                      <option value="design">Product Design & Fine Arts</option>
-                      <option value="physics">Physics & Applied Math</option>
+                      <option selected value="cs" data-i18n="reg.dept_cs">Computer Science & Engineering</option>
+                      <option value="bio" data-i18n="reg.dept_bio">Biological Sciences & Pre-Med</option>
+                      <option value="business" data-i18n="reg.dept_business">Business & Economics</option>
+                      <option value="design" data-i18n="reg.dept_design">Product Design & Fine Arts</option>
+                      <option value="physics" data-i18n="reg.dept_physics">Physics & Applied Math</option>
                     </select>
                     <span class="material-symbols-outlined absolute right-3.5 text-outline text-[18px] pointer-events-none">expand_more</span>
                   </div>
@@ -465,15 +477,15 @@
                 <!-- Field 5: Year of Study (Pill Segment Selector) -->
                 <div class="space-y-1">
                   <label class="text-xs font-bold text-primary flex items-center gap-1">
-                    <span>Year of Study</span>
+                    <span data-i18n="reg.year_label">Year of Study</span>
                     <span class="text-error">*</span>
                   </label>
                   <div class="grid grid-cols-5 gap-1.5 bg-surface-container-low p-1 rounded-2xl">
-                    <button type="button" onclick="selectYear(this, 'Freshman')" class="year-pill py-1.5 text-center rounded-xl text-xs text-on-surface-variant hover:bg-white transition-all cursor-pointer">Freshman</button>
-                    <button type="button" onclick="selectYear(this, 'Sophomore')" class="year-pill py-1.5 text-center rounded-xl text-xs text-on-surface-variant hover:bg-white transition-all cursor-pointer">Soph</button>
-                    <button type="button" onclick="selectYear(this, 'Junior')" class="year-pill py-1.5 text-center rounded-xl text-xs bg-primary text-white font-bold shadow-sm transition-all cursor-pointer">Junior</button>
-                    <button type="button" onclick="selectYear(this, 'Senior')" class="year-pill py-1.5 text-center rounded-xl text-xs text-on-surface-variant hover:bg-white transition-all cursor-pointer">Senior</button>
-                    <button type="button" onclick="selectYear(this, 'Grad')" class="year-pill py-1.5 text-center rounded-xl text-xs text-on-surface-variant hover:bg-white transition-all cursor-pointer">Grad</button>
+                    <button type="button" onclick="selectYear(this, 'Freshman')" class="year-pill py-1.5 text-center rounded-xl text-xs text-on-surface-variant hover:bg-white transition-all cursor-pointer" data-i18n="reg.year_freshman">Freshman</button>
+                    <button type="button" onclick="selectYear(this, 'Sophomore')" class="year-pill py-1.5 text-center rounded-xl text-xs text-on-surface-variant hover:bg-white transition-all cursor-pointer" data-i18n="reg.year_soph">Soph</button>
+                    <button type="button" onclick="selectYear(this, 'Junior')" class="year-pill py-1.5 text-center rounded-xl text-xs bg-primary text-white font-bold shadow-sm transition-all cursor-pointer" data-i18n="reg.year_junior">Junior</button>
+                    <button type="button" onclick="selectYear(this, 'Senior')" class="year-pill py-1.5 text-center rounded-xl text-xs text-on-surface-variant hover:bg-white transition-all cursor-pointer" data-i18n="reg.year_senior">Senior</button>
+                    <button type="button" onclick="selectYear(this, 'Grad')" class="year-pill py-1.5 text-center rounded-xl text-xs text-on-surface-variant hover:bg-white transition-all cursor-pointer" data-i18n="reg.year_grad">Grad</button>
                   </div>
                   <input id="selected-year" type="hidden" value="Junior">
                 </div>
@@ -481,7 +493,7 @@
                 <!-- Field 6: Password with Strength Indicator -->
                 <div class="space-y-1">
                   <label class="text-xs font-bold text-primary flex items-center gap-1" for="reg-pass">
-                    <span>Password</span>
+                    <span data-i18n="reg.password_label">Password</span>
                     <span class="text-error">*</span>
                   </label>
                   <div class="relative flex items-center">
@@ -494,8 +506,8 @@
                   <!-- Password Strength Indicator from registration code.html -->
                   <div class="flex flex-col gap-1 pt-0.5">
                     <div class="flex items-center justify-between text-[10px]">
-                      <span class="text-on-surface-variant font-medium">Password Strength</span>
-                      <span class="text-emerald-700 font-bold">Strong (8+ chars, symbol)</span>
+                      <span class="text-on-surface-variant font-medium" data-i18n="reg.password_strength">Password Strength</span>
+                      <span class="text-emerald-700 font-bold" data-i18n="reg.password_strength_strong">Strong (8+ chars, symbol)</span>
                     </div>
                     <div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden flex gap-1">
                       <div class="h-full flex-1 bg-emerald-500 rounded-full"></div>
@@ -509,7 +521,7 @@
                 <!-- Field 7: Confirm Password -->
                 <div class="space-y-1">
                   <label class="text-xs font-bold text-primary flex items-center gap-1" for="reg-confirm-pass">
-                    <span>Confirm Password</span>
+                    <span data-i18n="reg.confirm_password_label">Confirm Password</span>
                     <span class="text-error">*</span>
                   </label>
                   <div class="relative flex items-center">
@@ -519,20 +531,20 @@
                   </div>
                   <div class="flex items-center gap-1 text-emerald-700 text-[10px] font-semibold pl-1">
                     <span class="material-symbols-outlined text-[13px]">verified</span>
-                    <span>Passwords match</span>
+                    <span data-i18n="reg.passwords_match">Passwords match</span>
                   </div>
                 </div>
 
                 <!-- Action Button: Create Student Account -->
                 <button type="submit" id="btn-register" class="w-full h-12 bg-primary hover:bg-primary-hover text-white transition-all rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 shadow-md active:scale-[0.98] cursor-pointer">
-                  <span>Create Student Account</span>
+                  <span data-i18n="reg.submit_btn">Create Student Account</span>
                   <span class="material-symbols-outlined text-[19px]">arrow_forward</span>
                 </button>
 
                 <!-- Divider -->
                 <div class="flex items-center gap-3 my-1">
                   <div class="flex-1 h-[1px] bg-surface-container"></div>
-                  <span class="text-[10px] text-outline uppercase tracking-wider font-semibold">or verify with</span>
+                  <span class="text-[10px] text-outline uppercase tracking-wider font-semibold" data-i18n="reg.verify_with">or verify with</span>
                   <div class="flex-1 h-[1px] bg-surface-container"></div>
                 </div>
 
@@ -544,15 +556,15 @@
                     <path d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z" fill="#FBBC05"></path>
                     <path d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z" fill="#EA4335"></path>
                   </svg>
-                  <span>Sign up with Google Student Account</span>
+                  <span data-i18n="reg.google_signup">Sign up with Google Student Account</span>
                 </button>
 
                 <!-- Terms & Honor Code Disclaimer -->
                 <p class="text-[10px] text-outline text-center px-2 pt-1 leading-relaxed">
-                  By registering, you agree to the 
-                  <a href="#" onclick="showToast('CampusLend Honor Code: Trust, Care for peer gear, and Timely returns', 'info'); return false;" class="text-secondary font-semibold hover:underline">LendLoop Honor Code</a> 
+                  <span data-i18n="reg.terms_disclaimer">By registering, you agree to the</span> 
+                  <a href="#" onclick="showToast('CampusLend Honor Code: Trust, Care for peer gear, and Timely returns', 'info'); return false;" class="text-secondary font-semibold hover:underline" data-i18n="reg.honor_code">LendLoop Honor Code</a> 
                   & 
-                  <a href="#" onclick="showToast('Peer Lending Agreement: $1,000 security deposit shield active', 'info'); return false;" class="text-secondary font-semibold hover:underline">Peer Lending Agreement</a>.
+                  <a href="#" onclick="showToast('Peer Lending Agreement: $1,000 security deposit shield active', 'info'); return false;" class="text-secondary font-semibold hover:underline" data-i18n="reg.peer_agreement">Peer Lending Agreement</a>.
                 </p>
               </form>
             </div>
@@ -563,9 +575,9 @@
           <div class="pt-6 mt-6 border-t border-surface-container flex items-center justify-between text-[11px] text-outline">
             <span class="flex items-center gap-1 text-emerald-700 font-semibold">
               <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-              256-Bit SSL Campus Gateway
+              <span data-i18n="reg.ssl_gateway">256-Bit SSL Campus Gateway</span>
             </span>
-            <span>Stanford University Hub</span>
+            <span data-i18n="reg.stanford_hub">Stanford University Hub</span>
           </div>
 
         </div>
@@ -576,11 +588,11 @@
     <!-- Gateway Footer -->
     <footer class="w-full bg-white/80 border-t border-surface-container py-3 px-4 text-center text-xs text-outline">
       <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
-        <span>© 2026 LendLoop Inc. Peer-to-Peer Campus Sharing. Built for students, by students.</span>
+        <span data-i18n="footer.copyright">© 2026 LendLoop Inc. Peer-to-Peer Campus Sharing. Built for students, by students.</span>
         <div class="flex items-center gap-4 text-[11px]">
-          <span class="hover:underline cursor-pointer" onclick="showToast('Campus verified .edu safety standard active', 'info')">Security Standard</span>
-          <span class="hover:underline cursor-pointer" onclick="showToast('LendLoop 100% Peer Honor Guarantee', 'info')">Honor Code</span>
-          <span class="hover:underline cursor-pointer" onclick="showToast('Contact support: help@lendloop.edu', 'info')">Campus Helpdesk</span>
+          <span class="hover:underline cursor-pointer" onclick="showToast('Campus verified .edu safety standard active', 'info')" data-i18n="footer.security_standard">Security Standard</span>
+          <span class="hover:underline cursor-pointer" onclick="showToast('LendLoop 100% Peer Honor Guarantee', 'info')" data-i18n="footer.honor_code">Honor Code</span>
+          <span class="hover:underline cursor-pointer" onclick="showToast('Contact support: help@lendloop.edu', 'info')" data-i18n="footer.helpdesk">Campus Helpdesk</span>
         </div>
       </div>
     </footer>
@@ -609,7 +621,7 @@
               <span class="font-display text-2xl font-extrabold tracking-tight text-primary leading-none">
                 Lend<span class="text-emerald-brand">Loop</span>
               </span>
-              <span class="text-[10px] font-semibold text-secondary tracking-wider uppercase mt-0.5">Campus P2P Sharing</span>
+              <span class="text-[10px] font-semibold text-secondary tracking-wider uppercase mt-0.5" data-i18n="brand.sub">Campus P2P Sharing</span>
             </div>
           </a>
 
@@ -617,7 +629,7 @@
           <div class="relative hidden md:block">
             <button onclick="toggleCampusModal()" class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container-low hover:bg-surface-container text-primary text-xs font-semibold border border-blue-100/80 transition-colors">
               <span class="material-symbols-outlined text-[16px] text-secondary">school</span>
-              <span id="navCampusLabel" class="truncate max-w-[140px]">Stanford Campus</span>
+              <span id="navCampusLabel" class="truncate max-w-[140px]" data-i18n="nav.campus_hub">Stanford Campus</span>
               <span class="material-symbols-outlined text-[14px] text-outline">expand_more</span>
             </button>
           </div>
@@ -627,7 +639,7 @@
         <div class="hidden lg:flex items-center flex-1 max-w-md mx-6">
           <div class="relative w-full">
             <span class="material-symbols-outlined absolute left-3.5 top-2.5 text-outline text-[20px] pointer-events-none">search</span>
-            <input type="text" id="globalDesktopSearch" oninput="handleSearch(this.value)" placeholder="Search textbooks, graphing calculators, lab gear..." class="w-full h-10 pl-10 pr-10 bg-surface-container-low hover:bg-surface-container/60 focus:bg-white rounded-xl text-sm border border-transparent focus:border-secondary focus:ring-2 focus:ring-blue-100 transition-all outline-none">
+            <input type="text" id="globalDesktopSearch" oninput="handleSearch(this.value)" placeholder="Search textbooks, graphing calculators, lab gear..." data-i18n-placeholder="nav.search_placeholder" class="w-full h-10 pl-10 pr-10 bg-surface-container-low hover:bg-surface-container/60 focus:bg-white rounded-xl text-sm border border-transparent focus:border-secondary focus:ring-2 focus:ring-blue-100 transition-all outline-none">
             <button onclick="clearSearch()" id="globalSearchClearBtn" class="hidden absolute right-3 top-2.5 text-outline hover:text-on-surface">
               <span class="material-symbols-outlined text-[16px]">close</span>
             </button>
@@ -638,22 +650,33 @@
         <div class="flex items-center gap-3">
           <nav class="hidden md:flex items-center gap-1 mr-2">
             <button onclick="navigateView('marketplace')" class="nav-link px-3 py-2 rounded-xl text-sm font-semibold text-secondary bg-blue-50/80 transition-colors" data-view="marketplace">
-              Marketplace
+              <span data-i18n="nav.marketplace">Marketplace</span>
             </button>
             <button onclick="navigateView('my-loans')" class="nav-link relative px-3 py-2 rounded-xl text-sm font-semibold text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors" data-view="my-loans">
-              <span>My Loans</span>
+              <span data-i18n="nav.my_loans">My Loans</span>
               <span id="navLoansCountBadge" class="ml-1.5 px-1.5 py-0.5 rounded-full bg-secondary text-white text-[10px] font-bold">2</span>
             </button>
             <button onclick="navigateView('how-it-works')" class="nav-link px-3 py-2 rounded-xl text-sm font-semibold text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors" data-view="how-it-works">
-              How It Works
+              <span data-i18n="nav.how_it_works">How It Works</span>
             </button>
           </nav>
 
           <!-- Post an Item CTA Button -->
           <button onclick="openAddItemModal()" class="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-secondary hover:bg-secondary-hover text-white text-sm font-semibold shadow-sm hover:shadow transition-all active:scale-[0.98]">
             <span class="material-symbols-outlined text-[18px]">add_circle</span>
-            <span class="hidden sm:inline">Post an Item</span>
+            <span class="hidden sm:inline" data-i18n="nav.post_item">Post an Item</span>
           </button>
+
+          <!-- Language Selector Control in App Navbar -->
+          <div class="relative flex items-center">
+            <div class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-surface-container-low hover:bg-surface-container text-primary text-xs font-semibold border border-blue-100/80 transition-colors">
+              <span class="material-symbols-outlined text-[16px] text-secondary">language</span>
+              <select id="appLangSelect" onchange="switchLanguage(this.value)" class="bg-transparent text-primary text-xs font-bold outline-none cursor-pointer pr-1" aria-label="Language Selector">
+                <option value="en">English</option>
+                <option value="ta">தமிழ் (Tamil)</option>
+              </select>
+            </div>
+          </div>
 
           <!-- Notifications Bell -->
           <div class="relative">
@@ -665,22 +688,22 @@
             <!-- Notifications Flyout -->
             <div id="notificationsDropdown" class="hidden absolute right-0 mt-2 w-80 bg-white rounded-2xl shadow-dropdown border border-surface-container p-3 z-50">
               <div class="flex items-center justify-between pb-2 mb-2 border-b border-surface-container">
-                <span class="font-display font-bold text-sm text-primary">Notifications</span>
-                <span class="text-[11px] text-secondary font-semibold cursor-pointer hover:underline" onclick="showToast('All notifications marked as read', 'info')">Mark read</span>
+                <span class="font-display font-bold text-sm text-primary" data-i18n="nav.notifications">Notifications</span>
+                <span class="text-[11px] text-secondary font-semibold cursor-pointer hover:underline" onclick="showToast(t('toast.mark_all_read'), 'info')" data-i18n="nav.mark_read">Mark read</span>
               </div>
               <div class="space-y-2">
                 <div class="p-2.5 rounded-xl bg-blue-50/60 border border-blue-100 flex items-start gap-2.5 text-xs">
                   <span class="material-symbols-outlined text-secondary text-[18px] shrink-0 mt-0.5">schedule</span>
                   <div>
-                    <span class="font-semibold text-primary block">TI-84 Plus CE Calculator</span>
-                    <span class="text-on-surface-variant">Due in 3 days (Return to Sarah Lin)</span>
+                    <span class="font-semibold text-primary block" data-i18n="nav.notification_due_title">TI-84 Plus CE Calculator</span>
+                    <span class="text-on-surface-variant" data-i18n="nav.notification_due_desc">Due in 3 days (Return to Sarah Lin)</span>
                   </div>
                 </div>
                 <div class="p-2.5 rounded-xl bg-amber-50/60 border border-amber-100 flex items-start gap-2.5 text-xs">
                   <span class="material-symbols-outlined text-amber-600 text-[18px] shrink-0 mt-0.5">pending_actions</span>
                   <div>
-                    <span class="font-semibold text-amber-900 block">Borrow Request Pending</span>
-                    <span class="text-on-surface-variant">Marcus T. requested Java 8th Ed.</span>
+                    <span class="font-semibold text-amber-900 block" data-i18n="nav.notification_req_title">Borrow Request Pending</span>
+                    <span class="text-on-surface-variant" data-i18n="nav.notification_req_desc">Marcus T. requested Java 8th Ed.</span>
                   </div>
                 </div>
               </div>
@@ -703,25 +726,25 @@
                 <p class="font-display font-bold text-sm text-primary">Alex Rivera</p>
                 <p class="text-xs text-on-surface-variant truncate">a.rivera@stanford.edu</p>
                 <div class="inline-flex items-center gap-1 mt-1 px-2 py-0.5 rounded-full bg-emerald-light text-emerald-dark font-semibold text-[10px]">
-                  <span class="material-symbols-outlined text-[12px]">verified</span> Verified Stanford Student
+                  <span class="material-symbols-outlined text-[12px]">verified</span> <span data-i18n="nav.profile_verified_badge">Verified Stanford Student</span>
                 </div>
               </div>
               <button onclick="navigateView('profile'); closeDropdowns();" class="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-semibold text-on-surface hover:bg-surface-container-low rounded-xl text-left">
                 <span class="material-symbols-outlined text-[18px] text-outline">account_circle</span>
-                <span>My Profile & Listings</span>
+                <span data-i18n="nav.profile_listings">My Profile & Listings</span>
               </button>
               <button onclick="navigateView('my-loans'); closeDropdowns();" class="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-semibold text-on-surface hover:bg-surface-container-low rounded-xl text-left">
                 <span class="material-symbols-outlined text-[18px] text-outline">sync_alt</span>
-                <span>Active Loans & Requests</span>
+                <span data-i18n="nav.profile_active_loans">Active Loans & Requests</span>
               </button>
               <button onclick="openEditProfileModal(); closeDropdowns();" class="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-semibold text-on-surface hover:bg-surface-container-low rounded-xl text-left">
                 <span class="material-symbols-outlined text-[18px] text-outline">settings</span>
-                <span>Account Settings</span>
+                <span data-i18n="nav.profile_settings">Account Settings</span>
               </button>
               <div class="border-t border-surface-container my-1"></div>
               <button onclick="handleLogout(); closeDropdowns();" class="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-semibold text-error hover:bg-red-50 rounded-xl text-left cursor-pointer">
                 <span class="material-symbols-outlined text-[18px]">logout</span>
-                <span>Sign Out of LendLoop</span>
+                <span data-i18n="nav.sign_out">Sign Out of LendLoop</span>
               </button>
             </div>
           </div>
@@ -741,72 +764,32 @@
     <!-- ========================================================================= -->
     <div id="view-marketplace" class="view-fade space-y-6">
 
-      <!-- Webapp Hero Banner -->
-      <section class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-primary via-[#0a3568] to-[#124b8f] text-white p-8 lg:p-10 shadow-card">
-        <div class="absolute -right-16 -top-16 w-80 h-80 rounded-full bg-secondary/30 blur-3xl pointer-events-none"></div>
-        <div class="absolute right-32 -bottom-20 w-64 h-64 rounded-full bg-emerald-brand/20 blur-2xl pointer-events-none"></div>
-        
-        <div class="relative z-10 max-w-3xl space-y-4">
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs font-semibold">
-            <span class="material-symbols-outlined text-[16px] text-emerald-400" style="font-variation-settings: 'FILL' 1;">verified</span>
-            <span>100% Verified Campus P2P Network</span>
-            <span class="text-white/40">•</span>
-            <span class="text-blue-200">Zero Commercial Markup</span>
-          </div>
 
-          <h1 class="font-display text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight">
-            Borrow Smart. Share More. Save Hundreds on Campus.
-          </h1>
-          <p class="text-blue-100 text-sm sm:text-base max-w-2xl leading-relaxed">
-            Borrow expensive textbooks, TI-84 calculators, lab gear, audio equipment, and bikes directly from students in your dorms and campus halls.
-          </p>
-
-          <!-- Quick Metrics Ribbon inside Hero -->
-          <div class="pt-2 grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-2xl">
-            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-3 border border-white/10">
-              <span class="font-display text-2xl font-bold block">4,800+</span>
-              <span class="text-xs text-blue-200">Active Students</span>
-            </div>
-            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-3 border border-white/10">
-              <span class="font-display text-2xl font-bold block">$180</span>
-              <span class="text-xs text-blue-200">Avg. Term Savings</span>
-            </div>
-            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-3 border border-white/10">
-              <span class="font-display text-2xl font-bold block">98%</span>
-              <span class="text-xs text-blue-200">Trust Score</span>
-            </div>
-            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-3 border border-white/10">
-              <span class="font-display text-2xl font-bold block">&lt; 10m</span>
-              <span class="text-xs text-blue-200">Dorm Handover</span>
-            </div>
-          </div>
-        </div>
-      </section>
 
       <!-- Category Filter Tabs -->
       <section class="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar" id="categoryChips">
         <button onclick="filterCategory('all')" class="cat-pill active px-4 py-2 rounded-xl text-xs font-bold transition-all bg-primary text-white shadow-sm flex items-center gap-1.5" data-cat="all">
-          <span>All Items</span>
+          <span data-i18n="cat.all">All Items</span>
         </button>
         <button onclick="filterCategory('books')" class="cat-pill px-4 py-2 rounded-xl text-xs font-semibold transition-all bg-white text-on-surface hover:bg-surface-container-low border border-surface-container flex items-center gap-1.5" data-cat="books">
           <span>📚</span>
-          <span>Textbooks</span>
+          <span data-i18n="cat.books">Textbooks</span>
         </button>
         <button onclick="filterCategory('tech')" class="cat-pill px-4 py-2 rounded-xl text-xs font-semibold transition-all bg-white text-on-surface hover:bg-surface-container-low border border-surface-container flex items-center gap-1.5" data-cat="tech">
           <span>💻</span>
-          <span>Tech & Electronics</span>
+          <span data-i18n="cat.tech">Tech & Electronics</span>
         </button>
         <button onclick="filterCategory('stationery')" class="cat-pill px-4 py-2 rounded-xl text-xs font-semibold transition-all bg-white text-on-surface hover:bg-surface-container-low border border-surface-container flex items-center gap-1.5" data-cat="stationery">
           <span>📐</span>
-          <span>Calculators & Lab</span>
+          <span data-i18n="cat.stationery">Calculators & Lab</span>
         </button>
         <button onclick="filterCategory('sports')" class="cat-pill px-4 py-2 rounded-xl text-xs font-semibold transition-all bg-white text-on-surface hover:bg-surface-container-low border border-surface-container flex items-center gap-1.5" data-cat="sports">
           <span>🚲</span>
-          <span>Sports & Outdoor</span>
+          <span data-i18n="cat.sports">Sports & Outdoor</span>
         </button>
         <button onclick="filterCategory('others')" class="cat-pill px-4 py-2 rounded-xl text-xs font-semibold transition-all bg-white text-on-surface hover:bg-surface-container-low border border-surface-container flex items-center gap-1.5" data-cat="others">
           <span>🎒</span>
-          <span>Dorm Living</span>
+          <span data-i18n="cat.others">Dorm Living</span>
         </button>
       </section>
 
@@ -817,17 +800,17 @@
         <aside class="bg-white rounded-2xl p-5 border border-surface-container shadow-subtle space-y-6">
           <div class="flex items-center justify-between pb-3 border-b border-surface-container">
             <span class="font-display font-bold text-sm text-primary flex items-center gap-1.5">
-              <span class="material-symbols-outlined text-[18px]">tune</span> Filter Catalog
+              <span class="material-symbols-outlined text-[18px]">tune</span> <span data-i18n="filter.title">Filter Catalog</span>
             </span>
-            <button onclick="resetFilters()" class="text-xs text-secondary hover:underline font-semibold">Reset All</button>
+            <button onclick="resetFilters()" class="text-xs text-secondary hover:underline font-semibold" data-i18n="filter.reset">Reset All</button>
           </div>
 
           <!-- Availability Toggle -->
           <div class="space-y-2">
-            <label class="text-xs font-bold uppercase tracking-wider text-outline block">Availability</label>
+            <label class="text-xs font-bold uppercase tracking-wider text-outline block" data-i18n="filter.availability">Availability</label>
             <label class="flex items-center justify-between cursor-pointer p-2 rounded-xl hover:bg-surface-container-low transition-colors">
               <span class="text-xs font-semibold text-on-surface flex items-center gap-1.5">
-                <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Available Immediately
+                <span class="w-2 h-2 rounded-full bg-emerald-500"></span> <span data-i18n="filter.available_immediately">Available Immediately</span>
               </span>
               <input type="checkbox" id="filterAvailCheckbox" onchange="toggleAvailableFilter(this.checked)" class="accent-secondary w-4 h-4 rounded cursor-pointer">
             </label>
@@ -836,7 +819,7 @@
           <!-- Max Daily Rate Filter -->
           <div class="space-y-2">
             <div class="flex items-center justify-between">
-              <label class="text-xs font-bold uppercase tracking-wider text-outline">Max Daily Rate</label>
+              <label class="text-xs font-bold uppercase tracking-wider text-outline" data-i18n="filter.max_daily_rate">Max Daily Rate</label>
               <span class="text-xs font-bold text-secondary" id="priceFilterDisplay">$5.00/day</span>
             </div>
             <input type="range" min="1" max="10" step="0.5" value="5" id="priceRangeSlider" oninput="handlePriceRange(this.value)" class="w-full accent-secondary cursor-pointer">
@@ -849,14 +832,14 @@
 
           <!-- Location Radius / Dorm Hubs -->
           <div class="space-y-2">
-            <label class="text-xs font-bold uppercase tracking-wider text-outline block">Dorm & Hall Hub</label>
+            <label class="text-xs font-bold uppercase tracking-wider text-outline block" data-i18n="filter.hub_label">Dorm & Hall Hub</label>
             <select id="hubSelector" onchange="handleHubFilter(this.value)" class="w-full p-2.5 rounded-xl bg-surface-container-low text-xs font-semibold text-on-surface border border-transparent focus:border-secondary outline-none cursor-pointer">
-              <option value="all">All Campus Locations</option>
-              <option value="Wilbur">Wilbur Hall & Quad</option>
-              <option value="Stern">Stern Hall</option>
-              <option value="Green">Green Library</option>
-              <option value="Tressider">Tressider Union</option>
-              <option value="Gates">Gates CS Building</option>
+              <option value="all" data-i18n="filter.hub_all">All Campus Locations</option>
+              <option value="Wilbur" data-i18n="filter.hub_wilbur">Wilbur Hall & Quad</option>
+              <option value="Stern" data-i18n="filter.hub_stern">Stern Hall</option>
+              <option value="Green" data-i18n="filter.hub_green">Green Library</option>
+              <option value="Tressider" data-i18n="filter.hub_tressider">Tressider Union</option>
+              <option value="Gates" data-i18n="filter.hub_gates">Gates CS Building</option>
             </select>
           </div>
 
@@ -864,9 +847,9 @@
           <div class="p-3.5 rounded-xl bg-blue-50/70 border border-blue-100 space-y-1.5">
             <div class="flex items-center gap-1.5 text-secondary text-xs font-bold">
               <span class="material-symbols-outlined text-[16px]">verified_user</span>
-              <span>Escrow Security Protection</span>
+              <span data-i18n="filter.escrow_badge">Escrow Security Protection</span>
             </div>
-            <p class="text-[11px] text-on-surface-variant leading-relaxed">
+            <p class="text-[11px] text-on-surface-variant leading-relaxed" data-i18n="filter.escrow_desc">
               Every borrow request is backed by refundable student deposits and verified .edu university credentials.
             </p>
           </div>
@@ -878,17 +861,17 @@
           <!-- Search Results Header & Sort Controls -->
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-3.5 rounded-2xl border border-surface-container shadow-subtle">
             <div class="flex items-center gap-2">
-              <span class="font-display font-bold text-base text-primary" id="catalogResultTitle">All Campus Items</span>
+              <span class="font-display font-bold text-base text-primary" id="catalogResultTitle" data-i18n="catalog.all_items">All Campus Items</span>
               <span class="px-2 py-0.5 rounded-full bg-surface-container text-xs font-semibold text-secondary" id="catalogResultCount">6 items</span>
             </div>
 
             <div class="flex items-center gap-3">
-              <span class="text-xs text-outline hidden sm:inline">Sort by:</span>
+              <span class="text-xs text-outline hidden sm:inline" data-i18n="catalog.sort_label">Sort by:</span>
               <select onchange="handleSort(this.value)" class="px-3 py-1.5 rounded-xl bg-surface-container-low text-xs font-bold text-primary border border-transparent focus:border-secondary outline-none cursor-pointer">
-                <option value="featured">Featured & Closest</option>
-                <option value="price-asc">Price: Low to High</option>
-                <option value="price-desc">Price: High to Low</option>
-                <option value="rating">Top Lender Rating</option>
+                <option value="featured" data-i18n="catalog.sort_featured">Featured & Closest</option>
+                <option value="price-asc" data-i18n="catalog.sort_price_asc">Price: Low to High</option>
+                <option value="price-desc" data-i18n="catalog.sort_price_desc">Price: High to Low</option>
+                <option value="rating" data-i18n="catalog.sort_rating">Top Lender Rating</option>
               </select>
             </div>
           </div>
@@ -903,9 +886,9 @@
             <div class="w-16 h-16 rounded-full bg-blue-50 text-secondary flex items-center justify-center">
               <span class="material-symbols-outlined text-[32px]">search_off</span>
             </div>
-            <h3 class="font-display font-bold text-lg text-primary">No items found matching your filters</h3>
-            <p class="text-xs text-on-surface-variant max-w-sm">Try broadening your search term, adjusting the price slider, or selecting "All Campus Locations".</p>
-            <button onclick="resetFilters()" class="px-4 py-2 rounded-xl bg-primary text-white text-xs font-semibold shadow-sm hover:bg-primary-hover">Reset Filters</button>
+            <h3 class="font-display font-bold text-lg text-primary" data-i18n="empty.title">No items found matching your filters</h3>
+            <p class="text-xs text-on-surface-variant max-w-sm" data-i18n="empty.desc">Try broadening your search term, adjusting the price slider, or selecting "All Campus Locations".</p>
+            <button onclick="resetFilters()" class="px-4 py-2 rounded-xl bg-primary text-white text-xs font-semibold shadow-sm hover:bg-primary-hover" data-i18n="empty.reset_btn">Reset Filters</button>
           </div>
         </div>
 
@@ -922,14 +905,14 @@
       <div class="flex items-center justify-between">
         <button onclick="navigateView('marketplace')" class="flex items-center gap-1.5 text-xs font-bold text-secondary hover:text-primary transition-colors">
           <span class="material-symbols-outlined text-[18px]">arrow_back</span>
-          <span>Back to Marketplace</span>
+          <span data-i18n="detail.back_to_catalog">Back to Marketplace</span>
         </button>
         <div class="flex items-center gap-2">
-          <button onclick="showToast('Listing link copied to clipboard', 'info')" class="p-2 rounded-xl bg-white border border-surface-container text-on-surface-variant hover:text-primary shadow-subtle flex items-center gap-1 text-xs font-semibold">
-            <span class="material-symbols-outlined text-[16px]">share</span> Share
+          <button onclick="showToast(t('toast.link_copied'), 'info')" class="p-2 rounded-xl bg-white border border-surface-container text-on-surface-variant hover:text-primary shadow-subtle flex items-center gap-1 text-xs font-semibold">
+            <span class="material-symbols-outlined text-[16px]">share</span> <span data-i18n="detail.share">Share</span>
           </button>
           <button onclick="toggleActiveItemFavorite()" id="detailFavBtn" class="p-2 rounded-xl bg-white border border-surface-container text-on-surface-variant hover:text-error shadow-subtle flex items-center gap-1 text-xs font-semibold">
-            <span class="material-symbols-outlined text-[16px]" id="detailFavIcon">favorite_border</span> Wishlist
+            <span class="material-symbols-outlined text-[16px]" id="detailFavIcon">favorite_border</span> <span data-i18n="detail.wishlist">Wishlist</span>
           </button>
         </div>
       </div>
@@ -957,22 +940,22 @@
               <!-- Available Now Pill -->
               <div class="absolute bottom-4 left-4 bg-emerald-500/95 backdrop-blur-md text-white px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1.5 shadow-sm">
                 <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
-                <span>Ready for In-Person Pickup</span>
+                <span data-i18n="detail.ready_pickup">Ready for In-Person Pickup</span>
               </div>
             </div>
 
             <!-- Thumbnail Selector / Specs Bar -->
             <div class="p-4 border-t border-surface-container bg-surface-container-low/50 grid grid-cols-3 gap-3 text-center">
               <div class="bg-white p-2.5 rounded-xl border border-surface-container">
-                <span class="text-[11px] text-outline block">Security Deposit</span>
+                <span class="text-[11px] text-outline block" data-i18n="detail.security_deposit">Security Deposit</span>
                 <span class="font-display font-bold text-sm text-primary" id="detailDepositText">$20.00 Refundable</span>
               </div>
               <div class="bg-white p-2.5 rounded-xl border border-surface-container">
-                <span class="text-[11px] text-outline block">Max Period</span>
-                <span class="font-display font-bold text-sm text-primary">14 Days</span>
+                <span class="text-[11px] text-outline block" data-i18n="detail.max_period">Max Period</span>
+                <span class="font-display font-bold text-sm text-primary" data-i18n="detail.days_14">14 Days</span>
               </div>
               <div class="bg-white p-2.5 rounded-xl border border-surface-container">
-                <span class="text-[11px] text-outline block">Lender Rating</span>
+                <span class="text-[11px] text-outline block" data-i18n="detail.lender_rating">Lender Rating</span>
                 <span class="font-display font-bold text-sm text-primary" id="detailRatingText">4.9 ★ (18 reviews)</span>
               </div>
             </div>
@@ -980,7 +963,7 @@
 
           <!-- Detailed Item Specifications & Overview -->
           <div class="bg-white rounded-3xl p-6 border border-surface-container shadow-card space-y-4">
-            <h2 class="font-display font-bold text-xl text-primary">About this Item</h2>
+            <h2 class="font-display font-bold text-xl text-primary" data-i18n="detail.about_item">About this Item</h2>
             <p class="text-sm text-on-surface-variant leading-relaxed" id="detailDescriptionText"></p>
             
             <div class="pt-3 border-t border-surface-container grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -989,8 +972,8 @@
                   <span class="material-symbols-outlined text-[20px]">check_box</span>
                 </div>
                 <div>
-                  <span class="text-xs font-bold text-primary block">Included with Item</span>
-                  <span class="text-xs text-on-surface-variant">Protective case, charging cables, student guide</span>
+                  <span class="text-xs font-bold text-primary block" data-i18n="detail.included_title">Included with Item</span>
+                  <span class="text-xs text-on-surface-variant" data-i18n="detail.included_desc">Protective case, charging cables, student guide</span>
                 </div>
               </div>
               <div class="flex items-start gap-3">
@@ -998,8 +981,8 @@
                   <span class="material-symbols-outlined text-[20px]">sanitizer</span>
                 </div>
                 <div>
-                  <span class="text-xs font-bold text-primary block">Sanitized & Tested</span>
-                  <span class="text-xs text-on-surface-variant">Cleaned and checked after every handover</span>
+                  <span class="text-xs font-bold text-primary block" data-i18n="detail.sanitized_title">Sanitized & Tested</span>
+                  <span class="text-xs text-on-surface-variant" data-i18n="detail.sanitized_desc">Cleaned and checked after every handover</span>
                 </div>
               </div>
             </div>
@@ -1007,7 +990,7 @@
 
           <!-- Verified Lender Profile Card -->
           <div class="bg-white rounded-3xl p-6 border border-surface-container shadow-card space-y-4">
-            <h3 class="font-display font-bold text-lg text-primary">Peer Lender Profile</h3>
+            <h3 class="font-display font-bold text-lg text-primary" data-i18n="detail.lender_profile">Peer Lender Profile</h3>
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div class="flex items-center gap-3">
                 <div class="w-14 h-14 rounded-2xl overflow-hidden ring-2 ring-blue-100 shrink-0">
@@ -1016,18 +999,18 @@
                 <div>
                   <div class="flex items-center gap-1.5">
                     <span class="font-display font-bold text-base text-primary" id="detailLenderName"></span>
-                    <span class="material-symbols-outlined text-[16px] text-secondary" title="Verified Student">verified</span>
+                    <span class="material-symbols-outlined text-[16px] text-secondary" title="Verified Student" data-i18n-title="detail.verified_student">verified</span>
                   </div>
                   <span class="text-xs text-on-surface-variant" id="detailLenderDept"></span>
                   <div class="flex items-center gap-2 mt-1">
-                    <span class="text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">⚡ Replies in ~10m</span>
-                    <span class="text-[11px] font-semibold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full">🤝 32 Handshakes</span>
+                    <span class="text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full" data-i18n="detail.replies_quick">⚡ Replies in ~10m</span>
+                    <span class="text-[11px] font-semibold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full" data-i18n="detail.handshakes">🤝 32 Handshakes</span>
                   </div>
                 </div>
               </div>
               <button onclick="showToast('Secure campus chat opened with peer lender', 'info')" class="px-4 py-2 rounded-xl bg-surface-container-low hover:bg-surface-container text-primary font-semibold text-xs flex items-center justify-center gap-1.5 transition-colors">
                 <span class="material-symbols-outlined text-[16px]">chat</span>
-                <span>Message Peer</span>
+                <span data-i18n="detail.message_peer">Message Peer</span>
               </button>
             </div>
           </div>
@@ -1049,16 +1032,16 @@
             <div class="bg-surface-container-low p-4 rounded-2xl flex items-baseline justify-between">
               <div>
                 <span class="font-display font-extrabold text-3xl text-primary" id="detailDailyPriceDisplay">$3.50</span>
-                <span class="text-xs text-on-surface-variant font-medium">/ day</span>
+                <span class="text-xs text-on-surface-variant font-medium" data-i18n="detail.day_per">/ day</span>
               </div>
-              <span class="text-xs font-semibold text-secondary bg-white px-2.5 py-1 rounded-full shadow-sm">
+              <span class="text-xs font-semibold text-secondary bg-white px-2.5 py-1 rounded-full shadow-sm" data-i18n="detail.escrow_covered">
                 Campus Escrow Covered
               </span>
             </div>
 
             <!-- Duration Selector -->
             <div class="space-y-2">
-              <label class="text-xs font-bold uppercase tracking-wider text-outline block">Rental Duration</label>
+              <label class="text-xs font-bold uppercase tracking-wider text-outline block" data-i18n="detail.rental_duration">Rental Duration</label>
               <div class="flex items-center justify-between p-3 rounded-2xl bg-surface-container-low border border-surface-container">
                 <button onclick="modifyDetailDays(-1)" class="w-9 h-9 rounded-xl bg-white hover:bg-surface-container shadow-sm flex items-center justify-center font-bold text-lg active:scale-95 transition-all">−</button>
                 <div class="text-center">
@@ -1071,8 +1054,8 @@
 
             <!-- Optional message to lender -->
             <div class="space-y-1.5">
-              <label class="text-xs font-bold uppercase tracking-wider text-outline block" for="detailLenderNote">Note to Lender</label>
-              <textarea id="detailLenderNote" rows="2" placeholder="Hi! I need this for my midterms review on Friday..." class="w-full p-3 rounded-xl bg-surface-container-low text-xs border border-transparent focus:border-secondary outline-none resize-none"></textarea>
+              <label class="text-xs font-bold uppercase tracking-wider text-outline block" for="detailLenderNote" data-i18n="detail.note_label">Note to Lender</label>
+              <textarea id="detailLenderNote" rows="2" placeholder="Hi! I need this for my midterms review on Friday..." data-i18n-placeholder="detail.note_placeholder" class="w-full p-3 rounded-xl bg-surface-container-low text-xs border border-transparent focus:border-secondary outline-none resize-none"></textarea>
             </div>
 
             <!-- Price Breakdown Calculation Table -->
@@ -1082,15 +1065,15 @@
                 <span id="detailBreakdownRental">$10.50</span>
               </div>
               <div class="flex justify-between text-on-surface-variant">
-                <span>Campus Trust & Escrow Guarantee</span>
-                <span class="text-emerald-brand font-bold">Free ($0.00)</span>
+                <span data-i18n="detail.escrow_guarantee">Campus Trust & Escrow Guarantee</span>
+                <span class="text-emerald-brand font-bold" data-i18n="detail.free">Free ($0.00)</span>
               </div>
               <div class="flex justify-between text-on-surface-variant">
-                <span>Security Deposit (100% Refundable)</span>
+                <span data-i18n="detail.deposit_line">Security Deposit (100% Refundable)</span>
                 <span id="detailBreakdownDeposit">$20.00</span>
               </div>
               <div class="flex justify-between pt-2 border-t border-surface-container font-display font-bold text-base text-primary">
-                <span>Total Due Now</span>
+                <span data-i18n="detail.total_due">Total Due Now</span>
                 <span class="text-secondary font-extrabold text-xl" id="detailTotalDue">$10.50</span>
               </div>
             </div>
@@ -1100,7 +1083,7 @@
               <span class="material-symbols-outlined text-[18px]">send</span>
               <span id="detailSubmitBtnText">Request to Borrow ($10.50)</span>
             </button>
-            <p class="text-[11px] text-center text-outline">
+            <p class="text-[11px] text-center text-outline" data-i18n="detail.no_charge_notice">
               You won't be charged until the lender confirms the in-person handover.
             </p>
           </div>
@@ -1118,12 +1101,12 @@
       <!-- Top Overview Header & Metric Cards -->
       <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 class="font-display font-extrabold text-3xl text-primary">My Loans & Lending</h1>
-          <p class="text-sm text-on-surface-variant mt-0.5">Track your active borrowings, items out on loan to peers, and requests.</p>
+          <h1 class="font-display font-extrabold text-3xl text-primary" data-i18n="loans.title">My Loans & Lending</h1>
+          <p class="text-sm text-on-surface-variant mt-0.5" data-i18n="loans.subtitle">Track your active borrowings, items out on loan to peers, and requests.</p>
         </div>
         <div class="flex items-center gap-2">
           <span class="px-3 py-1.5 rounded-full bg-emerald-light text-emerald-dark text-xs font-bold flex items-center gap-1.5">
-            <span class="material-symbols-outlined text-[16px]">verified_user</span> Campus Escrow Active
+            <span class="material-symbols-outlined text-[16px]">verified_user</span> <span data-i18n="loans.escrow_active">Campus Escrow Active</span>
           </span>
         </div>
       </div>
@@ -1132,53 +1115,53 @@
       <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <div onclick="switchLoansTab('borrowing')" class="bg-white p-5 rounded-2xl border border-surface-container shadow-subtle hover:shadow-card cursor-pointer transition-all">
           <div class="flex items-center justify-between text-secondary mb-2">
-            <span class="text-xs font-bold uppercase tracking-wider">Active Borrowing</span>
+            <span class="text-xs font-bold uppercase tracking-wider" data-i18n="loans.stat_active_borrowing">Active Borrowing</span>
             <span class="material-symbols-outlined text-[20px]">shopping_bag</span>
           </div>
           <span class="font-display text-3xl font-extrabold text-primary" id="dashBorrowingCount">2</span>
-          <span class="text-[11px] text-secondary font-semibold block mt-1">1 due in 3 days</span>
+          <span class="text-[11px] text-secondary font-semibold block mt-1" data-i18n="loans.stat_due_3days">1 due in 3 days</span>
         </div>
 
         <div onclick="switchLoansTab('lending')" class="bg-white p-5 rounded-2xl border border-surface-container shadow-subtle hover:shadow-card cursor-pointer transition-all">
           <div class="flex items-center justify-between text-emerald-brand mb-2">
-            <span class="text-xs font-bold uppercase tracking-wider">Items Out on Loan</span>
+            <span class="text-xs font-bold uppercase tracking-wider" data-i18n="loans.stat_out_on_loan">Items Out on Loan</span>
             <span class="material-symbols-outlined text-[20px]">payments</span>
           </div>
           <span class="font-display text-3xl font-extrabold text-emerald-900" id="dashLendingCount">4</span>
-          <span class="text-[11px] text-emerald-700 font-semibold block mt-1">+$42.00 active earnings</span>
+          <span class="text-[11px] text-emerald-700 font-semibold block mt-1" data-i18n="loans.stat_active_earnings">+$42.00 active earnings</span>
         </div>
 
         <div onclick="switchLoansTab('requests')" class="bg-white p-5 rounded-2xl border border-surface-container shadow-subtle hover:shadow-card cursor-pointer transition-all">
           <div class="flex items-center justify-between text-amber-600 mb-2">
-            <span class="text-xs font-bold uppercase tracking-wider">Pending Requests</span>
+            <span class="text-xs font-bold uppercase tracking-wider" data-i18n="loans.stat_pending_requests">Pending Requests</span>
             <span class="material-symbols-outlined text-[20px]">pending_actions</span>
           </div>
           <span class="font-display text-3xl font-extrabold text-amber-900" id="dashRequestsCount">3</span>
-          <span class="text-[11px] text-amber-700 font-semibold block mt-1">Action required</span>
+          <span class="text-[11px] text-amber-700 font-semibold block mt-1" data-i18n="loans.stat_action_required">Action required</span>
         </div>
 
         <div class="bg-white p-5 rounded-2xl border border-surface-container shadow-subtle">
           <div class="flex items-center justify-between text-outline mb-2">
-            <span class="text-xs font-bold uppercase tracking-wider">Completed Loans</span>
+            <span class="text-xs font-bold uppercase tracking-wider" data-i18n="loans.stat_completed_loans">Completed Loans</span>
             <span class="material-symbols-outlined text-[20px]">task_alt</span>
           </div>
           <span class="font-display text-3xl font-extrabold text-primary">18</span>
-          <span class="text-[11px] text-outline font-semibold block mt-1">100% on-time returns</span>
+          <span class="text-[11px] text-outline font-semibold block mt-1" data-i18n="loans.stat_on_time_returns">100% on-time returns</span>
         </div>
       </div>
 
       <!-- Segmented Tab Navigation for Desktop -->
       <div class="bg-white rounded-2xl p-2 border border-surface-container shadow-subtle flex items-center gap-2 max-w-xl">
         <button onclick="switchLoansTab('borrowing')" id="tabBtnBorrowing" class="flex-1 py-2 px-4 rounded-xl text-xs font-bold bg-secondary text-white shadow-sm transition-all flex items-center justify-center gap-2">
-          <span>Borrowing</span>
+          <span data-i18n="loans.tab_borrowing">Borrowing</span>
           <span class="px-1.5 py-0.2 rounded-full bg-white/20 text-white text-[10px]" id="tabBadgeBorrow">2</span>
         </button>
         <button onclick="switchLoansTab('lending')" id="tabBtnLending" class="flex-1 py-2 px-4 rounded-xl text-xs font-bold text-on-surface-variant hover:text-primary transition-all flex items-center justify-center gap-2">
-          <span>Lending</span>
+          <span data-i18n="loans.tab_lending">Lending</span>
           <span class="px-1.5 py-0.2 rounded-full bg-surface-container-high text-primary text-[10px]" id="tabBadgeLend">4</span>
         </button>
         <button onclick="switchLoansTab('requests')" id="tabBtnRequests" class="flex-1 py-2 px-4 rounded-xl text-xs font-bold text-on-surface-variant hover:text-primary transition-all flex items-center justify-center gap-2">
-          <span>Incoming Requests</span>
+          <span data-i18n="loans.tab_requests">Incoming Requests</span>
           <span class="px-1.5 py-0.2 rounded-full bg-amber-100 text-amber-800 text-[10px]" id="tabBadgeReq">3</span>
         </button>
       </div>
@@ -1194,7 +1177,7 @@
             </div>
             <div>
               <div class="flex items-center gap-2 mb-1">
-                <span class="px-2.5 py-0.5 rounded-full bg-blue-50 text-secondary text-[11px] font-bold">BORROWED</span>
+                <span class="px-2.5 py-0.5 rounded-full bg-blue-50 text-secondary text-[11px] font-bold" data-i18n="loans.badge_borrowed">BORROWED</span>
                 <span class="text-xs text-outline">Wilbur Quad Pickup</span>
               </div>
               <h3 class="font-display font-bold text-lg text-primary">TI-84 Plus CE Graphing Calculator</h3>
@@ -1207,16 +1190,16 @@
           <div class="flex flex-col md:items-end gap-3 w-full md:w-auto pt-3 md:pt-0 border-t md:border-t-0 border-surface-container">
             <div class="flex items-center gap-3 text-xs">
               <span class="text-secondary font-bold bg-blue-50 px-2.5 py-1 rounded-full flex items-center gap-1">
-                <span class="material-symbols-outlined text-[14px]">event</span> Due in 3 days (Nov 4)
+                <span class="material-symbols-outlined text-[14px]">event</span> <span data-i18n="loans.due_in_3days">Due in 3 days (Nov 4)</span>
               </span>
-              <span class="text-outline">$20.00 Deposit Held</span>
+              <span class="text-outline" data-i18n="loans.deposit_held">$20.00 Deposit Held</span>
             </div>
             <div class="flex items-center gap-2 w-full md:w-auto">
               <button onclick="showToast('Opened chat with Sarah Lin', 'info')" class="flex-1 md:flex-initial px-3 py-2 rounded-xl bg-surface-container-low hover:bg-surface-container text-primary font-semibold text-xs flex items-center justify-center gap-1">
-                <span class="material-symbols-outlined text-[16px]">chat</span> Chat
+                <span class="material-symbols-outlined text-[16px]">chat</span> <span data-i18n="loans.chat_btn">Chat</span>
               </button>
               <button onclick="openReturnModal('TI-84 Plus CE Graphing Calculator', 'Sarah Lin', '$20.00', 'Wilbur Hall Lobby')" class="flex-1 md:flex-initial px-4 py-2 rounded-xl bg-secondary hover:bg-secondary-hover text-white font-semibold text-xs flex items-center justify-center gap-1.5 shadow-sm">
-                <span class="material-symbols-outlined text-[16px]">assignment_return</span> Return & Release Escrow
+                <span class="material-symbols-outlined text-[16px]">assignment_return</span> <span data-i18n="loans.return_release_btn">Return & Release Escrow</span>
               </button>
             </div>
           </div>
@@ -1230,8 +1213,8 @@
             </div>
             <div>
               <div class="flex items-center gap-2 mb-1">
-                <span class="px-2.5 py-0.5 rounded-full bg-red-100 text-error text-[11px] font-bold animate-pulse">OVERDUE</span>
-                <span class="text-xs text-error font-semibold">Due Yesterday (+ $1.50 fee)</span>
+                <span class="px-2.5 py-0.5 rounded-full bg-red-100 text-error text-[11px] font-bold animate-pulse" data-i18n="loans.badge_overdue">OVERDUE</span>
+                <span class="text-xs text-error font-semibold" data-i18n="loans.due_yesterday">Due Yesterday (+ $1.50 fee)</span>
               </div>
               <h3 class="font-display font-bold text-lg text-primary">Rotring Engineering Drafting Kit</h3>
               <p class="text-xs text-on-surface-variant mt-0.5">
@@ -1242,14 +1225,14 @@
 
           <div class="flex flex-col md:items-end gap-3 w-full md:w-auto pt-3 md:pt-0 border-t md:border-t-0 border-surface-container">
             <div class="flex items-center gap-2 text-xs">
-              <span class="text-error font-bold">$15.00 Escrow Deposit</span>
+              <span class="text-error font-bold" data-i18n="loans.escrow_deposit">$15.00 Escrow Deposit</span>
             </div>
             <div class="flex items-center gap-2 w-full md:w-auto">
               <button onclick="showToast('Opened chat with Maya S.', 'info')" class="flex-1 md:flex-initial px-3 py-2 rounded-xl bg-surface-container-low hover:bg-surface-container text-primary font-semibold text-xs flex items-center justify-center gap-1">
-                <span class="material-symbols-outlined text-[16px]">chat</span> Chat
+                <span class="material-symbols-outlined text-[16px]">chat</span> <span data-i18n="loans.chat_btn">Chat</span>
               </button>
               <button onclick="openReturnModal('Rotring Engineering Drafting Kit', 'Maya S.', '$15.00', 'Tressider Union')" class="flex-1 md:flex-initial px-4 py-2 rounded-xl bg-error hover:bg-red-700 text-white font-semibold text-xs flex items-center justify-center gap-1.5 shadow-sm">
-                <span class="material-symbols-outlined text-[16px]">bolt</span> Return Now
+                <span class="material-symbols-outlined text-[16px]">bolt</span> <span data-i18n="loans.return_now_btn">Return Now</span>
               </button>
             </div>
           </div>
@@ -1267,8 +1250,8 @@
             </div>
             <div>
               <div class="flex items-center gap-2 mb-1">
-                <span class="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[11px] font-bold">LENT OUT</span>
-                <span class="text-xs text-emerald-700 font-semibold">Returns Nov 6</span>
+                <span class="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[11px] font-bold" data-i18n="loans.badge_lent_out">LENT OUT</span>
+                <span class="text-xs text-emerald-700 font-semibold" data-i18n="loans.returns_nov6">Returns Nov 6</span>
               </div>
               <h3 class="font-display font-bold text-lg text-primary">Logitech MX Master 3S Mouse</h3>
               <p class="text-xs text-on-surface-variant mt-0.5">
@@ -1279,10 +1262,10 @@
 
           <div class="flex items-center gap-2">
             <button onclick="showToast('Sent ping message to Jordan T.', 'info')" class="px-3 py-2 rounded-xl bg-surface-container-low hover:bg-surface-container text-primary font-semibold text-xs flex items-center gap-1">
-              <span class="material-symbols-outlined text-[16px]">chat</span> Message
+              <span class="material-symbols-outlined text-[16px]">chat</span> <span data-i18n="loans.message_btn">Message</span>
             </button>
             <button onclick="showToast('Return confirmed. $17.50 transferred to your campus balance!', 'success')" class="px-4 py-2 rounded-xl bg-primary hover:bg-primary-hover text-white font-semibold text-xs flex items-center gap-1.5 shadow-sm">
-              <span class="material-symbols-outlined text-[16px]">check_circle</span> Mark Returned
+              <span class="material-symbols-outlined text-[16px]">check_circle</span> <span data-i18n="loans.mark_returned_btn">Mark Returned</span>
             </button>
           </div>
         </div>
@@ -1298,21 +1281,21 @@
             </div>
             <div>
               <div class="flex items-center gap-2 mb-1">
-                <span class="px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[11px] font-bold">INCOMING REQUEST</span>
-                <span class="text-xs text-primary font-bold">$6.00 Total Earnings</span>
+                <span class="px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[11px] font-bold" data-i18n="loans.badge_incoming_req">INCOMING REQUEST</span>
+                <span class="text-xs text-primary font-bold"><span data-i18n="loans.total_earnings">Total Earnings</span>: $6.00</span>
               </div>
               <h3 class="font-display font-bold text-lg text-primary">Java Software Solutions (8th Ed)</h3>
               <p class="text-xs text-on-surface-variant mt-0.5">
-                Requested by: <strong>Marcus T.</strong> (Junior • Bio/CS) • 3 Days rental
+                <span data-i18n="loans.requested_by">Requested by:</span> <strong>Marcus T.</strong> (Junior • Bio/CS) • 3 Days rental
               </p>
             </div>
           </div>
 
           <div class="flex items-center gap-2">
-            <button onclick="dismissRequest('reqCard1', 'Java Software Solutions')" class="px-3 py-2 rounded-xl bg-surface-container-low hover:bg-red-50 text-outline hover:text-error font-semibold text-xs">
+            <button onclick="dismissRequest('reqCard1', 'Java Software Solutions')" class="px-3 py-2 rounded-xl bg-surface-container-low hover:bg-red-50 text-outline hover:text-error font-semibold text-xs" data-i18n="loans.decline_btn">
               Decline
             </button>
-            <button onclick="acceptRequest('reqCard1', 'Java Software Solutions')" class="px-4 py-2 rounded-xl bg-secondary hover:bg-secondary-hover text-white font-semibold text-xs shadow-sm">
+            <button onclick="acceptRequest('reqCard1', 'Java Software Solutions')" class="px-4 py-2 rounded-xl bg-secondary hover:bg-secondary-hover text-white font-semibold text-xs shadow-sm" data-i18n="loans.accept_handover_btn">
               Accept Handover
             </button>
           </div>
@@ -1343,9 +1326,9 @@
             <h2 class="font-display font-extrabold text-2xl text-primary" id="profileFullName">Alex Rivera</h2>
             <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-secondary text-xs font-semibold mt-1">
               <span class="material-symbols-outlined text-[14px]">school</span>
-              <span>Stanford University • Class of '26</span>
+              <span data-i18n="profile.school">Stanford University • Class of '26</span>
             </div>
-            <p class="text-xs text-on-surface-variant mt-2">
+            <p class="text-xs text-on-surface-variant mt-2" data-i18n="profile.dept">
               Department of Computer Science • #STU-882941
             </p>
           </div>
@@ -1354,29 +1337,29 @@
           <div class="grid grid-cols-3 gap-2 bg-surface-container-low p-3 rounded-2xl">
             <div>
               <span class="font-display font-bold text-lg text-primary block">14</span>
-              <span class="text-[10px] text-outline">Items Lent</span>
+              <span class="text-[10px] text-outline" data-i18n="profile.stat_lent">Items Lent</span>
             </div>
             <div class="border-x border-surface-container">
               <span class="font-display font-bold text-lg text-primary block">6</span>
-              <span class="text-[10px] text-outline">Borrowed</span>
+              <span class="text-[10px] text-outline" data-i18n="profile.stat_borrowed">Borrowed</span>
             </div>
             <div>
               <span class="font-display font-bold text-lg text-primary block">4.9 ★</span>
-              <span class="text-[10px] text-outline">Trust Rating</span>
+              <span class="text-[10px] text-outline" data-i18n="profile.stat_trust">Trust Rating</span>
             </div>
           </div>
 
           <div class="text-left space-y-2.5 pt-3 border-t border-surface-container text-xs">
             <div class="flex justify-between">
-              <span class="text-outline">Campus Dorm:</span>
+              <span class="text-outline" data-i18n="profile.label_dorm">Campus Dorm:</span>
               <span class="font-semibold text-primary" id="profileDormText">Wilbur Hall 304</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-outline">Institutional Email:</span>
+              <span class="text-outline" data-i18n="profile.label_email">Institutional Email:</span>
               <span class="font-semibold text-secondary">a.rivera@stanford.edu</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-outline">Phone Handover:</span>
+              <span class="text-outline" data-i18n="profile.label_phone">Phone Handover:</span>
               <span class="font-semibold text-primary">+1 (650) 555-0194</span>
             </div>
           </div>
@@ -1384,11 +1367,11 @@
           <div class="space-y-2">
             <button onclick="openEditProfileModal()" class="w-full py-2.5 rounded-xl bg-surface-container hover:bg-surface-container-high text-primary font-semibold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer">
               <span class="material-symbols-outlined text-[16px]">edit</span>
-              <span>Edit Profile Info</span>
+              <span data-i18n="profile.edit_btn">Edit Profile Info</span>
             </button>
             <button onclick="handleLogout()" class="w-full py-2.5 rounded-xl border border-red-200 text-error hover:bg-red-50 font-semibold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer">
               <span class="material-symbols-outlined text-[16px]">logout</span>
-              <span>Sign Out of Campus Network</span>
+              <span data-i18n="profile.sign_out_btn">Sign Out of Campus Network</span>
             </button>
           </div>
         </div>
@@ -1398,11 +1381,11 @@
           <div class="bg-white rounded-3xl p-6 border border-surface-container shadow-card space-y-4">
             <div class="flex items-center justify-between">
               <div>
-                <h3 class="font-display font-bold text-xl text-primary">My Listed Items for Rent</h3>
-                <p class="text-xs text-on-surface-variant">Manage gear you've made available for campus peers.</p>
+                <h3 class="font-display font-bold text-xl text-primary" data-i18n="profile.listings_title">My Listed Items for Rent</h3>
+                <p class="text-xs text-on-surface-variant" data-i18n="profile.listings_subtitle">Manage gear you've made available for campus peers.</p>
               </div>
               <button onclick="openAddItemModal()" class="px-4 py-2 rounded-xl bg-secondary hover:bg-secondary-hover text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm">
-                <span class="material-symbols-outlined text-[16px]">add_circle</span> Add New Item
+                <span class="material-symbols-outlined text-[16px]">add_circle</span> <span data-i18n="profile.add_item_btn">Add New Item</span>
               </button>
             </div>
 
@@ -1414,16 +1397,16 @@
 
           <!-- Account Security Card -->
           <div class="bg-white rounded-3xl p-6 border border-surface-container shadow-card space-y-3">
-            <h4 class="font-display font-bold text-base text-primary">Security & Campus Trust</h4>
+            <h4 class="font-display font-bold text-base text-primary" data-i18n="profile.security_title">Security & Campus Trust</h4>
             <div class="flex items-center justify-between p-3 rounded-2xl bg-surface-container-low text-xs">
               <div class="flex items-center gap-2.5">
                 <span class="material-symbols-outlined text-secondary text-[20px]">verified_user</span>
                 <div>
-                  <span class="font-semibold text-primary block">University Single Sign-On Active</span>
-                  <span class="text-outline">Connected to Stanford 2FA Shibboleth</span>
+                  <span class="font-semibold text-primary block" data-i18n="profile.sso_active">University Single Sign-On Active</span>
+                  <span class="text-outline" data-i18n="profile.sso_desc">Connected to Stanford 2FA Shibboleth</span>
                 </div>
               </div>
-              <span class="text-emerald-700 font-bold bg-emerald-50 px-2.5 py-1 rounded-full">Active</span>
+              <span class="text-emerald-700 font-bold bg-emerald-50 px-2.5 py-1 rounded-full" data-i18n="profile.active_badge">Active</span>
             </div>
           </div>
         </div>
@@ -1437,28 +1420,28 @@
     <!-- ========================================================================= -->
     <div id="view-how-it-works" class="view-fade hidden space-y-8 py-4">
       <div class="text-center max-w-2xl mx-auto space-y-3">
-        <span class="px-3 py-1 rounded-full bg-blue-50 text-secondary text-xs font-bold uppercase tracking-wider">How LendLoop Works</span>
-        <h1 class="font-display font-extrabold text-3xl sm:text-4xl text-primary">Simple, Safe, Student-to-Student</h1>
-        <p class="text-sm text-on-surface-variant">Borrow textbooks for a week, grab a camera for a campus project, or lend your calculator to earn extra cash.</p>
+        <span class="px-3 py-1 rounded-full bg-blue-50 text-secondary text-xs font-bold uppercase tracking-wider" data-i18n="how.badge">How LendLoop Works</span>
+        <h1 class="font-display font-extrabold text-3xl sm:text-4xl text-primary" data-i18n="how.title">Simple, Safe, Student-to-Student</h1>
+        <p class="text-sm text-on-surface-variant" data-i18n="how.desc">Borrow textbooks for a week, grab a camera for a campus project, or lend your calculator to earn extra cash.</p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div class="bg-white p-6 rounded-3xl border border-surface-container shadow-card space-y-3">
           <div class="w-12 h-12 rounded-2xl bg-blue-50 text-secondary flex items-center justify-center font-display font-bold text-xl">1</div>
-          <h3 class="font-display font-bold text-lg text-primary">Browse & Request</h3>
-          <p class="text-xs text-on-surface-variant leading-relaxed">Search items available in your residence hall or quad. Pick your rental dates and send a request with one click.</p>
+          <h3 class="font-display font-bold text-lg text-primary" data-i18n="how.step1_title">Browse & Request</h3>
+          <p class="text-xs text-on-surface-variant leading-relaxed" data-i18n="how.step1_desc">Search items available in your residence hall or quad. Pick your rental dates and send a request with one click.</p>
         </div>
 
         <div class="bg-white p-6 rounded-3xl border border-surface-container shadow-card space-y-3">
           <div class="w-12 h-12 rounded-2xl bg-emerald-light text-emerald-dark flex items-center justify-center font-display font-bold text-xl">2</div>
-          <h3 class="font-display font-bold text-lg text-primary">Meet for Handover</h3>
-          <p class="text-xs text-on-surface-variant leading-relaxed">Meet your peer in your dorm lobby or library. Scan the LendLoop verification QR code to release the deposit into escrow.</p>
+          <h3 class="font-display font-bold text-lg text-primary" data-i18n="how.step2_title">Meet for Handover</h3>
+          <p class="text-xs text-on-surface-variant leading-relaxed" data-i18n="how.step2_desc">Meet your peer in your dorm lobby or library. Scan the LendLoop verification QR code to release the deposit into escrow.</p>
         </div>
 
         <div class="bg-white p-6 rounded-3xl border border-surface-container shadow-card space-y-3">
           <div class="w-12 h-12 rounded-2xl bg-purple-50 text-purple-700 flex items-center justify-center font-display font-bold text-xl">3</div>
-          <h3 class="font-display font-bold text-lg text-primary">Return & Earn Karma</h3>
-          <p class="text-xs text-on-surface-variant leading-relaxed">Return the item when done. Your deposit is instantly refunded to your student account, and both students earn trust karma.</p>
+          <h3 class="font-display font-bold text-lg text-primary" data-i18n="how.step3_title">Return & Earn Karma</h3>
+          <p class="text-xs text-on-surface-variant leading-relaxed" data-i18n="how.step3_desc">Return the item when done. Your deposit is instantly refunded to your student account, and both students earn trust karma.</p>
         </div>
       </div>
     </div>
@@ -1476,7 +1459,7 @@
           <div class="w-8 h-8 rounded-xl bg-secondary text-white flex items-center justify-center">
             <span class="material-symbols-outlined text-[18px]">add_circle</span>
           </div>
-          <h3 class="font-display font-bold text-lg text-primary">Post an Item to LendLoop</h3>
+          <h3 class="font-display font-bold text-lg text-primary" data-i18n="modal.add.title">Post an Item to LendLoop</h3>
         </div>
         <button onclick="closeAddItemModal()" class="w-8 h-8 rounded-full hover:bg-surface-container text-outline hover:text-on-surface flex items-center justify-center">
           <span class="material-symbols-outlined text-[18px]">close</span>
@@ -1485,56 +1468,97 @@
 
       <form onsubmit="event.preventDefault(); submitNewListing();" class="space-y-4">
         <div>
-          <label class="text-xs font-bold uppercase tracking-wider text-outline block mb-1">Item Title</label>
-          <input type="text" id="newItemTitle" required placeholder="e.g. Campbell Biology 12th Edition / TI-84 Plus CE" class="w-full p-2.5 rounded-xl bg-surface-container-low text-xs border border-transparent focus:border-secondary outline-none">
+          <label class="text-xs font-bold uppercase tracking-wider text-outline block mb-1" data-i18n="modal.add.item_title">Item Title</label>
+          <input type="text" id="newItemTitle" required placeholder="e.g. Campbell Biology 12th Edition / TI-84 Plus CE" data-i18n-placeholder="modal.add.placeholder_title" class="w-full p-2.5 rounded-xl bg-surface-container-low text-xs border border-transparent focus:border-secondary outline-none">
+        </div>
+
+        <!-- Item Photo Upload (File Picker & Live Preview) -->
+        <div>
+          <label class="text-xs font-bold uppercase tracking-wider text-outline flex items-center justify-between mb-1">
+            <span data-i18n="modal.add.photo_label">Item Photo</span>
+            <span class="text-[10px] text-outline font-normal lowercase">(optional)</span>
+          </label>
+          <div id="photoDropArea" onclick="document.getElementById('newItemPhotoInput').click()" class="border-2 border-dashed border-surface-container hover:border-secondary rounded-2xl p-3 bg-surface-container-low/50 hover:bg-blue-50/40 transition-all cursor-pointer group flex items-center justify-center">
+            <input type="file" id="newItemPhotoInput" accept="image/*" class="hidden" onchange="handlePhotoUpload(event)">
+            
+            <!-- Thumbnail preview container -->
+            <div id="photoPreviewContainer" class="hidden flex items-center justify-between w-full">
+              <div class="flex items-center gap-3">
+                <div class="w-14 h-14 rounded-xl overflow-hidden bg-white border border-surface-container shrink-0 shadow-sm">
+                  <img id="photoPreviewImg" src="" alt="Preview" class="w-full h-full object-cover">
+                </div>
+                <div>
+                  <p class="text-xs font-bold text-primary truncate max-w-[200px]" id="photoPreviewName">photo.jpg</p>
+                  <p class="text-[10px] text-emerald-600 font-semibold flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[13px]">check_circle</span> Photo attached
+                  </p>
+                </div>
+              </div>
+              <button type="button" onclick="removeUploadedPhoto(event)" class="px-2.5 py-1 rounded-lg bg-surface-container hover:bg-red-50 text-outline hover:text-error text-xs font-semibold flex items-center gap-1">
+                <span class="material-symbols-outlined text-[14px]">delete</span>
+                <span>Remove</span>
+              </button>
+            </div>
+
+            <!-- Upload prompt container -->
+            <div id="photoPromptContainer" class="flex items-center gap-2.5 text-xs text-on-surface-variant group-hover:text-secondary py-1">
+              <div class="w-9 h-9 rounded-xl bg-blue-100/60 text-secondary flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-[20px]">add_a_photo</span>
+              </div>
+              <div class="text-left">
+                <p class="font-bold text-xs text-primary group-hover:text-secondary" data-i18n="modal.add.upload_click">Click to upload photo</p>
+                <p class="text-[10px] text-outline" data-i18n="modal.add.upload_hint">PNG, JPG, or WEBP up to 5MB</p>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="text-xs font-bold uppercase tracking-wider text-outline block mb-1">Category</label>
+            <label class="text-xs font-bold uppercase tracking-wider text-outline block mb-1" data-i18n="modal.add.category">Category</label>
             <select id="newItemCategory" class="w-full p-2.5 rounded-xl bg-surface-container-low text-xs border border-transparent focus:border-secondary outline-none cursor-pointer">
-              <option value="books">Textbooks</option>
-              <option value="tech">Tech & Electronics</option>
-              <option value="stationery">Calculators & Lab Gear</option>
-              <option value="sports">Sports & Outdoor</option>
-              <option value="others">Dorm Living</option>
+              <option value="books" data-i18n="cat.books">Textbooks</option>
+              <option value="tech" data-i18n="cat.tech">Tech & Electronics</option>
+              <option value="stationery" data-i18n="cat.stationery">Calculators & Lab Gear</option>
+              <option value="sports" data-i18n="cat.sports">Sports & Outdoor</option>
+              <option value="others" data-i18n="cat.others">Dorm Living</option>
             </select>
           </div>
           <div>
-            <label class="text-xs font-bold uppercase tracking-wider text-outline block mb-1">Condition</label>
+            <label class="text-xs font-bold uppercase tracking-wider text-outline block mb-1" data-i18n="modal.add.condition">Condition</label>
             <select id="newItemCondition" class="w-full p-2.5 rounded-xl bg-surface-container-low text-xs border border-transparent focus:border-secondary outline-none cursor-pointer">
-              <option value="Brand New">Brand New</option>
-              <option selected value="Like New">Like New</option>
-              <option value="Good">Good</option>
-              <option value="Fair">Fair</option>
+              <option value="Brand New" data-i18n="card.condition.brand_new">Brand New</option>
+              <option selected value="Like New" data-i18n="card.condition.like_new">Like New</option>
+              <option value="Good" data-i18n="card.condition.good">Good</option>
+              <option value="Fair" data-i18n="card.condition.fair">Fair</option>
             </select>
           </div>
         </div>
 
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="text-xs font-bold uppercase tracking-wider text-outline block mb-1">Daily Rate ($/day)</label>
+            <label class="text-xs font-bold uppercase tracking-wider text-outline block mb-1" data-i18n="modal.add.daily_rate">Daily Rate ($/day)</label>
             <input type="number" step="0.5" min="0.5" value="3.00" id="newItemDailyPrice" required class="w-full p-2.5 rounded-xl bg-surface-container-low text-xs border border-transparent focus:border-secondary outline-none">
           </div>
           <div>
-            <label class="text-xs font-bold uppercase tracking-wider text-outline block mb-1">Refundable Deposit ($)</label>
+            <label class="text-xs font-bold uppercase tracking-wider text-outline block mb-1" data-i18n="modal.add.deposit">Refundable Deposit ($)</label>
             <input type="number" step="1" min="0" value="20.00" id="newItemDeposit" required class="w-full p-2.5 rounded-xl bg-surface-container-low text-xs border border-transparent focus:border-secondary outline-none">
           </div>
         </div>
 
         <div>
-          <label class="text-xs font-bold uppercase tracking-wider text-outline block mb-1">Dorm / Hall Pickup Point</label>
+          <label class="text-xs font-bold uppercase tracking-wider text-outline block mb-1" data-i18n="modal.add.pickup_point">Dorm / Hall Pickup Point</label>
           <input type="text" id="newItemLocation" required value="Wilbur Hall Commons" class="w-full p-2.5 rounded-xl bg-surface-container-low text-xs border border-transparent focus:border-secondary outline-none">
         </div>
 
         <div>
-          <label class="text-xs font-bold uppercase tracking-wider text-outline block mb-1">Description & Instructions</label>
-          <textarea id="newItemDescription" rows="2" placeholder="Include details about cables, software edition, condition..." class="w-full p-2.5 rounded-xl bg-surface-container-low text-xs border border-transparent focus:border-secondary outline-none resize-none"></textarea>
+          <label class="text-xs font-bold uppercase tracking-wider text-outline block mb-1" data-i18n="modal.add.desc_label">Description & Instructions</label>
+          <textarea id="newItemDescription" rows="2" placeholder="Include details about cables, software edition, condition..." data-i18n-placeholder="modal.add.desc_placeholder" class="w-full p-2.5 rounded-xl bg-surface-container-low text-xs border border-transparent focus:border-secondary outline-none resize-none"></textarea>
         </div>
 
         <div class="pt-2 flex justify-end gap-2">
-          <button type="button" onclick="closeAddItemModal()" class="px-4 py-2 rounded-xl text-xs font-semibold text-outline hover:bg-surface-container-low">Cancel</button>
-          <button type="submit" class="px-5 py-2.5 rounded-xl bg-secondary hover:bg-secondary-hover text-white text-xs font-bold shadow-sm">Publish Listing</button>
+          <button type="button" onclick="closeAddItemModal()" class="px-4 py-2 rounded-xl text-xs font-semibold text-outline hover:bg-surface-container-low" data-i18n="modal.add.cancel_btn">Cancel</button>
+          <button type="submit" class="px-5 py-2.5 rounded-xl bg-secondary hover:bg-secondary-hover text-white text-xs font-bold shadow-sm" data-i18n="modal.add.publish_btn">Publish Listing</button>
         </div>
       </form>
     </div>
@@ -1547,15 +1571,15 @@
   <div id="handoverModal" class="fixed inset-0 z-50 bg-primary/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-200 flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-surface-container text-center space-y-4">
       <div class="flex items-center justify-between">
-        <span class="text-[11px] font-bold text-secondary bg-blue-50 px-2.5 py-1 rounded-full uppercase tracking-wider">Escrow Handshake</span>
+        <span class="text-[11px] font-bold text-secondary bg-blue-50 px-2.5 py-1 rounded-full uppercase tracking-wider" data-i18n="modal.handover.badge">Escrow Handshake</span>
         <button onclick="closeReturnModal()" class="w-8 h-8 rounded-full hover:bg-surface-container text-outline flex items-center justify-center">
           <span class="material-symbols-outlined text-[18px]">close</span>
         </button>
       </div>
 
       <div>
-        <h3 class="font-display font-bold text-lg text-primary" id="returnModalItemTitle">Return Handover</h3>
-        <p class="text-xs text-on-surface-variant mt-0.5" id="returnModalSubtitle">Meet peer to scan and release deposit hold.</p>
+        <h3 class="font-display font-bold text-lg text-primary" id="returnModalItemTitle" data-i18n="modal.handover.title">Return Handover</h3>
+        <p class="text-xs text-on-surface-variant mt-0.5" id="returnModalSubtitle" data-i18n="modal.handover.subtitle">Meet peer to scan and release deposit hold.</p>
       </div>
 
       <!-- Animated SVG QR Code -->
@@ -1583,12 +1607,12 @@
       </div>
 
       <div class="bg-surface-container-low px-3 py-1.5 rounded-xl font-mono text-xs font-bold text-primary tracking-wider">
-        TOKEN: <span id="returnSecurityToken">LL-STAN-9842</span>
+        <span data-i18n="modal.handover.token">TOKEN:</span> <span id="returnSecurityToken">LL-STAN-9842</span>
       </div>
 
       <button onclick="confirmReturn()" class="w-full py-3 rounded-xl bg-secondary hover:bg-secondary-hover text-white text-xs font-bold shadow-sm transition-all flex items-center justify-center gap-1.5">
         <span class="material-symbols-outlined text-[16px]">check_circle</span>
-        <span>Confirm In-Person Handover</span>
+        <span data-i18n="modal.handover.confirm_btn">Confirm In-Person Handover</span>
       </button>
     </div>
   </div>
@@ -1600,12 +1624,12 @@
   <div id="campusModal" class="fixed inset-0 z-50 bg-primary/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-200 flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-surface-container space-y-4">
       <div class="flex items-center justify-between">
-        <h3 class="font-display font-bold text-lg text-primary">Select Campus Hub</h3>
+        <h3 class="font-display font-bold text-lg text-primary" data-i18n="modal.campus.title">Select Campus Hub</h3>
         <button onclick="toggleCampusModal()" class="w-8 h-8 rounded-full hover:bg-surface-container text-outline flex items-center justify-center">
           <span class="material-symbols-outlined text-[18px]">close</span>
         </button>
       </div>
-      <p class="text-xs text-on-surface-variant">LendLoop connects verified students within walking distance of dorms and quads.</p>
+      <p class="text-xs text-on-surface-variant" data-i18n="modal.campus.desc">LendLoop connects verified students within walking distance of dorms and quads.</p>
       
       <div class="space-y-2">
         <button onclick="selectCampus('Stanford Campus', 'Wilbur Quad Hub')" class="w-full p-3 rounded-xl bg-blue-50 text-secondary font-bold text-xs flex items-center justify-between border border-blue-100">
@@ -1632,21 +1656,21 @@
   <div id="editProfileModal" class="fixed inset-0 z-50 bg-primary/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-200 flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-surface-container space-y-4">
       <div class="flex items-center justify-between">
-        <h3 class="font-display font-bold text-lg text-primary">Edit Profile</h3>
+        <h3 class="font-display font-bold text-lg text-primary" data-i18n="modal.profile.title">Edit Profile</h3>
         <button onclick="closeEditProfileModal()" class="w-8 h-8 rounded-full hover:bg-surface-container text-outline flex items-center justify-center">
           <span class="material-symbols-outlined text-[18px]">close</span>
         </button>
       </div>
       <form onsubmit="event.preventDefault(); saveProfile();" class="space-y-3">
         <div>
-          <label class="text-xs font-bold text-outline block mb-1">Full Legal Name</label>
+          <label class="text-xs font-bold text-outline block mb-1" data-i18n="modal.profile.name_label">Full Legal Name</label>
           <input type="text" id="editNameInput" value="Alex Rivera" required class="w-full p-2.5 rounded-xl bg-surface-container-low text-xs border border-transparent focus:border-secondary outline-none">
         </div>
         <div>
-          <label class="text-xs font-bold text-outline block mb-1">Campus Residence / Dorm</label>
+          <label class="text-xs font-bold text-outline block mb-1" data-i18n="modal.profile.dorm_label">Campus Residence / Dorm</label>
           <input type="text" id="editDormInput" value="Wilbur Hall 304" required class="w-full p-2.5 rounded-xl bg-surface-container-low text-xs border border-transparent focus:border-secondary outline-none">
         </div>
-        <button type="submit" class="w-full py-2.5 rounded-xl bg-primary text-white text-xs font-bold shadow-sm">Save Changes</button>
+        <button type="submit" class="w-full py-2.5 rounded-xl bg-primary text-white text-xs font-bold shadow-sm" data-i18n="modal.profile.save_btn">Save Changes</button>
       </form>
     </div>
   </div>
@@ -1668,20 +1692,20 @@
       </div>
 
       <div class="p-1 rounded-xl bg-surface-container flex items-center gap-1">
-        <button onclick="switchAuthTab('login')" id="authTabLogin" class="flex-1 py-1.5 rounded-lg text-xs font-bold bg-white text-primary shadow-sm transition-all">Sign In</button>
-        <button onclick="switchAuthTab('register')" id="authTabRegister" class="flex-1 py-1.5 rounded-lg text-xs font-bold text-on-surface-variant hover:text-primary transition-all">Create Account</button>
+        <button onclick="switchAuthTab('login')" id="authTabLogin" class="flex-1 py-1.5 rounded-lg text-xs font-bold bg-white text-primary shadow-sm transition-all" data-i18n="modal.auth.sign_in">Sign In</button>
+        <button onclick="switchAuthTab('register')" id="authTabRegister" class="flex-1 py-1.5 rounded-lg text-xs font-bold text-on-surface-variant hover:text-primary transition-all" data-i18n="modal.auth.create_account">Create Account</button>
       </div>
 
       <form onsubmit="event.preventDefault(); submitAuth();" class="space-y-3 pt-1">
         <div>
-          <label class="text-xs font-bold text-outline block mb-1">University Email (.edu)</label>
+          <label class="text-xs font-bold text-outline block mb-1" data-i18n="modal.auth.email_label">University Email (.edu)</label>
           <input type="email" id="authEmailInput" value="alex.rivera@stanford.edu" required class="w-full p-2.5 rounded-xl bg-surface-container-low text-xs border border-transparent focus:border-secondary outline-none">
         </div>
         <div>
-          <label class="text-xs font-bold text-outline block mb-1">Password</label>
+          <label class="text-xs font-bold text-outline block mb-1" data-i18n="modal.auth.password_label">Password</label>
           <input type="password" id="authPassInput" value="Stanford2026!" required class="w-full p-2.5 rounded-xl bg-surface-container-low text-xs border border-transparent focus:border-secondary outline-none">
         </div>
-        <button type="submit" id="authSubmitBtn" class="w-full py-3 rounded-xl bg-secondary hover:bg-secondary-hover text-white text-xs font-bold shadow-sm transition-all">
+        <button type="submit" id="authSubmitBtn" class="w-full py-3 rounded-xl bg-secondary hover:bg-secondary-hover text-white text-xs font-bold shadow-sm transition-all" data-i18n="modal.auth.submit_btn">
           Sign In to LendLoop
         </button>
       </form>
@@ -1695,60 +1719,7 @@
   <div id="toastContainer" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
 
-  <!-- ========================================================================= -->
-  <!-- RESPONSIVE DESKTOP FOOTER                                                 -->
-  <!-- ========================================================================= -->
-  <footer class="mt-auto w-full bg-white border-t border-surface-container py-10">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-        
-        <div class="space-y-3">
-          <div class="flex items-center gap-2">
-            <img src="assets/logo.svg" alt="LendLoop" class="w-7 h-7 object-contain">
-            <span class="font-display font-extrabold text-xl text-primary">Lend<span class="text-emerald-brand">Loop</span></span>
-          </div>
-          <p class="text-xs text-on-surface-variant leading-relaxed">
-            The safe, peer-to-peer campus equipment & textbook sharing platform. Backed by university escrow and student ID verification.
-          </p>
-        </div>
 
-        <div>
-          <h4 class="font-display font-bold text-xs uppercase tracking-wider text-primary mb-3">Campus Categories</h4>
-          <ul class="space-y-2 text-xs text-on-surface-variant">
-            <li><a href="#" onclick="filterCategory('books'); return false;" class="hover:text-secondary">Textbooks & Notes</a></li>
-            <li><a href="#" onclick="filterCategory('stationery'); return false;" class="hover:text-secondary">TI-84 & Calculators</a></li>
-            <li><a href="#" onclick="filterCategory('tech'); return false;" class="hover:text-secondary">Headphones & Laptops</a></li>
-            <li><a href="#" onclick="filterCategory('sports'); return false;" class="hover:text-secondary">Bikes & Sports Gear</a></li>
-          </ul>
-        </div>
-
-        <div>
-          <h4 class="font-display font-bold text-xs uppercase tracking-wider text-primary mb-3">Trust & Security</h4>
-          <ul class="space-y-2 text-xs text-on-surface-variant">
-            <li class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[14px] text-emerald-brand">verified</span> .edu Student Verification</li>
-            <li class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[14px] text-emerald-brand">lock</span> Escrow Deposit Guarantee</li>
-            <li class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[14px] text-emerald-brand">handshake</span> In-Person QR Handshake</li>
-          </ul>
-        </div>
-
-        <div>
-          <h4 class="font-display font-bold text-xs uppercase tracking-wider text-primary mb-3">Active Campus Hubs</h4>
-          <p class="text-xs text-on-surface-variant">Stanford University, UC Berkeley, MIT, Harvard, Columbia, NYU.</p>
-          <div class="mt-3">
-            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-light text-emerald-dark text-[11px] font-bold">
-              ● All Systems Operational
-            </span>
-          </div>
-        </div>
-
-      </div>
-
-      <div class="pt-6 border-t border-surface-container flex flex-col sm:flex-row items-center justify-between text-xs text-outline gap-2">
-        <span>© 2026 LendLoop Inc. All rights reserved. Peer-to-Peer Campus Network.</span>
-        <span>Made for students, by students.</span>
-      </div>
-    </div>
-  </footer>
 
   </div> <!-- /#mainAppShell -->
 
@@ -1757,6 +1728,57 @@
   <!-- JAVASCRIPT APPLICATION CORE & CONTROLLERS                                 -->
   <!-- ========================================================================= -->
   <script>
+    // ================= DIRECT PYTHON API CONNECTOR (api.py) =================
+    const CampusLendAPI = {
+      BASE_URL: "http://localhost:8080/api",
+      async apiRequest(endpoint, options = {}) {
+        const headers = { "Content-Type": "application/json", "Accept": "application/json" };
+        const token = localStorage.getItem("campuslend_token");
+        if (token) headers["Authorization"] = `Bearer ${token}`;
+        try {
+          const res = await fetch(`${this.BASE_URL}${endpoint}`, { ...options, headers: { ...headers, ...(options.headers || {}) } });
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          return await res.json();
+        } catch (err) {
+          console.log(`[api.py Connector] Offline or unreachable for ${endpoint}:`, err.message);
+          throw err;
+        }
+      },
+      login(email, password) {
+        return this.apiRequest("/auth/login", { method: "POST", body: JSON.stringify({ email, password }) });
+      },
+      register(studentData) {
+        return this.apiRequest("/auth/register", { method: "POST", body: JSON.stringify(studentData) });
+      },
+      getItems(params = {}) {
+        const query = new URLSearchParams();
+        if (params.category && params.category !== "all") query.append("category", params.category);
+        if (params.search) query.append("search", params.search);
+        if (params.availableOnly) query.append("availableOnly", "true");
+        if (params.maxPrice) query.append("maxPrice", params.maxPrice);
+        const qs = query.toString();
+        return this.apiRequest(qs ? `/items?${qs}` : "/items", { method: "GET" });
+      },
+      getItem(id) {
+        return this.apiRequest(`/items/${id}`, { method: "GET" });
+      },
+      createItem(itemData) {
+        return this.apiRequest("/items", { method: "POST", body: JSON.stringify(itemData) });
+      },
+      requestLoan(itemId, borrowerId, borrowDays) {
+        return this.apiRequest("/loans/request", { method: "POST", body: JSON.stringify({ itemId, borrowerId, borrowDays }) });
+      },
+      async syncRemoteCatalog(onSuccess) {
+        try {
+          const remoteItems = await this.getItems();
+          if (Array.isArray(remoteItems) && remoteItems.length > 0 && typeof onSuccess === "function") {
+            onSuccess(remoteItems);
+          }
+        } catch (_) {}
+      }
+    };
+    window.CampusLendAPI = CampusLendAPI;
+
     // Initial Item Catalog
     const CATALOG = [
       {
@@ -1902,12 +1924,135 @@
       }
     ];
 
+    // Multilingual State and Internationalization Core
+    window.currentLang = localStorage.getItem("campuslend_language") || "en";
+
+    function getConditionLabel(cond) {
+      const map = {
+        "Like New": "card.condition.like_new",
+        "Pristine": "card.condition.pristine",
+        "Excellent": "card.condition.excellent",
+        "Sturdy": "card.condition.sturdy",
+        "Good": "card.condition.good",
+        "Brand New": "card.condition.brand_new",
+        "Fair": "card.condition.fair"
+      };
+      return map[cond] && typeof t === "function" ? t(map[cond], cond) : cond;
+    }
+
+    function getCategoryName(catKey) {
+      const map = {
+        "books": "cat.books",
+        "tech": "cat.tech",
+        "stationery": "cat.stationery",
+        "sports": "cat.sports",
+        "others": "cat.others"
+      };
+      return map[catKey] && typeof t === "function" ? t(map[catKey], catKey) : catKey;
+    }
+
+    function applyTranslations() {
+      if (typeof t !== "function") return;
+
+      // 1. Text elements
+      document.querySelectorAll("[data-i18n]").forEach(el => {
+        const key = el.getAttribute("data-i18n");
+        if (key) {
+          el.textContent = t(key, el.textContent);
+        }
+      });
+
+      // 2. Input placeholders
+      document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
+        const key = el.getAttribute("data-i18n-placeholder");
+        if (key) {
+          el.placeholder = t(key, el.placeholder);
+        }
+      });
+
+      // 3. Tooltips and titles
+      document.querySelectorAll("[data-i18n-title]").forEach(el => {
+        const key = el.getAttribute("data-i18n-title");
+        if (key) {
+          el.title = t(key, el.title);
+        }
+      });
+    }
+
+    function switchLanguage(lang, showNotification = true) {
+      window.currentLang = lang;
+      try {
+        localStorage.setItem("campuslend_language", lang);
+      } catch (err) {
+        console.warn("Could not save to localStorage:", err);
+      }
+
+      document.documentElement.lang = lang;
+
+      // Synchronize both language dropdown controls
+      const gSelect = document.getElementById("gatewayLangSelect");
+      const aSelect = document.getElementById("appLangSelect");
+      if (gSelect) gSelect.value = lang;
+      if (aSelect) aSelect.value = lang;
+
+      // Apply translations immediately across the DOM
+      applyTranslations();
+
+      // Refresh dynamic template renders
+      renderMarketplace();
+      renderProfileListings();
+      if (activeItem) {
+        loadItemDetail(activeItem.id);
+      }
+
+      if (showNotification && typeof showToast === "function") {
+        showToast(t("toast.language_changed", lang === "ta" ? "மொழி தமிழுக்கு மாற்றப்பட்டது" : "Language switched to English"), "info");
+      }
+    }
+
     // Initialize application
     document.addEventListener("DOMContentLoaded", () => {
+      window.currentLang = localStorage.getItem("campuslend_language") || "en";
+      document.documentElement.lang = window.currentLang;
+
+      const gSelect = document.getElementById("gatewayLangSelect");
+      const aSelect = document.getElementById("appLangSelect");
+      if (gSelect) gSelect.value = window.currentLang;
+      if (aSelect) aSelect.value = window.currentLang;
+
+      applyTranslations();
       initAuth();
       renderMarketplace();
       renderProfileListings();
       loadItemDetail(items[0].id);
+
+      // Gracefully sync remote catalog if Spring Boot MongoDB backend is running
+      if (window.CampusLendAPI && window.CampusLendAPI.syncRemoteCatalog) {
+        window.CampusLendAPI.syncRemoteCatalog((remoteItems) => {
+          if (Array.isArray(remoteItems) && remoteItems.length > 0) {
+            items = remoteItems.map(ri => ({
+              id: ri.id,
+              title: ri.title,
+              category: (ri.category || "others").toLowerCase(),
+              categoryName: ri.category || "General",
+              dailyPrice: ri.dailyPrice || 0,
+              depositHold: ri.securityDeposit || 0,
+              condition: ri.condition || "Good",
+              location: ri.location || "Campus Hub",
+              campus: "Stanford Campus",
+              lenderName: ri.ownerName || "Student Peer",
+              lenderDept: "Campus Peer",
+              lenderAvatar: ri.ownerAvatar || "https://lh3.googleusercontent.com/aida-public/AB6AXuCHidFGGvejNyhkUBYrLtdf6YBBJH4cdUC8PrAvMSsLsYw29f3rxNOr1LXFSuNGwGsWjv-ou9bedavLx1oiQXsiW3MD674jEP9umUigltN6OXY-sEur0CQveiqITJGNH2LX-cl2jcU0Vef-R_KhMIEo1PwG_hbf0mrS88phMWaoVA6h74QfX_S0Km9Ne14pch4EEQ08E86vS_bWV-4UiNF6-5rhOjPAEsh2hEdwtOo1",
+              image: ri.imageUrl || CATALOG[0].image,
+              rating: "5.0 ★ (Verified)",
+              description: ri.description || "",
+              isFavorite: false,
+              isAvailable: ri.available !== false
+            }));
+            renderMarketplace();
+          }
+        });
+      }
     });
 
     // ================= ROUTING & VIEW NAVIGATION =================
@@ -1954,7 +2099,8 @@
         return matchCat && matchSearch && matchAvail && matchPrice && matchHub;
       });
 
-      countBadge.textContent = `${filtered.length} item${filtered.length === 1 ? '' : 's'}`;
+      const countUnit = filtered.length === 1 ? t('catalog.item_count_singular', 'item') : t('catalog.items_count', 'items');
+      countBadge.textContent = `${filtered.length} ${countUnit}`;
 
       if (filtered.length === 0) {
         grid.innerHTML = "";
@@ -1974,7 +2120,7 @@
             
             <!-- Price Tag Pill -->
             <span class="absolute top-3 right-3 px-3 py-1 rounded-full bg-primary/95 backdrop-blur-md text-white font-display font-extrabold text-xs shadow-md">
-              $${item.dailyPrice.toFixed(2)}<span class="font-normal text-blue-200 text-[10px]">/d</span>
+              $${item.dailyPrice.toFixed(2)}<span class="font-normal text-blue-200 text-[10px]">${t('card.day_unit', '/d')}</span>
             </span>
 
             <!-- Wishlist Heart -->
@@ -1984,7 +2130,7 @@
 
             <!-- Condition Chip -->
             <span class="absolute bottom-3 left-3 px-2.5 py-0.5 rounded-lg bg-white/90 backdrop-blur-md text-primary font-bold text-[10px]">
-              ${item.condition}
+              ${getConditionLabel(item.condition)}
             </span>
           </div>
 
@@ -1992,9 +2138,9 @@
           <div class="p-5 flex flex-col flex-1 justify-between gap-3">
             <div>
               <div class="flex items-center justify-between gap-1 mb-1">
-                <span class="text-[11px] font-bold text-secondary uppercase tracking-wider">${item.categoryName}</span>
+                <span class="text-[11px] font-bold text-secondary uppercase tracking-wider">${getCategoryName(item.category)}</span>
                 <span class="text-[11px] text-emerald-600 font-semibold flex items-center gap-1">
-                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Available
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> ${t('card.available', 'Available')}
                 </span>
               </div>
               <h3 class="font-display font-bold text-base text-primary line-clamp-1 group-hover:text-secondary transition-colors">${item.title}</h3>
@@ -2086,7 +2232,7 @@
       document.getElementById("hubSelector").value = "all";
       clearSearch();
       filterCategory("all");
-      showToast("Filters reset to default", "info");
+      showToast(t("toast.filters_reset", "Filters reset to default"), "info");
     }
 
     function toggleCardFavorite(e, itemId) {
@@ -2095,7 +2241,7 @@
       if (item) {
         item.isFavorite = !item.isFavorite;
         renderMarketplace();
-        showToast(item.isFavorite ? `Saved "${item.title}" to Wishlist ❤️` : "Removed from Wishlist", "info");
+        showToast(item.isFavorite ? `${t('toast.saved_wishlist', 'Saved to Wishlist ❤️')} ("${item.title}")` : t('toast.removed_wishlist', 'Removed from Wishlist'), "info");
       }
     }
 
@@ -2110,9 +2256,9 @@
       activeItem = item;
 
       document.getElementById("detailHeroImage").src = item.image;
-      document.getElementById("detailConditionBadge").innerHTML = `<span class="material-symbols-outlined text-[14px] text-secondary">verified</span> ${item.condition}`;
+      document.getElementById("detailConditionBadge").innerHTML = `<span class="material-symbols-outlined text-[14px] text-secondary">verified</span> ${getConditionLabel(item.condition)}`;
       document.getElementById("detailLocationBadge").innerHTML = `<span class="material-symbols-outlined text-[13px] text-blue-300">location_on</span> ${item.location}`;
-      document.getElementById("detailDepositText").textContent = `$${item.depositHold.toFixed(2)} Refundable`;
+      document.getElementById("detailDepositText").textContent = `$${item.depositHold.toFixed(2)} ${t('detail.refundable', 'Refundable')}`;
       document.getElementById("detailRatingText").textContent = item.rating;
       document.getElementById("detailDescriptionText").textContent = item.description;
 
@@ -2120,7 +2266,7 @@
       document.getElementById("detailLenderName").textContent = item.lenderName;
       document.getElementById("detailLenderDept").textContent = item.lenderDept;
 
-      document.getElementById("detailCategoryLabel").textContent = item.categoryName;
+      document.getElementById("detailCategoryLabel").textContent = getCategoryName(item.category);
       document.getElementById("detailTitleText").textContent = item.title;
       document.getElementById("detailPickupSpot").textContent = item.location;
       document.getElementById("detailDailyPriceDisplay").textContent = `$${item.dailyPrice.toFixed(2)}`;
@@ -2148,13 +2294,14 @@
 
     function updateDetailMath() {
       const rentalCost = activeItem.dailyPrice * borrowDays;
-      document.getElementById("detailDaysCounter").textContent = `${borrowDays} Day${borrowDays > 1 ? 's' : ''}`;
+      const dayUnit = borrowDays > 1 ? t('detail.days', 'Days') : t('detail.day', 'Day');
+      document.getElementById("detailDaysCounter").textContent = `${borrowDays} ${dayUnit}`;
       document.getElementById("detailDatesRange").textContent = `Nov 1 → Nov ${1 + borrowDays}`;
-      document.getElementById("detailBreakdownMath").textContent = `${borrowDays} Days × $${activeItem.dailyPrice.toFixed(2)}`;
+      document.getElementById("detailBreakdownMath").textContent = `${borrowDays} ${dayUnit} × $${activeItem.dailyPrice.toFixed(2)}`;
       document.getElementById("detailBreakdownRental").textContent = `$${rentalCost.toFixed(2)}`;
       document.getElementById("detailBreakdownDeposit").textContent = `$${activeItem.depositHold.toFixed(2)}`;
       document.getElementById("detailTotalDue").textContent = `$${rentalCost.toFixed(2)}`;
-      document.getElementById("detailSubmitBtnText").textContent = `Request to Borrow ($${rentalCost.toFixed(2)})`;
+      document.getElementById("detailSubmitBtnText").textContent = `${t('detail.request_btn', 'Request to Borrow')} ($${rentalCost.toFixed(2)})`;
     }
 
     function toggleActiveItemFavorite() {
@@ -2162,17 +2309,22 @@
         activeItem.isFavorite = !activeItem.isFavorite;
         loadItemDetail(activeItem.id);
         renderMarketplace();
-        showToast(activeItem.isFavorite ? "Added to Wishlist ❤️" : "Removed from Wishlist", "info");
+        showToast(activeItem.isFavorite ? t('toast.saved_wishlist', 'Saved to Wishlist ❤️') : t('toast.removed_wishlist', 'Removed from Wishlist'), "info");
       }
     }
 
     function executeBorrowRequest() {
       const rentalTotal = (activeItem.dailyPrice * borrowDays).toFixed(2);
-      showToast(`Borrow request for ${activeItem.title} sent to ${activeItem.lenderName}! ($${rentalTotal})`, "success");
+      showToast(`${t('toast.borrow_request_sent', 'Borrow request sent')} (${activeItem.title} → ${activeItem.lenderName}, $${rentalTotal})!`, "success");
       
       const badge = document.getElementById("dashRequestsCount");
       if (badge) badge.textContent = parseInt(badge.textContent || 3) + 1;
       
+      if (window.CampusLendAPI && window.CampusLendAPI.requestLoan && activeItem) {
+        window.CampusLendAPI.requestLoan(activeItem.id, currentUser.studentId || "SU-9824102", borrowDays)
+          .catch(e => console.log("[CampusLend] Standalone offline loan request recorded"));
+      }
+
       setTimeout(() => {
         navigateView("my-loans");
         switchLoansTab("requests");
@@ -2201,8 +2353,8 @@
 
     // ================= HANDOVER & QR MODAL =================
     function openReturnModal(title, owner, deposit, location) {
-      document.getElementById("returnModalItemTitle").textContent = `Return ${title}`;
-      document.getElementById("returnModalSubtitle").textContent = `Meet ${owner} at ${location} to release ${deposit} deposit.`;
+      document.getElementById("returnModalItemTitle").textContent = `${t('modal.handover.title', 'Return Handover')}: ${title}`;
+      document.getElementById("returnModalSubtitle").textContent = `${t('modal.handover.subtitle', 'Meet peer to scan and release deposit hold.')} (${owner} • ${location} • ${deposit})`;
       
       const modal = document.getElementById("handoverModal");
       modal.classList.remove("opacity-0", "pointer-events-none");
@@ -2215,7 +2367,7 @@
 
     function confirmReturn() {
       closeReturnModal();
-      showToast("Handover verified! Security deposit refunded to your account ⚡ +50 Karma Points", "success");
+      showToast(t("toast.handover_confirmed", "Handover verified! Security deposit refunded to your account ⚡ +50 Karma Points"), "success");
     }
 
     function acceptRequest(cardId, itemTitle) {
@@ -2223,13 +2375,13 @@
       if (card) {
         card.classList.add("opacity-50", "pointer-events-none");
       }
-      showToast(`Accepted handover for "${itemTitle}". Chat connected!`, "success");
+      showToast(`${t('toast.accepted_handover', 'Accepted handover. Chat connected!')} (${itemTitle})`, "success");
     }
 
     function dismissRequest(cardId, itemTitle) {
       const card = document.getElementById(cardId);
       if (card) card.remove();
-      showToast(`Declined request for "${itemTitle}"`, "info");
+      showToast(`${t('toast.declined_request', 'Declined request')}: "${itemTitle}"`, "info");
     }
 
     // ================= PROFILE & LISTINGS =================
@@ -2244,7 +2396,7 @@
               <img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover">
             </div>
             <div>
-              <span class="text-[10px] font-bold text-secondary uppercase tracking-wider">${item.status}</span>
+              <span class="text-[10px] font-bold text-secondary uppercase tracking-wider">${item.status === 'Available' ? t('card.available', 'Available') : item.status}</span>
               <h4 class="font-display font-bold text-sm text-primary">${item.title}</h4>
               <p class="text-xs text-on-surface-variant">${item.price} • ${item.deposit}</p>
             </div>
@@ -2264,7 +2416,7 @@
     function removeUserListing(idx) {
       USER_LISTINGS.splice(idx, 1);
       renderProfileListings();
-      showToast("Listing removed from your catalog", "info");
+      showToast(t("toast.listing_removed", "Listing removed from your catalog"), "info");
     }
 
     function openEditProfileModal() {
@@ -2282,10 +2434,54 @@
       document.getElementById("topNavUserName").textContent = name;
       document.getElementById("profileDormText").textContent = dorm;
       closeEditProfileModal();
-      showToast("Profile details updated successfully", "success");
+      showToast(t("toast.profile_updated", "Profile details updated successfully"), "success");
     }
 
-    // ================= ADD NEW LISTING =================
+    // ================= ADD NEW LISTING & PHOTO UPLOAD =================
+    let uploadedPhotoData = null;
+
+    function handlePhotoUpload(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+
+      if (!file.type.startsWith("image/")) {
+        showToast(t("toast.invalid_image", "Please select a valid image file (PNG, JPG, WEBP)"), "error");
+        return;
+      }
+
+      if (file.size > 5 * 1024 * 1024) {
+        showToast(t("toast.image_too_large", "Image size must be under 5MB"), "error");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        uploadedPhotoData = e.target.result;
+        const img = document.getElementById("photoPreviewImg");
+        const container = document.getElementById("photoPreviewContainer");
+        const prompt = document.getElementById("photoPromptContainer");
+        const nameEl = document.getElementById("photoPreviewName");
+        if (img) img.src = uploadedPhotoData;
+        if (nameEl) nameEl.textContent = file.name;
+        if (container) container.classList.remove("hidden");
+        if (prompt) prompt.classList.add("hidden");
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function removeUploadedPhoto(event) {
+      if (event) event.stopPropagation();
+      uploadedPhotoData = null;
+      const input = document.getElementById("newItemPhotoInput");
+      const container = document.getElementById("photoPreviewContainer");
+      const prompt = document.getElementById("photoPromptContainer");
+      const img = document.getElementById("photoPreviewImg");
+      if (input) input.value = "";
+      if (img) img.src = "";
+      if (container) container.classList.add("hidden");
+      if (prompt) prompt.classList.remove("hidden");
+    }
+
     function openAddItemModal() {
       document.getElementById("addItemModal").classList.remove("opacity-0", "pointer-events-none");
       document.getElementById("addItemModalBox").classList.remove("scale-95");
@@ -2294,6 +2490,7 @@
     function closeAddItemModal() {
       document.getElementById("addItemModalBox").classList.add("scale-95");
       document.getElementById("addItemModal").classList.add("opacity-0", "pointer-events-none");
+      removeUploadedPhoto();
     }
 
     function submitNewListing() {
@@ -2305,6 +2502,16 @@
       const loc = document.getElementById("newItemLocation").value || "Wilbur Hall";
       const desc = document.getElementById("newItemDescription").value || "Working student equipment in clean condition.";
 
+      const defaultCategoryImages = {
+        "books": "https://lh3.googleusercontent.com/aida-public/AB6AXuCHzF2ArCYVDUbZmI5k-3Auz7nNqDBA4WqGQ1_r8IIU8jjqDVNVlooZAqi6nibGOpGadYKu5ScBbKKgWnsr9ydHbAltNtedVgEgaBaLKfU3mkvw3s76vF3PLWIMxVCHi2JEtw-gzEwPkPdyYeDOy4DPmUnWHKUK0VL90C9XVINWLVarO1OgZfW830QxaJX5WPLTzllZIizBk3oRRULosxsviytiqWvpYwa3i9q7yI-j",
+        "tech": "https://lh3.googleusercontent.com/aida-public/AB6AXuBkiquaYFgXakbP2mClmnfb7Va95cC2ekw5VVdqNTX6jzILz4X_lJKi8F7grlVAE-D9QiYeYNyjJfBNCInzQNdNbTdhKGLlWQxRmNdrhjptxFxbyvnmSlNKt4noiBYmHuVR9dyRrTDmvqLd6x9ViR5S6d4p7abPPi0nVk1HllDhaVaucdQJVULxFyeoPQ-MIcFK2c62h2EK7TIpoWfeB3YsuX_Kqfn_xkqORUID6qZG",
+        "stationery": "https://lh3.googleusercontent.com/aida-public/AB6AXuCwzEoEAOySUGjNOHtVUJfX4kzk2JoXBWr8O_2W6OlPBOBEyzFpdkwPF9maQ9UpdNsMNhfCUS2r3co300xpXSH1WgDkybFb8GNzCGFQuiKrPsYr-hmZl5O8hYxVk-y9cXuGdkTrUC89_-faqEUSw6bHHB1b3BkIkLNRObwI4vphIge7osJfNg6G1RmPKoEmOoxAuMrEH7yfzjBIMWa_DCjAE0B1vTF0hLqb6MycvIIR",
+        "sports": "https://lh3.googleusercontent.com/aida-public/AB6AXuD8LJ5er6DzREDNtgIhPowV_RLu0QJ7E6WBjDYlDPkdDFUGYbzCXQAQv_5mxifD6texvT-FrKICtTvmQPgroK95DNV0jUrDaWNxDd1l-3csq3mAfU02tGPToGD5bh2P1lSXX_gF5WvYXB2pghXiBoURCAhoQSxeyhMiSl8mPumqbg16PpeRys7ZfhVcdEAALS07xemOog2RtG5rnYGZ1_D_opGEsZdWgn7fzbV_BbD3",
+        "others": "https://lh3.googleusercontent.com/aida-public/AB6AXuB1HLeRSpdgX3LeoQ9mKLRt0X8SHRfjH-LLTBXn9iGVr2G2W-sbi6wLcDAmJHmAkp9a45-S86r-gBeooxf-ZHCzhnScTw_fb64wyFXHeYIB6Y2rhFj9Xwq8H3Jyo1MiRTL6sYNsNbbOLooGqLV8-tsClXqov9PCWGaswUaD8ATn6-PiMI7rw0UjAlEze1KZU8_A4u1qY4KyORJbuyQs7NNmzKB8rgmOz4INaa5dseI2"
+      };
+
+      const finalItemPhoto = uploadedPhotoData || defaultCategoryImages[cat] || defaultCategoryImages["others"];
+
       const newItem = {
         id: `item-${Date.now()}`,
         title,
@@ -2315,10 +2522,10 @@
         condition: cond,
         location: loc,
         campus: "Stanford Campus",
-        lenderName: "Alex Rivera",
-        lenderDept: "Junior • Computer Science",
+        lenderName: currentUser.name || "Alex Rivera",
+        lenderDept: currentUser.department || "Junior • Computer Science",
         lenderAvatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuCHidFGGvejNyhkUBYrLtdf6YBBJH4cdUC8PrAvMSsLsYw29f3rxNOr1LXFSuNGwGsWjv-ou9bedavLx1oiQXsiW3MD674jEP9umUigltN6OXY-sEur0CQveiqITJGNH2LX-cl2jcU0Vef-R_KhMIEo1PwG_hbf0mrS88phMWaoVA6h74QfX_S0Km9Ne14pch4EEQ08E86vS_bWV-4UiNF6-5rhOjPAEsh2hEdwtOo1",
-        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuB1HLeRSpdgX3LeoQ9mKLRt0X8SHRfjH-LLTBXn9iGVr2G2W-sbi6wLcDAmJHmAkp9a45-S86r-gBeooxf-ZHCzhnScTw_fb64wyFXHeYIB6Y2rhFj9Xwq8H3Jyo1MiRTL6sYNsNbbOLooGqLV8-tsClXqov9PCWGaswUaD8ATn6-PiMI7rw0UjAlEze1KZU8_A4u1qY4KyORJbuyQs7NNmzKB8rgmOz4INaa5dseI2",
+        image: finalItemPhoto,
         rating: "5.0 ★ (New)",
         description: desc,
         isFavorite: false,
@@ -2331,13 +2538,27 @@
         status: "Available",
         price: `$${price.toFixed(2)}/day`,
         deposit: `$${deposit.toFixed(2)} deposit`,
-        image: newItem.image
+        image: finalItemPhoto
       });
+
+      if (window.CampusLendAPI && window.CampusLendAPI.createItem) {
+        window.CampusLendAPI.createItem({
+          title,
+          description: desc,
+          category: cat,
+          dailyPrice: price,
+          securityDeposit: deposit,
+          condition: cond,
+          location: loc,
+          imageUrl: finalItemPhoto,
+          ownerId: currentUser.studentId || "SU-9824102"
+        }).catch(e => console.log("[CampusLend] Standalone offline listing saved locally"));
+      }
 
       renderMarketplace();
       renderProfileListings();
       closeAddItemModal();
-      showToast(`Listing "${title}" posted to LendLoop! 🚀`, "success");
+      showToast(`${t("toast.listing_published", "Listing posted to LendLoop! 🚀")} ("${title}")`, "success");
       navigateView("marketplace");
     }
 
@@ -2351,7 +2572,7 @@
     function selectCampus(name, hubSubtitle) {
       document.getElementById("navCampusLabel").textContent = name;
       toggleCampusModal();
-      showToast(`Switched network hub to ${name}`, "success");
+      showToast(`${t("toast.switched_campus", "Switched network hub to")} ${name}`, "success");
     }
 
     // ================= AUTHENTICATION & GATEWAY CONTROLLER =================
@@ -2390,7 +2611,7 @@
         renderProfileListings();
         window.scrollTo({ top: 0, behavior: "smooth" });
         if (showNotification) {
-          showToast(`Welcome to LendLoop, ${currentUser.name.split(' ')[0]}! Connected to Stanford University network.`, "success");
+          showToast(`${t("toast.welcome_user", "Welcome to LendLoop")}, ${currentUser.name.split(' ')[0]}!`, "success");
         }
       } else {
         if (gateway) gateway.classList.remove("hidden");
@@ -2434,12 +2655,26 @@
       const email = emailInput ? emailInput.value.trim() : "alex.chen@stanford.edu";
       
       if (!email.toLowerCase().includes(".edu")) {
-        showToast("Please enter a verified campus university (.edu) email", "info");
+        showToast(t("toast.invalid_email", "Please enter a verified campus university (.edu) email"), "info");
         return;
       }
       
       currentUser.email = email;
       sessionStorage.setItem("lendloop_authenticated", "true");
+
+      if (window.CampusLendAPI && window.CampusLendAPI.login) {
+        window.CampusLendAPI.login(email, "password123").then(res => {
+          if (res && res.token) localStorage.setItem("campuslend_token", res.token);
+          if (res && res.student) {
+            currentUser.name = res.student.name || currentUser.name;
+            currentUser.studentId = res.student.studentId || currentUser.studentId;
+            currentUser.department = res.student.department || currentUser.department;
+            currentUser.dorm = res.student.dormLocation || currentUser.dorm;
+            updateUserDisplay();
+          }
+        }).catch(e => console.log("[CampusLend] Standalone offline login session"));
+      }
+
       setAuthenticated(true, true);
     }
 
@@ -2460,12 +2695,12 @@
       const year = yearInput ? yearInput.value : "Junior";
 
       if (!email.toLowerCase().includes(".edu")) {
-        showToast("Must enter a verified campus .edu email address", "info");
+        showToast(t("toast.invalid_email", "Please enter a verified campus university (.edu) email"), "info");
         return;
       }
 
       if (passInput && confirmPassInput && passInput.value !== confirmPassInput.value) {
-        showToast("Passwords do not match", "error");
+        showToast(t("toast.password_mismatch", "Passwords do not match"), "error");
         return;
       }
 
@@ -2476,6 +2711,21 @@
       currentUser.year = year;
 
       sessionStorage.setItem("lendloop_authenticated", "true");
+
+      if (window.CampusLendAPI && window.CampusLendAPI.register) {
+        window.CampusLendAPI.register({
+          name,
+          studentId,
+          email,
+          password: passInput ? passInput.value : "CampusHero#2025",
+          department: dept,
+          yearOfStudy: year,
+          dormLocation: currentUser.dorm || "Wilbur Hall 304"
+        }).then(res => {
+          if (res && res.token) localStorage.setItem("campuslend_token", res.token);
+        }).catch(e => console.log("[CampusLend] Standalone offline register session"));
+      }
+
       setAuthenticated(true, true);
     }
 
@@ -2486,8 +2736,9 @@
 
     function handleLogout() {
       sessionStorage.removeItem("lendloop_authenticated");
+      localStorage.removeItem("campuslend_token");
       setAuthenticated(false, false);
-      showToast("Signed out of LendLoop. Please log in to continue.", "info");
+      showToast(t("toast.sign_out", "Signed out of LendLoop. Please log in to continue."), "info");
     }
 
     function togglePasswordVisibility(inputId, btn) {

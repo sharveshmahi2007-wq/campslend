@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:7.0
+    container_name: campuslend-mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+      - ./backend/src/main/resources/data/init_database.js:/docker-entrypoint-initdb.d/init_database.js:ro
+    environment:
+      - MONGO_INITDB_DATABASE=campuslend_db
+
+  mongo-express:
+    image: mongo-express:latest
+    container_name: campuslend-mongo-express
+    restart: always
+    ports:
+      - "8081:8081"
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongodb
+      - ME_CONFIG_MONGODB_PORT=27017
+      - ME_CONFIG_BASICAUTH=false
+    depends_on:
+      - mongodb
+
+volumes:
+  mongo-data:
+

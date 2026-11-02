@@ -100,3 +100,66 @@ The interface is built as a complete desktop-first web application:
 - **Clean White & Surface Layers**: `#ffffff`, `#f8faff`, `#f1f4fd`, `#e8edff`
 - **Typography**: Google Fonts *Plus Jakarta Sans* (headlines, pricing) and *Inter* (body, labels)
 - **Icons**: Google *Material Symbols Outlined*
+
+---
+
+## 🌐 Dynamic Multilingual Support (English & Tamil)
+
+LendLoop features zero-dependency, instantaneous language switching between **English (default)** and **Tamil (தமிழ்)** without altering the UI, fonts, or layout.
+- **Centralized Dictionary**: Managed in `translations.js` with over 150+ verified domain terminology keys.
+- **Immediate State Switching**: Seamlessly updates navigation, dashboard metrics, modal forms, buttons, and alert toasts without a page reload.
+- **Local Storage Persistence**: Retains the user's selected language (`campuslend_language`) across browser sessions.
+- **Preserved User Content**: Student names, item titles, descriptions, and dorm locations remain intact and are never machine-translated.
+
+---
+
+## 🐍 Python REST API Backend (`api.py`)
+
+A fast, lightweight Python REST API server is included in [`api.py`](file:///d:/lend/campslend_new/api.py). It connects to MongoDB (`campuslend_db`) and serves all endpoints on port `8080` with zero required dependencies:
+
+### Running the Python API Server:
+```bash
+python api.py
+```
+*(Optionally run `pip install pymongo` if you want it to directly read & write to your MongoDB instance!)*
+
+---
+
+## ☕ Spring Boot + MongoDB REST API Backend
+
+Located in the [`backend/`](file:///d:/lend/campslend_new/backend/) folder:
+
+### Prerequisites:
+- Java 17+ (`java -version`)
+- Maven 3.8+ or wrapper
+- MongoDB Community Server running on `localhost:27017`
+
+### Running the Backend:
+```bash
+cd backend
+mvn clean spring-boot:run
+```
+The server will start on port `8080` with MongoDB database `campuslend_db`. On first run, it automatically seeds standard demo student profiles and verified catalog items.
+
+### Core API Endpoints:
+- `POST /api/auth/register` - Student registration with BCrypt hashing
+- `POST /api/auth/login` - Student login & credential verification
+- `GET /api/items` - Search and filter item listings
+- `POST /api/items` - Create a new peer listing
+- `POST /api/loans/request` - Submit a borrowing request
+- `GET /api/loans/borrower/{studentId}` - Get active and historical student loans
+- `PUT /api/loans/{id}/status?status=ACCEPTED|DECLINED|RETURNED` - Manage loan lifecycle
+- `GET /api/students/{id}` - Fetch student profile and trust score
+
+### Frontend-Backend Connector (`api.js`):
+The frontend includes [`api.js`](file:///d:/lend/campslend_new/api.js) which connects the client to `http://localhost:8080/api`. If the backend is running, listings and loan requests sync with MongoDB. If the backend is offline, the frontend seamlessly operates in standalone demo mode.
+
+---
+
+## 📚 Project Documentation (`docs/`)
+
+- [`docs/PRD.md`](file:///d:/lend/campslend_new/docs/PRD.md): Product requirements, MVP boundaries, business rules, and acceptance criteria.
+- [`docs/ARCHITECTURE.md`](file:///d:/lend/campslend_new/docs/ARCHITECTURE.md): System architecture, 4-tier backend design, entity schemas, and REST endpoints.
+- [`docs/DESIGN.md`](file:///d:/lend/campslend_new/docs/DESIGN.md): Exact color tokens, typography scale, component inventory, and UI patterns.
+- [`docs/TASKS.md`](file:///d:/lend/campslend_new/docs/TASKS.md): Implementation task board with verified completion statuses across all phases.
+
