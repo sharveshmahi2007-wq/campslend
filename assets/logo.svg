@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Background Card Shadow -->
+    <filter id="softShadow" x="-10%" y="-10%" width="125%" height="125%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="16" stdDeviation="24" flood-color="#002753" flood-opacity="0.12"/>
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#002753" flood-opacity="0.08"/>
+    </filter>
+
+    <!-- Blue Arrow Gradient -->
+    <linearGradient id="blueLoopGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0047b3"/>
+      <stop offset="45%" stop-color="#0066ff"/>
+      <stop offset="100%" stop-color="#38bdf8"/>
+    </linearGradient>
+
+    <!-- Green Arrow Gradient -->
+    <linearGradient id="greenLoopGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4ade80"/>
+      <stop offset="50%" stop-color="#16a34a"/>
+      <stop offset="100%" stop-color="#14532d"/>
+    </linearGradient>
+
+    <!-- Left Circle Subtle Inner Shadow -->
+    <radialGradient id="circleInnerGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="80%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#f1f5f9"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Squircle Rounded App Icon Base -->
+  <rect x="24" y="24" width="464" height="464" rx="105" ry="105" fill="#ffffff" filter="url(#softShadow)"/>
+
+  <!-- ================= INFINITY LOOP SYMBOL ================= -->
+  <g transform="translate(0, -10)">
+    <!-- LEFT BLUE LOOP ARROW -->
+    <!-- Outer thick blue ribbon track -->
+    <path d="M 175 145 
+             C 115 145, 75 185, 75 245 
+             C 75 305, 115 345, 175 345 
+             C 220 345, 248 318, 280 278
+             L 242 248
+             C 222 274, 202 295, 175 295
+             C 142 295, 125 272, 125 245
+             C 125 218, 142 195, 175 195
+             C 202 195, 225 215, 252 246
+             L 240 262
+             L 295 245
+             L 282 190
+             L 268 206
+             C 240 172, 212 145, 175 145 Z" 
+          fill="url(#blueLoopGrad)"/>
+
+    <!-- RIGHT GREEN LOOP ARROW -->
+    <!-- Outer thick green ribbon track with crossover -->
+    <path d="M 337 145
+             C 292 145, 264 172, 232 212
+             L 270 242
+             C 290 216, 310 195, 337 195
+             C 370 195, 387 218, 387 245
+             C 387 272, 370 295, 337 295
+             C 310 295, 287 275, 260 244
+             L 272 228
+             L 217 245
+             L 230 300
+             L 244 284
+             C 272 318, 300 345, 337 345
+             C 397 345, 437 305, 437 245
+             C 437 185, 397 145, 337 145 Z"
+          fill="url(#greenLoopGrad)"/>
+
+    <!-- Left Center Inner Hole Circle Background -->
+    <circle cx="175" cy="245" r="48" fill="url(#circleInnerGlow)" />
+
+    <!-- Left Icon: Hammer / Tool (tilted 45deg) -->
+    <g transform="translate(175, 245) rotate(-35) translate(-175, -245)">
+      <!-- Hammer Head -->
+      <path d="M 160 218 L 190 218 C 193 218, 195 220, 195 223 L 195 233 C 195 236, 193 238, 190 238 L 160 238 C 157 238, 155 236, 155 233 L 155 223 C 155 220, 157 218, 160 218 Z" fill="#002753"/>
+      <!-- Hammer Claw -->
+      <path d="M 155 222 C 146 225, 142 233, 142 240 C 148 238, 152 236, 155 234 Z" fill="#002753"/>
+      <!-- Hammer Handle -->
+      <rect x="171" y="238" width="8" height="34" rx="3" fill="#002753"/>
+    </g>
+
+    <!-- Right Center Inner Hole Circle Background -->
+    <circle cx="337" cy="245" r="48" fill="url(#circleInnerGlow)" />
+
+    <!-- Right Icon: Graduation Cap (Mortarboard) -->
+    <g transform="translate(337, 245)">
+      <!-- Cap Top (Diamond) -->
+      <polygon points="0,-16 28,-3 0,10 -28,-3" fill="#14532d"/>
+      <!-- Skullcap Underneath -->
+      <path d="M -16,4 C -16,14 16,14 16,4 Z" fill="#14532d"/>
+      <!-- Tassel Ribbon & Ball -->
+      <path d="M 0,-3 C 16,-1 24,7 24,16" stroke="#14532d" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <circle cx="24" cy="17" r="2.5" fill="#14532d"/>
+    </g>
+  </g>
+
+  <!-- ================= TYPOGRAPHY: LendLoop ================= -->
+  <g transform="translate(256, 420)" text-anchor="middle">
+    <!-- "Lend" in Navy -->
+    <text x="-56" y="0" font-family="'Plus Jakarta Sans', 'Inter', system-ui, sans-serif" font-size="64" font-weight="800" fill="#002753" letter-spacing="-1.5px">Lend</text>
+    <!-- "Loop" in Vibrant Green -->
+    <text x="64" y="0" font-family="'Plus Jakarta Sans', 'Inter', system-ui, sans-serif" font-size="64" font-weight="800" fill="#16a34a" letter-spacing="-1.5px">Loop</text>
+  </g>
+</svg>

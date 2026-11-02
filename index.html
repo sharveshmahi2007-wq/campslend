@@ -1,0 +1,2589 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LendLoop - Campus Peer-to-Peer Borrowing & Lending Web App</title>
+  <meta name="description" content="LendLoop is the verified student peer-to-peer sharing marketplace. Borrow and lend textbooks, tech, lab gear, calculators, and campus essentials safely.">
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+
+  <!-- Typography: Plus Jakarta Sans & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface": "#f8faff",
+            "surface-dim": "#e8edff",
+            "surface-bright": "#ffffff",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-low": "#f1f4fd",
+            "surface-container": "#e8edff",
+            "surface-container-high": "#dfe6fd",
+            "surface-container-highest": "#d5e0fc",
+            "on-surface": "#071c3d",
+            "on-surface-variant": "#495057",
+            "outline": "#6c757d",
+            "outline-variant": "#ced4da",
+            "primary": "#002753",
+            "primary-hover": "#001a38",
+            "on-primary": "#ffffff",
+            "primary-container": "#173d70",
+            "on-primary-container": "#88a9e3",
+            "secondary": "#0051d5",
+            "secondary-hover": "#003ea8",
+            "secondary-container": "#316bf3",
+            "on-secondary": "#ffffff",
+            "emerald-brand": "#16a34a",
+            "emerald-dark": "#14532d",
+            "emerald-light": "#dcfce7",
+            "error": "#ba1a1a",
+            "error-container": "#ffdad6"
+          },
+          fontFamily: {
+            sans: ["Inter", "sans-serif"],
+            display: ["Plus Jakarta Sans", "sans-serif"]
+          },
+          boxShadow: {
+            "subtle": "0 2px 10px rgba(0, 39, 83, 0.04), 0 1px 3px rgba(0, 39, 83, 0.02)",
+            "card": "0 4px 20px -2px rgba(0, 39, 83, 0.06), 0 2px 6px rgba(0, 39, 83, 0.04)",
+            "card-hover": "0 12px 30px -4px rgba(0, 39, 83, 0.12), 0 4px 10px rgba(0, 39, 83, 0.06)",
+            "dropdown": "0 10px 40px -10px rgba(0, 39, 83, 0.18)"
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f4fd;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #c3cee8;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #9bb0dc;
+    }
+
+    /* Page View Transitions */
+    .view-fade {
+      animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Toast animation */
+    @keyframes toastIn {
+      from { transform: translateY(-100%) scale(0.95); opacity: 0; }
+      to { transform: translateY(0) scale(1); opacity: 1; }
+    }
+    .toast-animate {
+      animation: toastIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface antialiased min-h-screen flex flex-col font-sans selection:bg-blue-100 selection:text-primary">
+
+  <!-- ========================================================================= -->
+  <!-- AUTHENTICATION GATEWAY VIEW (LOGIN & REGISTRATION GATEWAY)                 -->
+  <!-- Displayed FIRST before entering into the LendLoop marketplace              -->
+  <!-- Uses photo & HTML assets from stitch_campuslend_mobile_app                 -->
+  <!-- ========================================================================= -->
+  <div id="authGatewayView" class="w-full min-h-screen flex flex-col bg-gradient-to-br from-slate-50 via-blue-50/50 to-indigo-50/30 selection:bg-blue-100 selection:text-primary">
+    
+    <!-- Gateway Navigation Top Bar -->
+    <header class="w-full bg-white/90 backdrop-blur-md border-b border-surface-container py-3 px-4 sm:px-8">
+      <div class="max-w-7xl mx-auto flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="h-10 w-10 rounded-xl bg-white p-1 shadow-sm border border-slate-100 flex items-center justify-center">
+            <img src="assets/logo.svg" alt="LendLoop" class="w-full h-full object-contain">
+          </div>
+          <div class="flex flex-col">
+            <span class="font-display text-xl sm:text-2xl font-extrabold tracking-tight text-primary leading-none">
+              Lend<span class="text-emerald-brand">Loop</span>
+            </span>
+            <span class="text-[10px] font-semibold text-secondary tracking-wider uppercase mt-0.5">Campus P2P Sharing Network</span>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <div class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container text-primary text-xs font-semibold">
+            <span class="material-symbols-outlined text-[15px] text-secondary">verified_user</span>
+            <span>Stanford • Berkeley • MIT • Harvard</span>
+          </div>
+          <button onclick="handleGatewayLogin()" class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-secondary text-xs font-bold transition-all border border-blue-200/60 shadow-sm cursor-pointer" title="Instant access with preloaded demo student account">
+            <span class="material-symbols-outlined text-[16px]">bolt</span>
+            <span>Quick Demo Access</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Central Gateway Content -->
+    <div class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12 flex items-center justify-center">
+      <div class="w-full max-w-5xl bg-white rounded-3xl shadow-2xl border border-surface-container overflow-hidden grid grid-cols-1 lg:grid-cols-12">
+        
+        <!-- =================================================================== -->
+        <!-- LEFT COLUMN: STUDENT COMMUNITY VISUAL SHOWCASE                      -->
+        <!-- =================================================================== -->
+        <div class="lg:col-span-5 bg-gradient-to-br from-primary via-[#072a59] to-[#0a3875] text-white p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden">
+          <!-- Ambient Glow Accents -->
+          <div class="absolute -top-16 -right-16 w-56 h-56 bg-secondary/30 rounded-full blur-3xl pointer-events-none"></div>
+          <div class="absolute -bottom-16 -left-16 w-56 h-56 bg-emerald-brand/20 rounded-full blur-3xl pointer-events-none"></div>
+
+          <!-- Top Brand Badge -->
+          <div class="relative z-10 space-y-4">
+            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-blue-100 text-xs font-semibold border border-white/10">
+              <span class="material-symbols-outlined text-[15px] text-emerald-400">verified_user</span>
+              <span>Official Campus P2P Network</span>
+            </div>
+
+            <div class="space-y-1">
+              <h2 class="font-display font-extrabold text-2xl sm:text-3xl text-white tracking-tight leading-tight">
+                Borrow Smart.<br><span class="text-emerald-400">Share More.</span>
+              </h2>
+              <p class="text-xs text-blue-200 leading-relaxed">
+                Connect with verified classmates at Stanford to borrow graphing calculators, textbooks, tech gear, and camera kits safely.
+              </p>
+            </div>
+
+            <!-- Dynamic Community Banner Card 1: LOGIN (Photo from campuslend_login) -->
+            <div id="loginVisualCard" class="relative rounded-2xl overflow-hidden shadow-lg border border-white/15 bg-white/5 transition-all">
+              <div class="relative h-48 w-full">
+                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEz5MC7ynlYmGIA8bC1ZfkAQv7vvvAwslIEoXHzab3cm6YGvPuS987wgpMsmoHdGf8kzoErbjy_LzrlTauczt65K7Ie2JZ8R2fZfbA8PuITNSkqRkBG43fzMfPmYbNOgSpeKZW-weIeBBMGXgdBiu12anxlxVEM-rFEaIt8rbdj0GlPLAaZfOe9ZneO68wJYmrcGpzA9Zhhf5VdW9J4E1CmuhTCDFoJe23D7H8KKuj" 
+                     onerror="this.src='stitch_campuslend_mobile_app/campuslend_login/screen.png'"
+                     alt="Students studying and sharing gear in campus lounge" 
+                     class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/30 to-transparent"></div>
+                <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between text-white">
+                  <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-white shadow-sm shrink-0">
+                      <span class="material-symbols-outlined text-[18px]">school</span>
+                    </div>
+                    <div class="flex flex-col">
+                      <span class="text-xs font-bold leading-tight">4,800+ Students Active</span>
+                      <span class="text-[10px] text-blue-200">Stanford, Berkeley, MIT & more</span>
+                    </div>
+                  </div>
+                  <span class="px-2.5 py-1 rounded-full bg-white/20 backdrop-blur-md text-white text-[11px] font-bold">
+                    98% Trust Rating
+                  </span>
+                </div>
+              </div>
+
+              <!-- Student Testimonial Snippet -->
+              <div class="p-3 bg-white/10 backdrop-blur-md text-xs border-t border-white/10 space-y-1">
+                <div class="flex items-center gap-1 text-amber-300">
+                  <span class="material-symbols-outlined text-[14px]">star</span>
+                  <span class="material-symbols-outlined text-[14px]">star</span>
+                  <span class="material-symbols-outlined text-[14px]">star</span>
+                  <span class="material-symbols-outlined text-[14px]">star</span>
+                  <span class="material-symbols-outlined text-[14px]">star</span>
+                </div>
+                <p class="text-blue-100 text-[11px] italic leading-tight">
+                  "Saved $120 on a TI-84 Plus CE for my Math midterm. Picked it up 10 mins later at Wilbur Hall!"
+                </p>
+                <span class="text-[10px] text-blue-300 block font-semibold">— Maya L., Sophomore CS</span>
+              </div>
+            </div>
+
+            <!-- Dynamic Community Banner Card 2: REGISTER (Photo from campuslend_registration) -->
+            <div id="registerVisualCard" class="hidden relative rounded-2xl overflow-hidden shadow-lg border border-white/15 bg-white/5 transition-all">
+              <div class="relative h-44 w-full">
+                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJE71qjEzL7rk5Fkz72DuV0C6E_4cn5J6UGUz4ffkLTPwOkERxWLshHp8CUrj1v2Kba8AUlaCCtMTofBCtSguh25coKUwEhZTyw_Hn9sYinGg-b3kNdVYXDTpMGa_IRfyPkrxdH5TgXpnVVHnxAM99KwPJfvyv8gZDMSj5VqzCLxaD-qVDTska6DcGtXWONnQ3ttCbEvmi_HdjcFme_m1BbvFTvYvVj5f6VgnJaxNI" 
+                     onerror="this.src='stitch_campuslend_mobile_app/campuslend_registration/screen.png'"
+                     alt="Diverse cheerful university students studying together" 
+                     class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-transparent flex items-end p-3">
+                  <div class="flex items-center gap-1.5 bg-white/90 backdrop-blur-md px-2.5 py-1 rounded-full text-primary shadow-sm">
+                    <span class="material-symbols-outlined text-secondary text-[16px]">verified</span>
+                    <span class="text-xs font-bold">Verified Student Network</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Social Proof Banner from registration code.html -->
+              <div class="p-3 bg-white/10 backdrop-blur-md flex items-center gap-3 border-t border-white/10">
+                <div class="w-8 h-8 rounded-xl bg-secondary flex items-center justify-center text-white shrink-0 shadow-sm">
+                  <span class="material-symbols-outlined text-[18px]">groups</span>
+                </div>
+                <div class="flex flex-col min-w-0">
+                  <span class="text-[10px] text-emerald-300 font-bold uppercase tracking-wider">Campus Community</span>
+                  <p class="text-[11px] text-white font-medium leading-tight">
+                    Join 4,200+ verified students borrowing & earning safely.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Trust Highlights Footer -->
+          <div class="relative z-10 pt-4 mt-4 border-t border-white/10 grid grid-cols-2 gap-2 text-[11px]">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-emerald-400 text-[18px]">verified_user</span>
+              <span class="text-blue-100 font-semibold">100% ID Verified</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-emerald-400 text-[18px]">shield</span>
+              <span class="text-blue-100 font-semibold">$1,000 Deposit Shield</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- =================================================================== -->
+        <!-- RIGHT COLUMN: INTERACTIVE AUTHENTICATION GATEWAY CARD               -->
+        <!-- =================================================================== -->
+        <div class="lg:col-span-7 p-6 sm:p-10 flex flex-col justify-between bg-white">
+          
+          <div class="space-y-6">
+            <!-- Brand Title & Tagline -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-surface-container">
+              <div>
+                <div class="flex items-center gap-2">
+                  <img src="assets/logo.svg" alt="LendLoop" class="w-7 h-7 object-contain">
+                  <h1 class="font-display font-extrabold text-2xl text-primary tracking-tight">
+                    Welcome to Lend<span class="text-emerald-brand">Loop</span>
+                  </h1>
+                </div>
+                <p class="text-xs text-on-surface-variant font-medium mt-0.5">
+                  Official Campus Peer-to-Peer Sharing Network
+                </p>
+              </div>
+
+              <div class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-bold self-start sm:self-auto">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span>Active Network Gateway</span>
+              </div>
+            </div>
+
+            <!-- Segmented Auth Tab Switcher (Log In / Register) -->
+            <div class="w-full bg-surface-container-low p-1.5 rounded-2xl flex items-center shadow-inner">
+              <button onclick="switchGatewayTab('login')" id="gatewayTabLogin" class="flex-1 py-2.5 text-center font-bold text-xs sm:text-sm rounded-xl bg-primary text-white shadow-sm transition-all flex items-center justify-center gap-1.5 cursor-pointer">
+                <span class="material-symbols-outlined text-[18px]">login</span>
+                <span>Log In</span>
+              </button>
+              <button onclick="switchGatewayTab('register')" id="gatewayTabRegister" class="flex-1 py-2.5 text-center font-semibold text-xs sm:text-sm rounded-xl text-on-surface-variant hover:text-primary transition-all flex items-center justify-center gap-1.5 cursor-pointer">
+                <span class="material-symbols-outlined text-[18px]">person_add</span>
+                <span>Register</span>
+              </button>
+            </div>
+
+            <!-- =============================================================== -->
+            <!-- TAB 1: LOGIN FORM PANEL                                         -->
+            <!-- =============================================================== -->
+            <div id="authLoginPanel" class="space-y-5">
+              
+              <!-- Verification Highlight Badge from campuslend_login code.html -->
+              <div class="flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-blue-50 text-primary border border-blue-100">
+                <div class="flex items-center gap-2 min-w-0">
+                  <span class="material-symbols-outlined text-[20px] text-secondary flex-shrink-0">check_circle</span>
+                  <span class="text-xs font-semibold truncate">.edu verified student network</span>
+                </div>
+                <span class="text-[11px] text-secondary bg-white px-2 py-0.5 rounded-md font-bold shadow-xs">100% ID Safe</span>
+              </div>
+
+              <!-- Main Login Form -->
+              <form onsubmit="handleGatewayLogin(event)" class="space-y-4">
+                
+                <!-- Email Field -->
+                <div class="space-y-1.5">
+                  <div class="flex items-center justify-between">
+                    <label class="text-xs font-bold text-primary" for="gatewayLoginEmail">
+                      College Email (.edu)
+                    </label>
+                    <span class="text-[11px] text-secondary flex items-center gap-1 font-semibold">
+                      <span class="material-symbols-outlined text-[14px]">domain_verification</span>
+                      Verified campus domain
+                    </span>
+                  </div>
+                  <div class="relative flex items-center">
+                    <div class="absolute left-3.5 flex items-center pointer-events-none text-outline">
+                      <span class="material-symbols-outlined text-[20px]">mail</span>
+                    </div>
+                    <input id="gatewayLoginEmail" type="email" required value="alex.chen@stanford.edu" placeholder="alex.chen@stanford.edu" class="w-full h-12 pl-11 pr-10 rounded-xl bg-surface-container-low text-on-surface text-sm border border-transparent focus:border-secondary focus:bg-white focus:ring-2 focus:ring-blue-100 transition-all outline-none">
+                    <div class="absolute right-3.5 flex items-center text-emerald-600">
+                      <span class="material-symbols-outlined text-[18px]">verified</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Password Field -->
+                <div class="space-y-1.5">
+                  <div class="flex items-center justify-between">
+                    <label class="text-xs font-bold text-primary" for="gatewayLoginPassword">
+                      Password
+                    </label>
+                    <a href="#" onclick="showToast('Password reset link sent to registered .edu email', 'info'); return false;" class="text-[11px] text-secondary hover:underline font-semibold">
+                      Forgot password?
+                    </a>
+                  </div>
+                  <div class="relative flex items-center">
+                    <div class="absolute left-3.5 flex items-center pointer-events-none text-outline">
+                      <span class="material-symbols-outlined text-[20px]">lock</span>
+                    </div>
+                    <input id="gatewayLoginPassword" type="password" required value="sampleCampusPass123" placeholder="••••••••••••" class="w-full h-12 pl-11 pr-11 rounded-xl bg-surface-container-low text-on-surface text-sm border border-transparent focus:border-secondary focus:bg-white focus:ring-2 focus:ring-blue-100 transition-all outline-none">
+                    <button type="button" onclick="togglePasswordVisibility('gatewayLoginPassword', this)" aria-label="Toggle password visibility" class="absolute right-3 p-1 rounded-lg text-outline hover:text-primary transition-colors flex items-center justify-center cursor-pointer">
+                      <span class="material-symbols-outlined text-[20px]">visibility</span>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Remember Me Checkbox -->
+                <div class="flex items-center justify-between pt-1">
+                  <label class="flex items-center gap-2 cursor-pointer select-none">
+                    <input type="checkbox" checked id="gatewayRememberMe" class="w-4 h-4 rounded text-secondary border-gray-300 focus:ring-secondary">
+                    <span class="text-xs text-on-surface-variant font-medium">Remember me on this campus device</span>
+                  </label>
+                </div>
+
+                <!-- Primary Submit Action Button -->
+                <button type="submit" id="gatewayLoginSubmitBtn" class="w-full h-12 px-4 rounded-xl bg-primary hover:bg-primary-hover text-white text-sm font-bold flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all active:scale-[0.99] cursor-pointer">
+                  <span>Log In to LendLoop</span>
+                  <span class="material-symbols-outlined text-[19px]">arrow_forward</span>
+                </button>
+              </form>
+
+              <!-- SSO Divider -->
+              <div class="relative flex items-center justify-center my-2">
+                <div class="absolute inset-0 flex items-center">
+                  <div class="w-full h-[1px] bg-surface-container"></div>
+                </div>
+                <div class="relative px-3 bg-white text-outline text-[11px] uppercase tracking-wider font-semibold">
+                  Or continue with campus SSO
+                </div>
+              </div>
+
+              <!-- Google Student SSO Button -->
+              <button onclick="handleGoogleSignIn()" type="button" class="w-full h-12 px-4 rounded-xl bg-white border border-surface-container hover:bg-surface-container-low text-primary shadow-subtle hover:shadow transition-all flex items-center justify-center gap-3 active:scale-[0.99] cursor-pointer">
+                <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24">
+                  <path d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.8-2.4 3.65v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.14z" fill="#4285F4"></path>
+                  <path d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z" fill="#34A853"></path>
+                  <path d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z" fill="#FBBC05"></path>
+                  <path d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z" fill="#EA4335"></path>
+                </svg>
+                <span class="text-xs sm:text-sm font-bold text-primary">
+                  Continue with Google Student Account
+                </span>
+              </button>
+
+              <!-- University Security / Trust Badge -->
+              <div class="flex items-center justify-center gap-1.5 pt-2 text-center text-on-surface-variant text-[11px]">
+                <span class="material-symbols-outlined text-[16px] text-secondary">lock_person</span>
+                <span>Secured with University 2FA & Campus ID Protection</span>
+              </div>
+            </div>
+
+            <!-- =============================================================== -->
+            <!-- TAB 2: REGISTRATION FORM PANEL                                  -->
+            <!-- =============================================================== -->
+            <div id="authRegisterPanel" class="hidden space-y-4">
+              
+              <!-- Registration Form -->
+              <form onsubmit="handleGatewayRegister(event)" class="space-y-3.5">
+                
+                <!-- Field 1 & 2: Name and Student ID in Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <!-- Legal Name -->
+                  <div class="space-y-1">
+                    <label class="text-xs font-bold text-primary flex items-center gap-1" for="reg-name">
+                      <span>Full Legal / Campus Name</span>
+                      <span class="text-error">*</span>
+                    </label>
+                    <div class="relative flex items-center">
+                      <span class="material-symbols-outlined absolute left-3.5 text-outline text-[18px] pointer-events-none">person</span>
+                      <input id="reg-name" required value="Alex J. Chen" placeholder="Alex J. Chen" class="w-full h-11 pl-10 pr-3 rounded-xl bg-surface-container-low text-on-surface text-xs border border-transparent focus:border-secondary focus:bg-white outline-none">
+                    </div>
+                  </div>
+
+                  <!-- Student ID -->
+                  <div class="space-y-1">
+                    <div class="flex items-center justify-between">
+                      <label class="text-xs font-bold text-primary flex items-center gap-1" for="reg-studentid">
+                        <span>Student ID Number</span>
+                        <span class="text-error">*</span>
+                      </label>
+                    </div>
+                    <div class="relative flex items-center">
+                      <span class="material-symbols-outlined absolute left-3.5 text-outline text-[18px] pointer-events-none">badge</span>
+                      <input id="reg-studentid" required value="SU-9824102" placeholder="SU-9824102" class="w-full h-11 pl-10 pr-3 rounded-xl bg-surface-container-low text-on-surface text-xs border border-transparent focus:border-secondary focus:bg-white outline-none">
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Field 3: College Email Address with Edu Verification Badge -->
+                <div class="space-y-1">
+                  <div class="flex items-center justify-between">
+                    <label class="text-xs font-bold text-primary flex items-center gap-1" for="reg-email">
+                      <span>College Email Address</span>
+                      <span class="text-error">*</span>
+                    </label>
+                    <span class="text-[10px] text-secondary font-semibold">Ends in .edu</span>
+                  </div>
+                  <div class="relative flex items-center">
+                    <span class="material-symbols-outlined absolute left-3.5 text-outline text-[18px] pointer-events-none">mail</span>
+                    <input id="reg-email" type="email" required value="alex.chen@stanford.edu" placeholder="alex.chen@stanford.edu" class="w-full h-11 pl-10 pr-10 rounded-xl bg-surface-container-low text-on-surface text-xs border border-transparent focus:border-secondary focus:bg-white outline-none">
+                    <span class="material-symbols-outlined absolute right-3.5 text-emerald-600 text-[18px]">check_circle</span>
+                  </div>
+                </div>
+
+                <!-- Field 4: Department / Major Selection -->
+                <div class="space-y-1">
+                  <label class="text-xs font-bold text-primary flex items-center gap-1" for="reg-dept">
+                    <span>Department / Major</span>
+                    <span class="text-error">*</span>
+                  </label>
+                  <div class="relative flex items-center">
+                    <span class="material-symbols-outlined absolute left-3.5 text-outline text-[18px] pointer-events-none">history_edu</span>
+                    <select id="reg-dept" class="w-full h-11 pl-10 pr-10 rounded-xl bg-surface-container-low text-on-surface text-xs border border-transparent focus:border-secondary focus:bg-white outline-none appearance-none cursor-pointer">
+                      <option selected value="cs">Computer Science & Engineering</option>
+                      <option value="bio">Biological Sciences & Pre-Med</option>
+                      <option value="business">Business & Economics</option>
+                      <option value="design">Product Design & Fine Arts</option>
+                      <option value="physics">Physics & Applied Math</option>
+                    </select>
+                    <span class="material-symbols-outlined absolute right-3.5 text-outline text-[18px] pointer-events-none">expand_more</span>
+                  </div>
+                </div>
+
+                <!-- Field 5: Year of Study (Pill Segment Selector) -->
+                <div class="space-y-1">
+                  <label class="text-xs font-bold text-primary flex items-center gap-1">
+                    <span>Year of Study</span>
+                    <span class="text-error">*</span>
+                  </label>
+                  <div class="grid grid-cols-5 gap-1.5 bg-surface-container-low p-1 rounded-2xl">
+                    <button type="button" onclick="selectYear(this, 'Freshman')" class="year-pill py-1.5 text-center rounded-xl text-xs text-on-surface-variant hover:bg-white transition-all cursor-pointer">Freshman</button>
+                    <button type="button" onclick="selectYear(this, 'Sophomore')" class="year-pill py-1.5 text-center rounded-xl text-xs text-on-surface-variant hover:bg-white transition-all cursor-pointer">Soph</button>
+                    <button type="button" onclick="selectYear(this, 'Junior')" class="year-pill py-1.5 text-center rounded-xl text-xs bg-primary text-white font-bold shadow-sm transition-all cursor-pointer">Junior</button>
+                    <button type="button" onclick="selectYear(this, 'Senior')" class="year-pill py-1.5 text-center rounded-xl text-xs text-on-surface-variant hover:bg-white transition-all cursor-pointer">Senior</button>
+                    <button type="button" onclick="selectYear(this, 'Grad')" class="year-pill py-1.5 text-center rounded-xl text-xs text-on-surface-variant hover:bg-white transition-all cursor-pointer">Grad</button>
+                  </div>
+                  <input id="selected-year" type="hidden" value="Junior">
+                </div>
+
+                <!-- Field 6: Password with Strength Indicator -->
+                <div class="space-y-1">
+                  <label class="text-xs font-bold text-primary flex items-center gap-1" for="reg-pass">
+                    <span>Password</span>
+                    <span class="text-error">*</span>
+                  </label>
+                  <div class="relative flex items-center">
+                    <span class="material-symbols-outlined absolute left-3.5 text-outline text-[18px] pointer-events-none">lock</span>
+                    <input id="reg-pass" type="password" required value="CampusHero#2025" placeholder="Create strong password" class="w-full h-11 pl-10 pr-10 rounded-xl bg-surface-container-low text-on-surface text-xs border border-transparent focus:border-secondary focus:bg-white outline-none">
+                    <button type="button" onclick="togglePasswordVisibility('reg-pass', this)" aria-label="Toggle password visibility" class="absolute right-3.5 text-outline hover:text-primary transition-colors p-1 cursor-pointer">
+                      <span class="material-symbols-outlined text-[18px]">visibility</span>
+                    </button>
+                  </div>
+                  <!-- Password Strength Indicator from registration code.html -->
+                  <div class="flex flex-col gap-1 pt-0.5">
+                    <div class="flex items-center justify-between text-[10px]">
+                      <span class="text-on-surface-variant font-medium">Password Strength</span>
+                      <span class="text-emerald-700 font-bold">Strong (8+ chars, symbol)</span>
+                    </div>
+                    <div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden flex gap-1">
+                      <div class="h-full flex-1 bg-emerald-500 rounded-full"></div>
+                      <div class="h-full flex-1 bg-emerald-500 rounded-full"></div>
+                      <div class="h-full flex-1 bg-emerald-500 rounded-full"></div>
+                      <div class="h-full flex-1 bg-emerald-500 rounded-full"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Field 7: Confirm Password -->
+                <div class="space-y-1">
+                  <label class="text-xs font-bold text-primary flex items-center gap-1" for="reg-confirm-pass">
+                    <span>Confirm Password</span>
+                    <span class="text-error">*</span>
+                  </label>
+                  <div class="relative flex items-center">
+                    <span class="material-symbols-outlined absolute left-3.5 text-outline text-[18px] pointer-events-none">lock_clock</span>
+                    <input id="reg-confirm-pass" type="password" required value="CampusHero#2025" placeholder="Re-enter password" class="w-full h-11 pl-10 pr-10 rounded-xl bg-surface-container-low text-on-surface text-xs border border-transparent focus:border-secondary focus:bg-white outline-none">
+                    <span class="material-symbols-outlined absolute right-3.5 text-emerald-600 text-[18px]">check_circle</span>
+                  </div>
+                  <div class="flex items-center gap-1 text-emerald-700 text-[10px] font-semibold pl-1">
+                    <span class="material-symbols-outlined text-[13px]">verified</span>
+                    <span>Passwords match</span>
+                  </div>
+                </div>
+
+                <!-- Action Button: Create Student Account -->
+                <button type="submit" id="btn-register" class="w-full h-12 bg-primary hover:bg-primary-hover text-white transition-all rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 shadow-md active:scale-[0.98] cursor-pointer">
+                  <span>Create Student Account</span>
+                  <span class="material-symbols-outlined text-[19px]">arrow_forward</span>
+                </button>
+
+                <!-- Divider -->
+                <div class="flex items-center gap-3 my-1">
+                  <div class="flex-1 h-[1px] bg-surface-container"></div>
+                  <span class="text-[10px] text-outline uppercase tracking-wider font-semibold">or verify with</span>
+                  <div class="flex-1 h-[1px] bg-surface-container"></div>
+                </div>
+
+                <!-- Google Student SSO -->
+                <button onclick="handleGoogleSignIn()" type="button" class="w-full h-11 bg-white border border-surface-container hover:bg-surface-container-low text-primary rounded-xl text-xs font-semibold flex items-center justify-center gap-2.5 shadow-subtle active:scale-[0.98] cursor-pointer">
+                  <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24">
+                    <path d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.8-2.4 3.65v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.14z" fill="#4285F4"></path>
+                    <path d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z" fill="#34A853"></path>
+                    <path d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z" fill="#FBBC05"></path>
+                    <path d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z" fill="#EA4335"></path>
+                  </svg>
+                  <span>Sign up with Google Student Account</span>
+                </button>
+
+                <!-- Terms & Honor Code Disclaimer -->
+                <p class="text-[10px] text-outline text-center px-2 pt-1 leading-relaxed">
+                  By registering, you agree to the 
+                  <a href="#" onclick="showToast('CampusLend Honor Code: Trust, Care for peer gear, and Timely returns', 'info'); return false;" class="text-secondary font-semibold hover:underline">LendLoop Honor Code</a> 
+                  & 
+                  <a href="#" onclick="showToast('Peer Lending Agreement: $1,000 security deposit shield active', 'info'); return false;" class="text-secondary font-semibold hover:underline">Peer Lending Agreement</a>.
+                </p>
+              </form>
+            </div>
+
+          </div>
+
+          <!-- Bottom Footer Note -->
+          <div class="pt-6 mt-6 border-t border-surface-container flex items-center justify-between text-[11px] text-outline">
+            <span class="flex items-center gap-1 text-emerald-700 font-semibold">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+              256-Bit SSL Campus Gateway
+            </span>
+            <span>Stanford University Hub</span>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Gateway Footer -->
+    <footer class="w-full bg-white/80 border-t border-surface-container py-3 px-4 text-center text-xs text-outline">
+      <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
+        <span>© 2026 LendLoop Inc. Peer-to-Peer Campus Sharing. Built for students, by students.</span>
+        <div class="flex items-center gap-4 text-[11px]">
+          <span class="hover:underline cursor-pointer" onclick="showToast('Campus verified .edu safety standard active', 'info')">Security Standard</span>
+          <span class="hover:underline cursor-pointer" onclick="showToast('LendLoop 100% Peer Honor Guarantee', 'info')">Honor Code</span>
+          <span class="hover:underline cursor-pointer" onclick="showToast('Contact support: help@lendloop.edu', 'info')">Campus Helpdesk</span>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MAIN APPLICATION SHELL (GATED UNTIL AUTHENTICATED)                        -->
+  <!-- ========================================================================= -->
+  <div id="mainAppShell" class="hidden flex-1 flex flex-col min-h-screen">
+
+  <!-- ========================================================================= -->
+  <!-- GLOBAL DESKTOP APPLICATION NAVBAR                                         -->
+  <!-- ========================================================================= -->
+  <header class="sticky top-0 z-40 w-full bg-white/95 backdrop-blur-md border-b border-surface-container shadow-subtle transition-all">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-18 py-2">
+        
+        <!-- Left: Brand Logo & Campus Selector -->
+        <div class="flex items-center gap-6">
+          <a href="#" onclick="navigateView('marketplace'); return false;" class="flex items-center gap-2 group flex-shrink-0">
+            <div class="h-10 w-10 rounded-xl bg-white p-1 shadow-sm border border-slate-100 flex items-center justify-center group-hover:scale-105 transition-transform">
+              <img src="assets/logo.svg" alt="LendLoop" class="w-full h-full object-contain">
+            </div>
+            <div class="flex flex-col">
+              <span class="font-display text-2xl font-extrabold tracking-tight text-primary leading-none">
+                Lend<span class="text-emerald-brand">Loop</span>
+              </span>
+              <span class="text-[10px] font-semibold text-secondary tracking-wider uppercase mt-0.5">Campus P2P Sharing</span>
+            </div>
+          </a>
+
+          <!-- Campus Hub Selector Dropdown -->
+          <div class="relative hidden md:block">
+            <button onclick="toggleCampusModal()" class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container-low hover:bg-surface-container text-primary text-xs font-semibold border border-blue-100/80 transition-colors">
+              <span class="material-symbols-outlined text-[16px] text-secondary">school</span>
+              <span id="navCampusLabel" class="truncate max-w-[140px]">Stanford Campus</span>
+              <span class="material-symbols-outlined text-[14px] text-outline">expand_more</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Center: Search Bar on Desktop -->
+        <div class="hidden lg:flex items-center flex-1 max-w-md mx-6">
+          <div class="relative w-full">
+            <span class="material-symbols-outlined absolute left-3.5 top-2.5 text-outline text-[20px] pointer-events-none">search</span>
+            <input type="text" id="globalDesktopSearch" oninput="handleSearch(this.value)" placeholder="Search textbooks, graphing calculators, lab gear..." class="w-full h-10 pl-10 pr-10 bg-surface-container-low hover:bg-surface-container/60 focus:bg-white rounded-xl text-sm border border-transparent focus:border-secondary focus:ring-2 focus:ring-blue-100 transition-all outline-none">
+            <button onclick="clearSearch()" id="globalSearchClearBtn" class="hidden absolute right-3 top-2.5 text-outline hover:text-on-surface">
+              <span class="material-symbols-outlined text-[16px]">close</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Right: Main Nav Links & Actions -->
+        <div class="flex items-center gap-3">
+          <nav class="hidden md:flex items-center gap-1 mr-2">
+            <button onclick="navigateView('marketplace')" class="nav-link px-3 py-2 rounded-xl text-sm font-semibold text-secondary bg-blue-50/80 transition-colors" data-view="marketplace">
+              Marketplace
+            </button>
+            <button onclick="navigateView('my-loans')" class="nav-link relative px-3 py-2 rounded-xl text-sm font-semibold text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors" data-view="my-loans">
+              <span>My Loans</span>
+              <span id="navLoansCountBadge" class="ml-1.5 px-1.5 py-0.5 rounded-full bg-secondary text-white text-[10px] font-bold">2</span>
+            </button>
+            <button onclick="navigateView('how-it-works')" class="nav-link px-3 py-2 rounded-xl text-sm font-semibold text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors" data-view="how-it-works">
+              How It Works
+            </button>
+          </nav>
+
+          <!-- Post an Item CTA Button -->
+          <button onclick="openAddItemModal()" class="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-secondary hover:bg-secondary-hover text-white text-sm font-semibold shadow-sm hover:shadow transition-all active:scale-[0.98]">
+            <span class="material-symbols-outlined text-[18px]">add_circle</span>
+            <span class="hidden sm:inline">Post an Item</span>
+          </button>
+
+          <!-- Notifications Bell -->
+          <div class="relative">
+            <button onclick="toggleNotificationsDropdown(event)" aria-label="Notifications" class="w-10 h-10 rounded-xl bg-surface-container-low hover:bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors relative cursor-pointer">
+              <span class="material-symbols-outlined text-[20px]">notifications</span>
+              <span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-emerald-brand ring-2 ring-white"></span>
+            </button>
+
+            <!-- Notifications Flyout -->
+            <div id="notificationsDropdown" class="hidden absolute right-0 mt-2 w-80 bg-white rounded-2xl shadow-dropdown border border-surface-container p-3 z-50">
+              <div class="flex items-center justify-between pb-2 mb-2 border-b border-surface-container">
+                <span class="font-display font-bold text-sm text-primary">Notifications</span>
+                <span class="text-[11px] text-secondary font-semibold cursor-pointer hover:underline" onclick="showToast('All notifications marked as read', 'info')">Mark read</span>
+              </div>
+              <div class="space-y-2">
+                <div class="p-2.5 rounded-xl bg-blue-50/60 border border-blue-100 flex items-start gap-2.5 text-xs">
+                  <span class="material-symbols-outlined text-secondary text-[18px] shrink-0 mt-0.5">schedule</span>
+                  <div>
+                    <span class="font-semibold text-primary block">TI-84 Plus CE Calculator</span>
+                    <span class="text-on-surface-variant">Due in 3 days (Return to Sarah Lin)</span>
+                  </div>
+                </div>
+                <div class="p-2.5 rounded-xl bg-amber-50/60 border border-amber-100 flex items-start gap-2.5 text-xs">
+                  <span class="material-symbols-outlined text-amber-600 text-[18px] shrink-0 mt-0.5">pending_actions</span>
+                  <div>
+                    <span class="font-semibold text-amber-900 block">Borrow Request Pending</span>
+                    <span class="text-on-surface-variant">Marcus T. requested Java 8th Ed.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- User Profile Dropdown Button -->
+          <div class="relative">
+            <button onclick="toggleProfileDropdown(event)" class="flex items-center gap-2 p-1 pl-2 rounded-xl hover:bg-surface-container-low transition-colors cursor-pointer">
+              <div class="w-8 h-8 rounded-full overflow-hidden ring-2 ring-blue-100 shrink-0">
+                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHidFGGvejNyhkUBYrLtdf6YBBJH4cdUC8PrAvMSsLsYw29f3rxNOr1LXFSuNGwGsWjv-ou9bedavLx1oiQXsiW3MD674jEP9umUigltN6OXY-sEur0CQveiqITJGNH2LX-cl2jcU0Vef-R_KhMIEo1PwG_hbf0mrS88phMWaoVA6h74QfX_S0Km9Ne14pch4EEQ08E86vS_bWV-4UiNF6-5rhOjPAEsh2hEdwtOo1" alt="Alex Rivera" class="w-full h-full object-cover">
+              </div>
+              <span class="hidden xl:inline text-xs font-semibold text-primary" id="topNavUserName">Alex Rivera</span>
+              <span class="material-symbols-outlined text-[16px] text-outline hidden xl:inline">expand_more</span>
+            </button>
+
+            <!-- Profile Menu Flyout -->
+            <div id="profileDropdown" class="hidden absolute right-0 mt-2 w-64 bg-white rounded-2xl shadow-dropdown border border-surface-container p-2 z-50">
+              <div class="px-3 py-2 border-b border-surface-container mb-1">
+                <p class="font-display font-bold text-sm text-primary">Alex Rivera</p>
+                <p class="text-xs text-on-surface-variant truncate">a.rivera@stanford.edu</p>
+                <div class="inline-flex items-center gap-1 mt-1 px-2 py-0.5 rounded-full bg-emerald-light text-emerald-dark font-semibold text-[10px]">
+                  <span class="material-symbols-outlined text-[12px]">verified</span> Verified Stanford Student
+                </div>
+              </div>
+              <button onclick="navigateView('profile'); closeDropdowns();" class="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-semibold text-on-surface hover:bg-surface-container-low rounded-xl text-left">
+                <span class="material-symbols-outlined text-[18px] text-outline">account_circle</span>
+                <span>My Profile & Listings</span>
+              </button>
+              <button onclick="navigateView('my-loans'); closeDropdowns();" class="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-semibold text-on-surface hover:bg-surface-container-low rounded-xl text-left">
+                <span class="material-symbols-outlined text-[18px] text-outline">sync_alt</span>
+                <span>Active Loans & Requests</span>
+              </button>
+              <button onclick="openEditProfileModal(); closeDropdowns();" class="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-semibold text-on-surface hover:bg-surface-container-low rounded-xl text-left">
+                <span class="material-symbols-outlined text-[18px] text-outline">settings</span>
+                <span>Account Settings</span>
+              </button>
+              <div class="border-t border-surface-container my-1"></div>
+              <button onclick="handleLogout(); closeDropdowns();" class="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-semibold text-error hover:bg-red-50 rounded-xl text-left cursor-pointer">
+                <span class="material-symbols-outlined text-[18px]">logout</span>
+                <span>Sign Out of LendLoop</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================================= -->
+  <!-- MAIN WORKSPACE VIEWS CONTAINER                                            -->
+  <!-- ========================================================================= -->
+  <main class="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+    <!-- ========================================================================= -->
+    <!-- VIEW 1: MARKETPLACE / EXPLORE CATALOG (HOME)                              -->
+    <!-- ========================================================================= -->
+    <div id="view-marketplace" class="view-fade space-y-6">
+
+      <!-- Webapp Hero Banner -->
+      <section class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-primary via-[#0a3568] to-[#124b8f] text-white p-8 lg:p-10 shadow-card">
+        <div class="absolute -right-16 -top-16 w-80 h-80 rounded-full bg-secondary/30 blur-3xl pointer-events-none"></div>
+        <div class="absolute right-32 -bottom-20 w-64 h-64 rounded-full bg-emerald-brand/20 blur-2xl pointer-events-none"></div>
+        
+        <div class="relative z-10 max-w-3xl space-y-4">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs font-semibold">
+            <span class="material-symbols-outlined text-[16px] text-emerald-400" style="font-variation-settings: 'FILL' 1;">verified</span>
+            <span>100% Verified Campus P2P Network</span>
+            <span class="text-white/40">•</span>
+            <span class="text-blue-200">Zero Commercial Markup</span>
+          </div>
+
+          <h1 class="font-display text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight">
+            Borrow Smart. Share More. Save Hundreds on Campus.
+          </h1>
+          <p class="text-blue-100 text-sm sm:text-base max-w-2xl leading-relaxed">
+            Borrow expensive textbooks, TI-84 calculators, lab gear, audio equipment, and bikes directly from students in your dorms and campus halls.
+          </p>
+
+          <!-- Quick Metrics Ribbon inside Hero -->
+          <div class="pt-2 grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-2xl">
+            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-3 border border-white/10">
+              <span class="font-display text-2xl font-bold block">4,800+</span>
+              <span class="text-xs text-blue-200">Active Students</span>
+            </div>
+            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-3 border border-white/10">
+              <span class="font-display text-2xl font-bold block">$180</span>
+              <span class="text-xs text-blue-200">Avg. Term Savings</span>
+            </div>
+            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-3 border border-white/10">
+              <span class="font-display text-2xl font-bold block">98%</span>
+              <span class="text-xs text-blue-200">Trust Score</span>
+            </div>
+            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-3 border border-white/10">
+              <span class="font-display text-2xl font-bold block">&lt; 10m</span>
+              <span class="text-xs text-blue-200">Dorm Handover</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Category Filter Tabs -->
+      <section class="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar" id="categoryChips">
+        <button onclick="filterCategory('all')" class="cat-pill active px-4 py-2 rounded-xl text-xs font-bold transition-all bg-primary text-white shadow-sm flex items-center gap-1.5" data-cat="all">
+          <span>All Items</span>
+        </button>
+        <button onclick="filterCategory('books')" class="cat-pill px-4 py-2 rounded-xl text-xs font-semibold transition-all bg-white text-on-surface hover:bg-surface-container-low border border-surface-container flex items-center gap-1.5" data-cat="books">
+          <span>📚</span>
+          <span>Textbooks</span>
+        </button>
+        <button onclick="filterCategory('tech')" class="cat-pill px-4 py-2 rounded-xl text-xs font-semibold transition-all bg-white text-on-surface hover:bg-surface-container-low border border-surface-container flex items-center gap-1.5" data-cat="tech">
+          <span>💻</span>
+          <span>Tech & Electronics</span>
+        </button>
+        <button onclick="filterCategory('stationery')" class="cat-pill px-4 py-2 rounded-xl text-xs font-semibold transition-all bg-white text-on-surface hover:bg-surface-container-low border border-surface-container flex items-center gap-1.5" data-cat="stationery">
+          <span>📐</span>
+          <span>Calculators & Lab</span>
+        </button>
+        <button onclick="filterCategory('sports')" class="cat-pill px-4 py-2 rounded-xl text-xs font-semibold transition-all bg-white text-on-surface hover:bg-surface-container-low border border-surface-container flex items-center gap-1.5" data-cat="sports">
+          <span>🚲</span>
+          <span>Sports & Outdoor</span>
+        </button>
+        <button onclick="filterCategory('others')" class="cat-pill px-4 py-2 rounded-xl text-xs font-semibold transition-all bg-white text-on-surface hover:bg-surface-container-low border border-surface-container flex items-center gap-1.5" data-cat="others">
+          <span>🎒</span>
+          <span>Dorm Living</span>
+        </button>
+      </section>
+
+      <!-- Desktop Two-Column Layout: Left Filter Sidebar + Right Catalog Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
+        
+        <!-- Left Filter Sidebar -->
+        <aside class="bg-white rounded-2xl p-5 border border-surface-container shadow-subtle space-y-6">
+          <div class="flex items-center justify-between pb-3 border-b border-surface-container">
+            <span class="font-display font-bold text-sm text-primary flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-[18px]">tune</span> Filter Catalog
+            </span>
+            <button onclick="resetFilters()" class="text-xs text-secondary hover:underline font-semibold">Reset All</button>
+          </div>
+
+          <!-- Availability Toggle -->
+          <div class="space-y-2">
+            <label class="text-xs font-bold uppercase tracking-wider text-outline block">Availability</label>
+            <label class="flex items-center justify-between cursor-pointer p-2 rounded-xl hover:bg-surface-container-low transition-colors">
+              <span class="text-xs font-semibold text-on-surface flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Available Immediately
+              </span>
+              <input type="checkbox" id="filterAvailCheckbox" onchange="toggleAvailableFilter(this.checked)" class="accent-secondary w-4 h-4 rounded cursor-pointer">
+            </label>
+          </div>
+
+          <!-- Max Daily Rate Filter -->
+          <div class="space-y-2">
+            <div class="flex items-center justify-between">
+              <label class="text-xs font-bold uppercase tracking-wider text-outline">Max Daily Rate</label>
+              <span class="text-xs font-bold text-secondary" id="priceFilterDisplay">$5.00/day</span>
+            </div>
+            <input type="range" min="1" max="10" step="0.5" value="5" id="priceRangeSlider" oninput="handlePriceRange(this.value)" class="w-full accent-secondary cursor-pointer">
+            <div class="flex justify-between text-[10px] text-outline">
+              <span>$1/d</span>
+              <span>$5/d</span>
+              <span>$10/d</span>
+            </div>
+          </div>
+
+          <!-- Location Radius / Dorm Hubs -->
+          <div class="space-y-2">
+            <label class="text-xs font-bold uppercase tracking-wider text-outline block">Dorm & Hall Hub</label>
+            <select id="hubSelector" onchange="handleHubFilter(this.value)" class="w-full p-2.5 rounded-xl bg-surface-container-low text-xs font-semibold text-on-surface border border-transparent focus:border-secondary outline-none cursor-pointer">
+              <option value="all">All Campus Locations</option>
+              <option value="Wilbur">Wilbur Hall & Quad</option>
+              <option value="Stern">Stern Hall</option>
+              <option value="Green">Green Library</option>
+              <option value="Tressider">Tressider Union</option>
+              <option value="Gates">Gates CS Building</option>
+            </select>
+          </div>
+
+          <!-- Campus Escrow Trust Guarantee Card -->
+          <div class="p-3.5 rounded-xl bg-blue-50/70 border border-blue-100 space-y-1.5">
+            <div class="flex items-center gap-1.5 text-secondary text-xs font-bold">
+              <span class="material-symbols-outlined text-[16px]">verified_user</span>
+              <span>Escrow Security Protection</span>
+            </div>
+            <p class="text-[11px] text-on-surface-variant leading-relaxed">
+              Every borrow request is backed by refundable student deposits and verified .edu university credentials.
+            </p>
+          </div>
+        </aside>
+
+        <!-- Right Main Catalog Content -->
+        <div class="lg:col-span-3 space-y-4">
+          
+          <!-- Search Results Header & Sort Controls -->
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-3.5 rounded-2xl border border-surface-container shadow-subtle">
+            <div class="flex items-center gap-2">
+              <span class="font-display font-bold text-base text-primary" id="catalogResultTitle">All Campus Items</span>
+              <span class="px-2 py-0.5 rounded-full bg-surface-container text-xs font-semibold text-secondary" id="catalogResultCount">6 items</span>
+            </div>
+
+            <div class="flex items-center gap-3">
+              <span class="text-xs text-outline hidden sm:inline">Sort by:</span>
+              <select onchange="handleSort(this.value)" class="px-3 py-1.5 rounded-xl bg-surface-container-low text-xs font-bold text-primary border border-transparent focus:border-secondary outline-none cursor-pointer">
+                <option value="featured">Featured & Closest</option>
+                <option value="price-asc">Price: Low to High</option>
+                <option value="price-desc">Price: High to Low</option>
+                <option value="rating">Top Lender Rating</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Product Grid: 3 columns on desktop -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5" id="marketplaceGrid">
+            <!-- Dynamically populated -->
+          </div>
+
+          <!-- Empty State -->
+          <div id="marketplaceEmpty" class="hidden bg-white rounded-3xl p-12 text-center border border-surface-container shadow-subtle flex-col items-center justify-center space-y-3">
+            <div class="w-16 h-16 rounded-full bg-blue-50 text-secondary flex items-center justify-center">
+              <span class="material-symbols-outlined text-[32px]">search_off</span>
+            </div>
+            <h3 class="font-display font-bold text-lg text-primary">No items found matching your filters</h3>
+            <p class="text-xs text-on-surface-variant max-w-sm">Try broadening your search term, adjusting the price slider, or selecting "All Campus Locations".</p>
+            <button onclick="resetFilters()" class="px-4 py-2 rounded-xl bg-primary text-white text-xs font-semibold shadow-sm hover:bg-primary-hover">Reset Filters</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- ========================================================================= -->
+    <!-- VIEW 2: PRODUCT DETAIL PAGE (ITEM DETAILS)                                -->
+    <!-- ========================================================================= -->
+    <div id="view-item-detail" class="view-fade hidden space-y-6">
+      
+      <!-- Back to Catalog Navigation -->
+      <div class="flex items-center justify-between">
+        <button onclick="navigateView('marketplace')" class="flex items-center gap-1.5 text-xs font-bold text-secondary hover:text-primary transition-colors">
+          <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+          <span>Back to Marketplace</span>
+        </button>
+        <div class="flex items-center gap-2">
+          <button onclick="showToast('Listing link copied to clipboard', 'info')" class="p-2 rounded-xl bg-white border border-surface-container text-on-surface-variant hover:text-primary shadow-subtle flex items-center gap-1 text-xs font-semibold">
+            <span class="material-symbols-outlined text-[16px]">share</span> Share
+          </button>
+          <button onclick="toggleActiveItemFavorite()" id="detailFavBtn" class="p-2 rounded-xl bg-white border border-surface-container text-on-surface-variant hover:text-error shadow-subtle flex items-center gap-1 text-xs font-semibold">
+            <span class="material-symbols-outlined text-[16px]" id="detailFavIcon">favorite_border</span> Wishlist
+          </button>
+        </div>
+      </div>
+
+      <!-- Main Desktop 2-Column Product Detail Layout -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        <!-- Left Column: Gallery & Details (7 cols) -->
+        <div class="lg:col-span-7 space-y-6">
+          <!-- Large High-Res Hero Image Card -->
+          <div class="bg-white rounded-3xl overflow-hidden border border-surface-container shadow-card relative">
+            <div class="w-full aspect-[16/10] bg-surface-container-low overflow-hidden relative">
+              <img id="detailHeroImage" src="" alt="Item" class="w-full h-full object-cover">
+              
+              <!-- Floating Badges on Image -->
+              <div class="absolute top-4 left-4 flex flex-col gap-2">
+                <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-white/95 backdrop-blur-md text-primary text-xs font-bold shadow-sm" id="detailConditionBadge">
+                  <span class="material-symbols-outlined text-[14px] text-secondary">verified</span> Like New
+                </span>
+                <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-primary/90 backdrop-blur-md text-white text-xs font-semibold shadow-sm" id="detailLocationBadge">
+                  <span class="material-symbols-outlined text-[13px] text-blue-300">location_on</span> Wilbur Hall • 0.2 mi
+                </span>
+              </div>
+
+              <!-- Available Now Pill -->
+              <div class="absolute bottom-4 left-4 bg-emerald-500/95 backdrop-blur-md text-white px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1.5 shadow-sm">
+                <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
+                <span>Ready for In-Person Pickup</span>
+              </div>
+            </div>
+
+            <!-- Thumbnail Selector / Specs Bar -->
+            <div class="p-4 border-t border-surface-container bg-surface-container-low/50 grid grid-cols-3 gap-3 text-center">
+              <div class="bg-white p-2.5 rounded-xl border border-surface-container">
+                <span class="text-[11px] text-outline block">Security Deposit</span>
+                <span class="font-display font-bold text-sm text-primary" id="detailDepositText">$20.00 Refundable</span>
+              </div>
+              <div class="bg-white p-2.5 rounded-xl border border-surface-container">
+                <span class="text-[11px] text-outline block">Max Period</span>
+                <span class="font-display font-bold text-sm text-primary">14 Days</span>
+              </div>
+              <div class="bg-white p-2.5 rounded-xl border border-surface-container">
+                <span class="text-[11px] text-outline block">Lender Rating</span>
+                <span class="font-display font-bold text-sm text-primary" id="detailRatingText">4.9 ★ (18 reviews)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Detailed Item Specifications & Overview -->
+          <div class="bg-white rounded-3xl p-6 border border-surface-container shadow-card space-y-4">
+            <h2 class="font-display font-bold text-xl text-primary">About this Item</h2>
+            <p class="text-sm text-on-surface-variant leading-relaxed" id="detailDescriptionText"></p>
+            
+            <div class="pt-3 border-t border-surface-container grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="flex items-start gap-3">
+                <div class="w-8 h-8 rounded-lg bg-blue-50 text-secondary flex items-center justify-center shrink-0">
+                  <span class="material-symbols-outlined text-[20px]">check_box</span>
+                </div>
+                <div>
+                  <span class="text-xs font-bold text-primary block">Included with Item</span>
+                  <span class="text-xs text-on-surface-variant">Protective case, charging cables, student guide</span>
+                </div>
+              </div>
+              <div class="flex items-start gap-3">
+                <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-brand flex items-center justify-center shrink-0">
+                  <span class="material-symbols-outlined text-[20px]">sanitizer</span>
+                </div>
+                <div>
+                  <span class="text-xs font-bold text-primary block">Sanitized & Tested</span>
+                  <span class="text-xs text-on-surface-variant">Cleaned and checked after every handover</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Verified Lender Profile Card -->
+          <div class="bg-white rounded-3xl p-6 border border-surface-container shadow-card space-y-4">
+            <h3 class="font-display font-bold text-lg text-primary">Peer Lender Profile</h3>
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div class="flex items-center gap-3">
+                <div class="w-14 h-14 rounded-2xl overflow-hidden ring-2 ring-blue-100 shrink-0">
+                  <img id="detailLenderAvatar" src="" alt="Lender" class="w-full h-full object-cover">
+                </div>
+                <div>
+                  <div class="flex items-center gap-1.5">
+                    <span class="font-display font-bold text-base text-primary" id="detailLenderName"></span>
+                    <span class="material-symbols-outlined text-[16px] text-secondary" title="Verified Student">verified</span>
+                  </div>
+                  <span class="text-xs text-on-surface-variant" id="detailLenderDept"></span>
+                  <div class="flex items-center gap-2 mt-1">
+                    <span class="text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">⚡ Replies in ~10m</span>
+                    <span class="text-[11px] font-semibold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full">🤝 32 Handshakes</span>
+                  </div>
+                </div>
+              </div>
+              <button onclick="showToast('Secure campus chat opened with peer lender', 'info')" class="px-4 py-2 rounded-xl bg-surface-container-low hover:bg-surface-container text-primary font-semibold text-xs flex items-center justify-center gap-1.5 transition-colors">
+                <span class="material-symbols-outlined text-[16px]">chat</span>
+                <span>Message Peer</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Sticky Request Card (5 cols) -->
+        <div class="lg:col-span-5 sticky top-24 space-y-4">
+          <div class="bg-white rounded-3xl p-6 border border-surface-container shadow-card space-y-5">
+            <div>
+              <span class="text-xs font-bold uppercase tracking-wider text-secondary" id="detailCategoryLabel">Textbooks</span>
+              <h1 class="font-display font-extrabold text-2xl text-primary mt-1" id="detailTitleText"></h1>
+              <p class="text-xs text-outline mt-0.5 flex items-center gap-1">
+                <span class="material-symbols-outlined text-[14px]">pin_drop</span>
+                <span id="detailPickupSpot">Wilbur Hall Commons</span>
+              </p>
+            </div>
+
+            <!-- Pricing Banner -->
+            <div class="bg-surface-container-low p-4 rounded-2xl flex items-baseline justify-between">
+              <div>
+                <span class="font-display font-extrabold text-3xl text-primary" id="detailDailyPriceDisplay">$3.50</span>
+                <span class="text-xs text-on-surface-variant font-medium">/ day</span>
+              </div>
+              <span class="text-xs font-semibold text-secondary bg-white px-2.5 py-1 rounded-full shadow-sm">
+                Campus Escrow Covered
+              </span>
+            </div>
+
+            <!-- Duration Selector -->
+            <div class="space-y-2">
+              <label class="text-xs font-bold uppercase tracking-wider text-outline block">Rental Duration</label>
+              <div class="flex items-center justify-between p-3 rounded-2xl bg-surface-container-low border border-surface-container">
+                <button onclick="modifyDetailDays(-1)" class="w-9 h-9 rounded-xl bg-white hover:bg-surface-container shadow-sm flex items-center justify-center font-bold text-lg active:scale-95 transition-all">−</button>
+                <div class="text-center">
+                  <span class="font-display font-bold text-lg text-primary block" id="detailDaysCounter">3 Days</span>
+                  <span class="text-[11px] text-outline" id="detailDatesRange">Nov 1 → Nov 4</span>
+                </div>
+                <button onclick="modifyDetailDays(1)" class="w-9 h-9 rounded-xl bg-secondary text-white hover:bg-secondary-hover shadow-sm flex items-center justify-center font-bold text-lg active:scale-95 transition-all">+</button>
+              </div>
+            </div>
+
+            <!-- Optional message to lender -->
+            <div class="space-y-1.5">
+              <label class="text-xs font-bold uppercase tracking-wider text-outline block" for="detailLenderNote">Note to Lender</label>
+              <textarea id="detailLenderNote" rows="2" placeholder="Hi! I need this for my midterms review on Friday..." class="w-full p-3 rounded-xl bg-surface-container-low text-xs border border-transparent focus:border-secondary outline-none resize-none"></textarea>
+            </div>
+
+            <!-- Price Breakdown Calculation Table -->
+            <div class="space-y-2 pt-2 border-t border-surface-container text-xs">
+              <div class="flex justify-between text-on-surface-variant">
+                <span id="detailBreakdownMath">3 Days × $3.50</span>
+                <span id="detailBreakdownRental">$10.50</span>
+              </div>
+              <div class="flex justify-between text-on-surface-variant">
+                <span>Campus Trust & Escrow Guarantee</span>
+                <span class="text-emerald-brand font-bold">Free ($0.00)</span>
+              </div>
+              <div class="flex justify-between text-on-surface-variant">
+                <span>Security Deposit (100% Refundable)</span>
+                <span id="detailBreakdownDeposit">$20.00</span>
+              </div>
+              <div class="flex justify-between pt-2 border-t border-surface-container font-display font-bold text-base text-primary">
+                <span>Total Due Now</span>
+                <span class="text-secondary font-extrabold text-xl" id="detailTotalDue">$10.50</span>
+              </div>
+            </div>
+
+            <!-- Request CTA -->
+            <button onclick="executeBorrowRequest()" class="w-full py-3.5 px-4 rounded-2xl bg-secondary hover:bg-secondary-hover text-white font-display font-bold text-sm shadow-md hover:shadow-lg transition-all active:scale-[0.99] flex items-center justify-center gap-2">
+              <span class="material-symbols-outlined text-[18px]">send</span>
+              <span id="detailSubmitBtnText">Request to Borrow ($10.50)</span>
+            </button>
+            <p class="text-[11px] text-center text-outline">
+              You won't be charged until the lender confirms the in-person handover.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- ========================================================================= -->
+    <!-- VIEW 3: MY LOANS DASHBOARD (DESKTOP)                                      -->
+    <!-- ========================================================================= -->
+    <div id="view-my-loans" class="view-fade hidden space-y-6">
+      
+      <!-- Top Overview Header & Metric Cards -->
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h1 class="font-display font-extrabold text-3xl text-primary">My Loans & Lending</h1>
+          <p class="text-sm text-on-surface-variant mt-0.5">Track your active borrowings, items out on loan to peers, and requests.</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="px-3 py-1.5 rounded-full bg-emerald-light text-emerald-dark text-xs font-bold flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[16px]">verified_user</span> Campus Escrow Active
+          </span>
+        </div>
+      </div>
+
+      <!-- Metric Stat Cards -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div onclick="switchLoansTab('borrowing')" class="bg-white p-5 rounded-2xl border border-surface-container shadow-subtle hover:shadow-card cursor-pointer transition-all">
+          <div class="flex items-center justify-between text-secondary mb-2">
+            <span class="text-xs font-bold uppercase tracking-wider">Active Borrowing</span>
+            <span class="material-symbols-outlined text-[20px]">shopping_bag</span>
+          </div>
+          <span class="font-display text-3xl font-extrabold text-primary" id="dashBorrowingCount">2</span>
+          <span class="text-[11px] text-secondary font-semibold block mt-1">1 due in 3 days</span>
+        </div>
+
+        <div onclick="switchLoansTab('lending')" class="bg-white p-5 rounded-2xl border border-surface-container shadow-subtle hover:shadow-card cursor-pointer transition-all">
+          <div class="flex items-center justify-between text-emerald-brand mb-2">
+            <span class="text-xs font-bold uppercase tracking-wider">Items Out on Loan</span>
+            <span class="material-symbols-outlined text-[20px]">payments</span>
+          </div>
+          <span class="font-display text-3xl font-extrabold text-emerald-900" id="dashLendingCount">4</span>
+          <span class="text-[11px] text-emerald-700 font-semibold block mt-1">+$42.00 active earnings</span>
+        </div>
+
+        <div onclick="switchLoansTab('requests')" class="bg-white p-5 rounded-2xl border border-surface-container shadow-subtle hover:shadow-card cursor-pointer transition-all">
+          <div class="flex items-center justify-between text-amber-600 mb-2">
+            <span class="text-xs font-bold uppercase tracking-wider">Pending Requests</span>
+            <span class="material-symbols-outlined text-[20px]">pending_actions</span>
+          </div>
+          <span class="font-display text-3xl font-extrabold text-amber-900" id="dashRequestsCount">3</span>
+          <span class="text-[11px] text-amber-700 font-semibold block mt-1">Action required</span>
+        </div>
+
+        <div class="bg-white p-5 rounded-2xl border border-surface-container shadow-subtle">
+          <div class="flex items-center justify-between text-outline mb-2">
+            <span class="text-xs font-bold uppercase tracking-wider">Completed Loans</span>
+            <span class="material-symbols-outlined text-[20px]">task_alt</span>
+          </div>
+          <span class="font-display text-3xl font-extrabold text-primary">18</span>
+          <span class="text-[11px] text-outline font-semibold block mt-1">100% on-time returns</span>
+        </div>
+      </div>
+
+      <!-- Segmented Tab Navigation for Desktop -->
+      <div class="bg-white rounded-2xl p-2 border border-surface-container shadow-subtle flex items-center gap-2 max-w-xl">
+        <button onclick="switchLoansTab('borrowing')" id="tabBtnBorrowing" class="flex-1 py-2 px-4 rounded-xl text-xs font-bold bg-secondary text-white shadow-sm transition-all flex items-center justify-center gap-2">
+          <span>Borrowing</span>
+          <span class="px-1.5 py-0.2 rounded-full bg-white/20 text-white text-[10px]" id="tabBadgeBorrow">2</span>
+        </button>
+        <button onclick="switchLoansTab('lending')" id="tabBtnLending" class="flex-1 py-2 px-4 rounded-xl text-xs font-bold text-on-surface-variant hover:text-primary transition-all flex items-center justify-center gap-2">
+          <span>Lending</span>
+          <span class="px-1.5 py-0.2 rounded-full bg-surface-container-high text-primary text-[10px]" id="tabBadgeLend">4</span>
+        </button>
+        <button onclick="switchLoansTab('requests')" id="tabBtnRequests" class="flex-1 py-2 px-4 rounded-xl text-xs font-bold text-on-surface-variant hover:text-primary transition-all flex items-center justify-center gap-2">
+          <span>Incoming Requests</span>
+          <span class="px-1.5 py-0.2 rounded-full bg-amber-100 text-amber-800 text-[10px]" id="tabBadgeReq">3</span>
+        </button>
+      </div>
+
+      <!-- TAB PANE: BORROWING -->
+      <div id="loansPaneBorrowing" class="space-y-4">
+        
+        <!-- Active Borrow 1: TI-84 Plus CE Calculator -->
+        <div class="bg-white rounded-3xl p-6 border border-surface-container shadow-subtle hover:shadow-card transition-all flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+          <div class="flex items-center gap-4">
+            <div class="w-20 h-20 rounded-2xl overflow-hidden bg-surface-container-low shrink-0 border border-slate-100">
+              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCwzEoEAOySUGjNOHtVUJfX4kzk2JoXBWr8O_2W6OlPBOBEyzFpdkwPF9maQ9UpdNsMNhfCUS2r3co300xpXSH1WgDkybFb8GNzCGFQuiKrPsYr-hmZl5O8hYxVk-y9cXuGdkTrUC89_-faqEUSw6bHHB1b3BkIkLNRObwI4vphIge7osJfNg6G1RmPKoEmOoxAuMrEH7yfzjBIMWa_DCjAE0B1vTF0hLqb6MycvIIR" alt="Calculator" class="w-full h-full object-cover">
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <span class="px-2.5 py-0.5 rounded-full bg-blue-50 text-secondary text-[11px] font-bold">BORROWED</span>
+                <span class="text-xs text-outline">Wilbur Quad Pickup</span>
+              </div>
+              <h3 class="font-display font-bold text-lg text-primary">TI-84 Plus CE Graphing Calculator</h3>
+              <p class="text-xs text-on-surface-variant mt-0.5">
+                Owner: <strong>Sarah Lin</strong> (Sophomore • Applied Math) • $3.50/day
+              </p>
+            </div>
+          </div>
+
+          <div class="flex flex-col md:items-end gap-3 w-full md:w-auto pt-3 md:pt-0 border-t md:border-t-0 border-surface-container">
+            <div class="flex items-center gap-3 text-xs">
+              <span class="text-secondary font-bold bg-blue-50 px-2.5 py-1 rounded-full flex items-center gap-1">
+                <span class="material-symbols-outlined text-[14px]">event</span> Due in 3 days (Nov 4)
+              </span>
+              <span class="text-outline">$20.00 Deposit Held</span>
+            </div>
+            <div class="flex items-center gap-2 w-full md:w-auto">
+              <button onclick="showToast('Opened chat with Sarah Lin', 'info')" class="flex-1 md:flex-initial px-3 py-2 rounded-xl bg-surface-container-low hover:bg-surface-container text-primary font-semibold text-xs flex items-center justify-center gap-1">
+                <span class="material-symbols-outlined text-[16px]">chat</span> Chat
+              </button>
+              <button onclick="openReturnModal('TI-84 Plus CE Graphing Calculator', 'Sarah Lin', '$20.00', 'Wilbur Hall Lobby')" class="flex-1 md:flex-initial px-4 py-2 rounded-xl bg-secondary hover:bg-secondary-hover text-white font-semibold text-xs flex items-center justify-center gap-1.5 shadow-sm">
+                <span class="material-symbols-outlined text-[16px]">assignment_return</span> Return & Release Escrow
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Active Borrow 2: Rotring Engineering Drawing Kit (Overdue) -->
+        <div class="bg-white rounded-3xl p-6 border-2 border-red-200 shadow-subtle hover:shadow-card transition-all flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+          <div class="flex items-center gap-4">
+            <div class="w-20 h-20 rounded-2xl overflow-hidden bg-surface-container-low shrink-0 border border-slate-100">
+              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZWL68BaBKd6KhJdKVU9eQVkuF0tJiGah9DjEZoAeOf-BnX03u0vCpqpKE-9blCTEFY4eV2ddWj0uh8avgWzJhwyqUPJAMsTG-ukRzpwZNIW6jb8OEy_XVjHVGE1MvO2N7DkvVUXG0QA9WHG-KcEOFRvKofQZxeXJjP3iVkw0r5MV1ZQGNTH8sdfEbbkXkGzjEF0P3tosOVd82au01v3vMjN-76bWm7W3z1GXeV7ab" alt="Kit" class="w-full h-full object-cover">
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <span class="px-2.5 py-0.5 rounded-full bg-red-100 text-error text-[11px] font-bold animate-pulse">OVERDUE</span>
+                <span class="text-xs text-error font-semibold">Due Yesterday (+ $1.50 fee)</span>
+              </div>
+              <h3 class="font-display font-bold text-lg text-primary">Rotring Engineering Drafting Kit</h3>
+              <p class="text-xs text-on-surface-variant mt-0.5">
+                Owner: <strong>Maya S.</strong> (Mechanical Engineering Jr) • Tressider Union
+              </p>
+            </div>
+          </div>
+
+          <div class="flex flex-col md:items-end gap-3 w-full md:w-auto pt-3 md:pt-0 border-t md:border-t-0 border-surface-container">
+            <div class="flex items-center gap-2 text-xs">
+              <span class="text-error font-bold">$15.00 Escrow Deposit</span>
+            </div>
+            <div class="flex items-center gap-2 w-full md:w-auto">
+              <button onclick="showToast('Opened chat with Maya S.', 'info')" class="flex-1 md:flex-initial px-3 py-2 rounded-xl bg-surface-container-low hover:bg-surface-container text-primary font-semibold text-xs flex items-center justify-center gap-1">
+                <span class="material-symbols-outlined text-[16px]">chat</span> Chat
+              </button>
+              <button onclick="openReturnModal('Rotring Engineering Drafting Kit', 'Maya S.', '$15.00', 'Tressider Union')" class="flex-1 md:flex-initial px-4 py-2 rounded-xl bg-error hover:bg-red-700 text-white font-semibold text-xs flex items-center justify-center gap-1.5 shadow-sm">
+                <span class="material-symbols-outlined text-[16px]">bolt</span> Return Now
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- TAB PANE: LENDING -->
+      <div id="loansPaneLending" class="hidden space-y-4">
+        <!-- Item Lent Out 1 -->
+        <div class="bg-white rounded-3xl p-6 border border-surface-container shadow-subtle flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+          <div class="flex items-center gap-4">
+            <div class="w-20 h-20 rounded-2xl overflow-hidden bg-surface-container-low shrink-0 border border-slate-100">
+              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuD7gwQjV590U9vx14Fk3gWAVGNeM94g7uvPbrLTk2sSK8gny8hVVMT7_0_gm89wFpynlso1Q9OX3izu6Wd4PNJLwwEJNRNjDD2aJQl_5o0aKz5Q1ma_k-mNZwBS7eSiO6fd43lyYEJQMNYJTyVboZBYo00lgRiaz0tR2Zw_aomqYqDQpCp93tw6nEGJjG_rCBVbXdJ1kTE1eCchh_pJHvktAPkVxwhBPFeAVLkhixo7" alt="Mouse" class="w-full h-full object-cover">
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <span class="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[11px] font-bold">LENT OUT</span>
+                <span class="text-xs text-emerald-700 font-semibold">Returns Nov 6</span>
+              </div>
+              <h3 class="font-display font-bold text-lg text-primary">Logitech MX Master 3S Mouse</h3>
+              <p class="text-xs text-on-surface-variant mt-0.5">
+                Borrower: <strong>Jordan T.</strong> (Stern Hall • Product Design) • Earned $17.50
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button onclick="showToast('Sent ping message to Jordan T.', 'info')" class="px-3 py-2 rounded-xl bg-surface-container-low hover:bg-surface-container text-primary font-semibold text-xs flex items-center gap-1">
+              <span class="material-symbols-outlined text-[16px]">chat</span> Message
+            </button>
+            <button onclick="showToast('Return confirmed. $17.50 transferred to your campus balance!', 'success')" class="px-4 py-2 rounded-xl bg-primary hover:bg-primary-hover text-white font-semibold text-xs flex items-center gap-1.5 shadow-sm">
+              <span class="material-symbols-outlined text-[16px]">check_circle</span> Mark Returned
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB PANE: REQUESTS -->
+      <div id="loansPaneRequests" class="hidden space-y-4">
+        <!-- Request Card 1 -->
+        <div class="bg-white rounded-3xl p-6 border border-surface-container shadow-subtle flex flex-col md:flex-row items-start md:items-center justify-between gap-6" id="reqCard1">
+          <div class="flex items-center gap-4">
+            <div class="w-20 h-20 rounded-2xl overflow-hidden bg-surface-container-low shrink-0 border border-slate-100">
+              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBw5EJSfzwMOKh7CHb1318qHLtHVHxxCTQU8Kcz-uXwL0-jIbnyKqFL1FQL803NdVQZkLDXXLUkbnn1OAXQHJ1rFFnYXK5aG7pNGpHoBdoZML2e1sIrQ2L99B_CH9X8RSGe4V6oyPCfq73jCP1xW6qpIZ9rSvC8MboAv3TS_vo01sVW1JtUeLmUwrhFL71Exiho87iD-ulGXygtVEMXyWtMAAbyeghydJIDAl8J8mgP" alt="Textbook" class="w-full h-full object-cover">
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <span class="px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[11px] font-bold">INCOMING REQUEST</span>
+                <span class="text-xs text-primary font-bold">$6.00 Total Earnings</span>
+              </div>
+              <h3 class="font-display font-bold text-lg text-primary">Java Software Solutions (8th Ed)</h3>
+              <p class="text-xs text-on-surface-variant mt-0.5">
+                Requested by: <strong>Marcus T.</strong> (Junior • Bio/CS) • 3 Days rental
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button onclick="dismissRequest('reqCard1', 'Java Software Solutions')" class="px-3 py-2 rounded-xl bg-surface-container-low hover:bg-red-50 text-outline hover:text-error font-semibold text-xs">
+              Decline
+            </button>
+            <button onclick="acceptRequest('reqCard1', 'Java Software Solutions')" class="px-4 py-2 rounded-xl bg-secondary hover:bg-secondary-hover text-white font-semibold text-xs shadow-sm">
+              Accept Handover
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+
+    <!-- ========================================================================= -->
+    <!-- VIEW 4: STUDENT PROFILE & SETTINGS                                        -->
+    <!-- ========================================================================= -->
+    <div id="view-profile" class="view-fade hidden space-y-6">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        <!-- Left: Student Info Card (4 cols) -->
+        <div class="lg:col-span-4 bg-white rounded-3xl p-6 border border-surface-container shadow-card space-y-6 text-center">
+          <div class="relative w-28 h-28 mx-auto">
+            <div class="w-full h-full rounded-full overflow-hidden ring-4 ring-blue-100 shadow-md">
+              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHidFGGvejNyhkUBYrLtdf6YBBJH4cdUC8PrAvMSsLsYw29f3rxNOr1LXFSuNGwGsWjv-ou9bedavLx1oiQXsiW3MD674jEP9umUigltN6OXY-sEur0CQveiqITJGNH2LX-cl2jcU0Vef-R_KhMIEo1PwG_hbf0mrS88phMWaoVA6h74QfX_S0Km9Ne14pch4EEQ08E86vS_bWV-4UiNF6-5rhOjPAEsh2hEdwtOo1" alt="Alex Rivera" class="w-full h-full object-cover">
+            </div>
+            <div class="absolute -bottom-1 -right-1 w-8 h-8 rounded-full bg-secondary text-white flex items-center justify-center shadow-md" title="Stanford Verified Student">
+              <span class="material-symbols-outlined text-[18px]">verified</span>
+            </div>
+          </div>
+
+          <div>
+            <h2 class="font-display font-extrabold text-2xl text-primary" id="profileFullName">Alex Rivera</h2>
+            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-secondary text-xs font-semibold mt-1">
+              <span class="material-symbols-outlined text-[14px]">school</span>
+              <span>Stanford University • Class of '26</span>
+            </div>
+            <p class="text-xs text-on-surface-variant mt-2">
+              Department of Computer Science • #STU-882941
+            </p>
+          </div>
+
+          <!-- Trust Badges & Metrics -->
+          <div class="grid grid-cols-3 gap-2 bg-surface-container-low p-3 rounded-2xl">
+            <div>
+              <span class="font-display font-bold text-lg text-primary block">14</span>
+              <span class="text-[10px] text-outline">Items Lent</span>
+            </div>
+            <div class="border-x border-surface-container">
+              <span class="font-display font-bold text-lg text-primary block">6</span>
+              <span class="text-[10px] text-outline">Borrowed</span>
+            </div>
+            <div>
+              <span class="font-display font-bold text-lg text-primary block">4.9 ★</span>
+              <span class="text-[10px] text-outline">Trust Rating</span>
+            </div>
+          </div>
+
+          <div class="text-left space-y-2.5 pt-3 border-t border-surface-container text-xs">
+            <div class="flex justify-between">
+              <span class="text-outline">Campus Dorm:</span>
+              <span class="font-semibold text-primary" id="profileDormText">Wilbur Hall 304</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-outline">Institutional Email:</span>
+              <span class="font-semibold text-secondary">a.rivera@stanford.edu</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-outline">Phone Handover:</span>
+              <span class="font-semibold text-primary">+1 (650) 555-0194</span>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <button onclick="openEditProfileModal()" class="w-full py-2.5 rounded-xl bg-surface-container hover:bg-surface-container-high text-primary font-semibold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer">
+              <span class="material-symbols-outlined text-[16px]">edit</span>
+              <span>Edit Profile Info</span>
+            </button>
+            <button onclick="handleLogout()" class="w-full py-2.5 rounded-xl border border-red-200 text-error hover:bg-red-50 font-semibold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer">
+              <span class="material-symbols-outlined text-[16px]">logout</span>
+              <span>Sign Out of Campus Network</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Right: My Listed Items (8 cols) -->
+        <div class="lg:col-span-8 space-y-6">
+          <div class="bg-white rounded-3xl p-6 border border-surface-container shadow-card space-y-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="font-display font-bold text-xl text-primary">My Listed Items for Rent</h3>
+                <p class="text-xs text-on-surface-variant">Manage gear you've made available for campus peers.</p>
+              </div>
+              <button onclick="openAddItemModal()" class="px-4 py-2 rounded-xl bg-secondary hover:bg-secondary-hover text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm">
+                <span class="material-symbols-outlined text-[16px]">add_circle</span> Add New Item
+              </button>
+            </div>
+
+            <!-- Listings Container -->
+            <div class="space-y-3" id="profileListingsContainer">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <!-- Account Security Card -->
+          <div class="bg-white rounded-3xl p-6 border border-surface-container shadow-card space-y-3">
+            <h4 class="font-display font-bold text-base text-primary">Security & Campus Trust</h4>
+            <div class="flex items-center justify-between p-3 rounded-2xl bg-surface-container-low text-xs">
+              <div class="flex items-center gap-2.5">
+                <span class="material-symbols-outlined text-secondary text-[20px]">verified_user</span>
+                <div>
+                  <span class="font-semibold text-primary block">University Single Sign-On Active</span>
+                  <span class="text-outline">Connected to Stanford 2FA Shibboleth</span>
+                </div>
+              </div>
+              <span class="text-emerald-700 font-bold bg-emerald-50 px-2.5 py-1 rounded-full">Active</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- ========================================================================= -->
+    <!-- VIEW 5: HOW IT WORKS / COMMUNITY                                          -->
+    <!-- ========================================================================= -->
+    <div id="view-how-it-works" class="view-fade hidden space-y-8 py-4">
+      <div class="text-center max-w-2xl mx-auto space-y-3">
+        <span class="px-3 py-1 rounded-full bg-blue-50 text-secondary text-xs font-bold uppercase tracking-wider">How LendLoop Works</span>
+        <h1 class="font-display font-extrabold text-3xl sm:text-4xl text-primary">Simple, Safe, Student-to-Student</h1>
+        <p class="text-sm text-on-surface-variant">Borrow textbooks for a week, grab a camera for a campus project, or lend your calculator to earn extra cash.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white p-6 rounded-3xl border border-surface-container shadow-card space-y-3">
+          <div class="w-12 h-12 rounded-2xl bg-blue-50 text-secondary flex items-center justify-center font-display font-bold text-xl">1</div>
+          <h3 class="font-display font-bold text-lg text-primary">Browse & Request</h3>
+          <p class="text-xs text-on-surface-variant leading-relaxed">Search items available in your residence hall or quad. Pick your rental dates and send a request with one click.</p>
+        </div>
+
+        <div class="bg-white p-6 rounded-3xl border border-surface-container shadow-card space-y-3">
+          <div class="w-12 h-12 rounded-2xl bg-emerald-light text-emerald-dark flex items-center justify-center font-display font-bold text-xl">2</div>
+          <h3 class="font-display font-bold text-lg text-primary">Meet for Handover</h3>
+          <p class="text-xs text-on-surface-variant leading-relaxed">Meet your peer in your dorm lobby or library. Scan the LendLoop verification QR code to release the deposit into escrow.</p>
+        </div>
+
+        <div class="bg-white p-6 rounded-3xl border border-surface-container shadow-card space-y-3">
+          <div class="w-12 h-12 rounded-2xl bg-purple-50 text-purple-700 flex items-center justify-center font-display font-bold text-xl">3</div>
+          <h3 class="font-display font-bold text-lg text-primary">Return & Earn Karma</h3>
+          <p class="text-xs text-on-surface-variant leading-relaxed">Return the item when done. Your deposit is instantly refunded to your student account, and both students earn trust karma.</p>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+
+  <!-- ========================================================================= -->
+  <!-- MODAL: ADD / LIST AN ITEM MODAL (DESKTOP)                                 -->
+  <!-- ========================================================================= -->
+  <div id="addItemModal" class="fixed inset-0 z-50 bg-primary/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-200 flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-xl w-full p-6 shadow-2xl border border-surface-container transform scale-95 transition-transform duration-200" id="addItemModalBox">
+      <div class="flex items-center justify-between pb-3 border-b border-surface-container mb-4">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-xl bg-secondary text-white flex items-center justify-center">
+            <span class="material-symbols-outlined text-[18px]">add_circle</span>
+          </div>
+          <h3 class="font-display font-bold text-lg text-primary">Post an Item to LendLoop</h3>
+        </div>
+        <button onclick="closeAddItemModal()" class="w-8 h-8 rounded-full hover:bg-surface-container text-outline hover:text-on-surface flex items-center justify-center">
+          <span class="material-symbols-outlined text-[18px]">close</span>
+        </button>
+      </div>
+
+      <form onsubmit="event.preventDefault(); submitNewListing();" class="space-y-4">
+        <div>
+          <label class="text-xs font-bold uppercase tracking-wider text-outline block mb-1">Item Title</label>
+          <input type="text" id="newItemTitle" required placeholder="e.g. Campbell Biology 12th Edition / TI-84 Plus CE" class="w-full p-2.5 rounded-xl bg-surface-container-low text-xs border border-transparent focus:border-secondary outline-none">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-xs font-bold uppercase tracking-wider text-outline block mb-1">Category</label>
+            <select id="newItemCategory" class="w-full p-2.5 rounded-xl bg-surface-container-low text-xs border border-transparent focus:border-secondary outline-none cursor-pointer">
+              <option value="books">Textbooks</option>
+              <option value="tech">Tech & Electronics</option>
+              <option value="stationery">Calculators & Lab Gear</option>
+              <option value="sports">Sports & Outdoor</option>
+              <option value="others">Dorm Living</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-xs font-bold uppercase tracking-wider text-outline block mb-1">Condition</label>
+            <select id="newItemCondition" class="w-full p-2.5 rounded-xl bg-surface-container-low text-xs border border-transparent focus:border-secondary outline-none cursor-pointer">
+              <option value="Brand New">Brand New</option>
+              <option selected value="Like New">Like New</option>
+              <option value="Good">Good</option>
+              <option value="Fair">Fair</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-xs font-bold uppercase tracking-wider text-outline block mb-1">Daily Rate ($/day)</label>
+            <input type="number" step="0.5" min="0.5" value="3.00" id="newItemDailyPrice" required class="w-full p-2.5 rounded-xl bg-surface-container-low text-xs border border-transparent focus:border-secondary outline-none">
+          </div>
+          <div>
+            <label class="text-xs font-bold uppercase tracking-wider text-outline block mb-1">Refundable Deposit ($)</label>
+            <input type="number" step="1" min="0" value="20.00" id="newItemDeposit" required class="w-full p-2.5 rounded-xl bg-surface-container-low text-xs border border-transparent focus:border-secondary outline-none">
+          </div>
+        </div>
+
+        <div>
+          <label class="text-xs font-bold uppercase tracking-wider text-outline block mb-1">Dorm / Hall Pickup Point</label>
+          <input type="text" id="newItemLocation" required value="Wilbur Hall Commons" class="w-full p-2.5 rounded-xl bg-surface-container-low text-xs border border-transparent focus:border-secondary outline-none">
+        </div>
+
+        <div>
+          <label class="text-xs font-bold uppercase tracking-wider text-outline block mb-1">Description & Instructions</label>
+          <textarea id="newItemDescription" rows="2" placeholder="Include details about cables, software edition, condition..." class="w-full p-2.5 rounded-xl bg-surface-container-low text-xs border border-transparent focus:border-secondary outline-none resize-none"></textarea>
+        </div>
+
+        <div class="pt-2 flex justify-end gap-2">
+          <button type="button" onclick="closeAddItemModal()" class="px-4 py-2 rounded-xl text-xs font-semibold text-outline hover:bg-surface-container-low">Cancel</button>
+          <button type="submit" class="px-5 py-2.5 rounded-xl bg-secondary hover:bg-secondary-hover text-white text-xs font-bold shadow-sm">Publish Listing</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- ========================================================================= -->
+  <!-- MODAL: QR CODE IN-PERSON HANDOVER MODAL                                   -->
+  <!-- ========================================================================= -->
+  <div id="handoverModal" class="fixed inset-0 z-50 bg-primary/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-200 flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-surface-container text-center space-y-4">
+      <div class="flex items-center justify-between">
+        <span class="text-[11px] font-bold text-secondary bg-blue-50 px-2.5 py-1 rounded-full uppercase tracking-wider">Escrow Handshake</span>
+        <button onclick="closeReturnModal()" class="w-8 h-8 rounded-full hover:bg-surface-container text-outline flex items-center justify-center">
+          <span class="material-symbols-outlined text-[18px]">close</span>
+        </button>
+      </div>
+
+      <div>
+        <h3 class="font-display font-bold text-lg text-primary" id="returnModalItemTitle">Return Handover</h3>
+        <p class="text-xs text-on-surface-variant mt-0.5" id="returnModalSubtitle">Meet peer to scan and release deposit hold.</p>
+      </div>
+
+      <!-- Animated SVG QR Code -->
+      <div class="w-48 h-48 mx-auto bg-white p-3 rounded-2xl shadow-sm border-2 border-slate-100 flex items-center justify-center relative">
+        <svg class="w-full h-full text-primary" viewBox="0 0 100 100" fill="currentColor">
+          <rect x="5" y="5" width="26" height="26" rx="4" fill="none" stroke="currentColor" stroke-width="5"/>
+          <rect x="12" y="12" width="12" height="12" rx="2" fill="currentColor"/>
+          <rect x="69" y="5" width="26" height="26" rx="4" fill="none" stroke="currentColor" stroke-width="5"/>
+          <rect x="76" y="12" width="12" height="12" rx="2" fill="currentColor"/>
+          <rect x="5" y="69" width="26" height="26" rx="4" fill="none" stroke="currentColor" stroke-width="5"/>
+          <rect x="12" y="76" width="12" height="12" rx="2" fill="currentColor"/>
+          <rect x="36" y="8" width="6" height="6" fill="currentColor"/>
+          <rect x="46" y="14" width="6" height="6" fill="currentColor"/>
+          <rect x="56" y="8" width="6" height="6" fill="currentColor"/>
+          <rect x="36" y="40" width="8" height="8" rx="2" fill="#0051d5"/>
+          <rect x="48" y="48" width="8" height="8" rx="2" fill="#16a34a"/>
+          <rect x="62" y="64" width="6" height="6" fill="currentColor"/>
+          <rect x="74" y="72" width="6" height="6" fill="currentColor"/>
+        </svg>
+        <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div class="w-8 h-8 rounded-full bg-white shadow-md flex items-center justify-center border border-slate-100">
+            <img src="assets/logo.svg" alt="LendLoop" class="w-5 h-5 object-contain">
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-surface-container-low px-3 py-1.5 rounded-xl font-mono text-xs font-bold text-primary tracking-wider">
+        TOKEN: <span id="returnSecurityToken">LL-STAN-9842</span>
+      </div>
+
+      <button onclick="confirmReturn()" class="w-full py-3 rounded-xl bg-secondary hover:bg-secondary-hover text-white text-xs font-bold shadow-sm transition-all flex items-center justify-center gap-1.5">
+        <span class="material-symbols-outlined text-[16px]">check_circle</span>
+        <span>Confirm In-Person Handover</span>
+      </button>
+    </div>
+  </div>
+
+
+  <!-- ========================================================================= -->
+  <!-- MODAL: CAMPUS NETWORK SELECTOR                                            -->
+  <!-- ========================================================================= -->
+  <div id="campusModal" class="fixed inset-0 z-50 bg-primary/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-200 flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-surface-container space-y-4">
+      <div class="flex items-center justify-between">
+        <h3 class="font-display font-bold text-lg text-primary">Select Campus Hub</h3>
+        <button onclick="toggleCampusModal()" class="w-8 h-8 rounded-full hover:bg-surface-container text-outline flex items-center justify-center">
+          <span class="material-symbols-outlined text-[18px]">close</span>
+        </button>
+      </div>
+      <p class="text-xs text-on-surface-variant">LendLoop connects verified students within walking distance of dorms and quads.</p>
+      
+      <div class="space-y-2">
+        <button onclick="selectCampus('Stanford Campus', 'Wilbur Quad Hub')" class="w-full p-3 rounded-xl bg-blue-50 text-secondary font-bold text-xs flex items-center justify-between border border-blue-100">
+          <span class="flex items-center gap-2"><span class="material-symbols-outlined text-[18px]">school</span> Stanford University</span>
+          <span class="material-symbols-outlined text-[16px]">check</span>
+        </button>
+        <button onclick="selectCampus('UC Berkeley', 'Sproul Plaza Hub')" class="w-full p-3 rounded-xl hover:bg-surface-container-low text-on-surface font-semibold text-xs flex items-center justify-between">
+          <span class="flex items-center gap-2"><span class="material-symbols-outlined text-[18px] text-outline">school</span> UC Berkeley</span>
+        </button>
+        <button onclick="selectCampus('MIT', 'Kendall Quad Hub')" class="w-full p-3 rounded-xl hover:bg-surface-container-low text-on-surface font-semibold text-xs flex items-center justify-between">
+          <span class="flex items-center gap-2"><span class="material-symbols-outlined text-[18px] text-outline">school</span> MIT Campus</span>
+        </button>
+        <button onclick="selectCampus('Harvard', 'Harvard Yard Hub')" class="w-full p-3 rounded-xl hover:bg-surface-container-low text-on-surface font-semibold text-xs flex items-center justify-between">
+          <span class="flex items-center gap-2"><span class="material-symbols-outlined text-[18px] text-outline">school</span> Harvard University</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ========================================================================= -->
+  <!-- MODAL: EDIT PROFILE MODAL                                                 -->
+  <!-- ========================================================================= -->
+  <div id="editProfileModal" class="fixed inset-0 z-50 bg-primary/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-200 flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-surface-container space-y-4">
+      <div class="flex items-center justify-between">
+        <h3 class="font-display font-bold text-lg text-primary">Edit Profile</h3>
+        <button onclick="closeEditProfileModal()" class="w-8 h-8 rounded-full hover:bg-surface-container text-outline flex items-center justify-center">
+          <span class="material-symbols-outlined text-[18px]">close</span>
+        </button>
+      </div>
+      <form onsubmit="event.preventDefault(); saveProfile();" class="space-y-3">
+        <div>
+          <label class="text-xs font-bold text-outline block mb-1">Full Legal Name</label>
+          <input type="text" id="editNameInput" value="Alex Rivera" required class="w-full p-2.5 rounded-xl bg-surface-container-low text-xs border border-transparent focus:border-secondary outline-none">
+        </div>
+        <div>
+          <label class="text-xs font-bold text-outline block mb-1">Campus Residence / Dorm</label>
+          <input type="text" id="editDormInput" value="Wilbur Hall 304" required class="w-full p-2.5 rounded-xl bg-surface-container-low text-xs border border-transparent focus:border-secondary outline-none">
+        </div>
+        <button type="submit" class="w-full py-2.5 rounded-xl bg-primary text-white text-xs font-bold shadow-sm">Save Changes</button>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- ========================================================================= -->
+  <!-- MODAL: AUTHENTICATION MODAL (LOGIN / REGISTER)                            -->
+  <!-- ========================================================================= -->
+  <div id="authModal" class="fixed inset-0 z-50 bg-primary/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-200 flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-surface-container space-y-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <img src="assets/logo.svg" alt="LendLoop" class="w-8 h-8 object-contain">
+          <span class="font-display font-bold text-xl text-primary">Lend<span class="text-emerald-brand">Loop</span></span>
+        </div>
+        <button onclick="closeAuthModal()" class="w-8 h-8 rounded-full hover:bg-surface-container text-outline flex items-center justify-center">
+          <span class="material-symbols-outlined text-[18px]">close</span>
+        </button>
+      </div>
+
+      <div class="p-1 rounded-xl bg-surface-container flex items-center gap-1">
+        <button onclick="switchAuthTab('login')" id="authTabLogin" class="flex-1 py-1.5 rounded-lg text-xs font-bold bg-white text-primary shadow-sm transition-all">Sign In</button>
+        <button onclick="switchAuthTab('register')" id="authTabRegister" class="flex-1 py-1.5 rounded-lg text-xs font-bold text-on-surface-variant hover:text-primary transition-all">Create Account</button>
+      </div>
+
+      <form onsubmit="event.preventDefault(); submitAuth();" class="space-y-3 pt-1">
+        <div>
+          <label class="text-xs font-bold text-outline block mb-1">University Email (.edu)</label>
+          <input type="email" id="authEmailInput" value="alex.rivera@stanford.edu" required class="w-full p-2.5 rounded-xl bg-surface-container-low text-xs border border-transparent focus:border-secondary outline-none">
+        </div>
+        <div>
+          <label class="text-xs font-bold text-outline block mb-1">Password</label>
+          <input type="password" id="authPassInput" value="Stanford2026!" required class="w-full p-2.5 rounded-xl bg-surface-container-low text-xs border border-transparent focus:border-secondary outline-none">
+        </div>
+        <button type="submit" id="authSubmitBtn" class="w-full py-3 rounded-xl bg-secondary hover:bg-secondary-hover text-white text-xs font-bold shadow-sm transition-all">
+          Sign In to LendLoop
+        </button>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- ========================================================================= -->
+  <!-- TOAST NOTIFICATION CONTAINER                                              -->
+  <!-- ========================================================================= -->
+  <div id="toastContainer" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+
+  <!-- ========================================================================= -->
+  <!-- RESPONSIVE DESKTOP FOOTER                                                 -->
+  <!-- ========================================================================= -->
+  <footer class="mt-auto w-full bg-white border-t border-surface-container py-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+        
+        <div class="space-y-3">
+          <div class="flex items-center gap-2">
+            <img src="assets/logo.svg" alt="LendLoop" class="w-7 h-7 object-contain">
+            <span class="font-display font-extrabold text-xl text-primary">Lend<span class="text-emerald-brand">Loop</span></span>
+          </div>
+          <p class="text-xs text-on-surface-variant leading-relaxed">
+            The safe, peer-to-peer campus equipment & textbook sharing platform. Backed by university escrow and student ID verification.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="font-display font-bold text-xs uppercase tracking-wider text-primary mb-3">Campus Categories</h4>
+          <ul class="space-y-2 text-xs text-on-surface-variant">
+            <li><a href="#" onclick="filterCategory('books'); return false;" class="hover:text-secondary">Textbooks & Notes</a></li>
+            <li><a href="#" onclick="filterCategory('stationery'); return false;" class="hover:text-secondary">TI-84 & Calculators</a></li>
+            <li><a href="#" onclick="filterCategory('tech'); return false;" class="hover:text-secondary">Headphones & Laptops</a></li>
+            <li><a href="#" onclick="filterCategory('sports'); return false;" class="hover:text-secondary">Bikes & Sports Gear</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="font-display font-bold text-xs uppercase tracking-wider text-primary mb-3">Trust & Security</h4>
+          <ul class="space-y-2 text-xs text-on-surface-variant">
+            <li class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[14px] text-emerald-brand">verified</span> .edu Student Verification</li>
+            <li class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[14px] text-emerald-brand">lock</span> Escrow Deposit Guarantee</li>
+            <li class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[14px] text-emerald-brand">handshake</span> In-Person QR Handshake</li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="font-display font-bold text-xs uppercase tracking-wider text-primary mb-3">Active Campus Hubs</h4>
+          <p class="text-xs text-on-surface-variant">Stanford University, UC Berkeley, MIT, Harvard, Columbia, NYU.</p>
+          <div class="mt-3">
+            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-light text-emerald-dark text-[11px] font-bold">
+              ● All Systems Operational
+            </span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="pt-6 border-t border-surface-container flex flex-col sm:flex-row items-center justify-between text-xs text-outline gap-2">
+        <span>© 2026 LendLoop Inc. All rights reserved. Peer-to-Peer Campus Network.</span>
+        <span>Made for students, by students.</span>
+      </div>
+    </div>
+  </footer>
+
+  </div> <!-- /#mainAppShell -->
+
+
+  <!-- ========================================================================= -->
+  <!-- JAVASCRIPT APPLICATION CORE & CONTROLLERS                                 -->
+  <!-- ========================================================================= -->
+  <script>
+    // Initial Item Catalog
+    const CATALOG = [
+      {
+        id: "item-1",
+        title: "TI-84 Plus CE Graphing Calculator",
+        category: "stationery",
+        categoryName: "Calculators & Lab",
+        dailyPrice: 3.50,
+        depositHold: 20.00,
+        condition: "Like New",
+        location: "Wilbur Hall • 0.2 mi",
+        campus: "Stanford Campus",
+        lenderName: "Sarah Lin",
+        lenderDept: "Sophomore • Applied Mathematics",
+        lenderAvatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuBM8VSzPWz6gX7VI2wzCYRejzZ-cxNpuaEF-mrtYyc4P20zvX2frfHkS75qBmQ7sNSciIYrMNM5VK1ZMyXi3W8ShFLb7o-zZNhhGqJAdNUbM3Z-b77r5tSXgdPIB6dd4mzmgFolQkHmrepl88pZ7AKd6OFrAyTCVunaRI3SuyVpfaalf0FqpiFIZkBil0Rq-_pMRvPb1lpO70yIbtS2D1m0a7Z9-EWNDqXSpV3R7YzR",
+        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCwzEoEAOySUGjNOHtVUJfX4kzk2JoXBWr8O_2W6OlPBOBEyzFpdkwPF9maQ9UpdNsMNhfCUS2r3co300xpXSH1WgDkybFb8GNzCGFQuiKrPsYr-hmZl5O8hYxVk-y9cXuGdkTrUC89_-faqEUSw6bHHB1b3BkIkLNRObwI4vphIge7osJfNg6G1RmPKoEmOoxAuMrEH7yfzjBIMWa_DCjAE0B1vTF0hLqb6MycvIIR",
+        rating: "4.9 ★ (18 loans)",
+        description: "Pristine Python Edition color graphing calculator with backlit display and rechargeable battery. Essential for Math 51, CS 109, Chem 31, and all midterms or finals. Sanitized and fully charged.",
+        isFavorite: false,
+        isAvailable: true
+      },
+      {
+        id: "item-2",
+        title: "Campbell Biology 12th Edition Hardcover",
+        category: "books",
+        categoryName: "Textbooks",
+        dailyPrice: 2.00,
+        depositHold: 15.00,
+        condition: "Pristine",
+        location: "Stern Hall • 0.4 mi",
+        campus: "Stanford Campus",
+        lenderName: "Marcus T.",
+        lenderDept: "Pre-Med • Bio Dept",
+        lenderAvatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuCHidFGGvejNyhkUBYrLtdf6YBBJH4cdUC8PrAvMSsLsYw29f3rxNOr1LXFSuNGwGsWjv-ou9bedavLx1oiQXsiW3MD674jEP9umUigltN6OXY-sEur0CQveiqITJGNH2LX-cl2jcU0Vef-R_KhMIEo1PwG_hbf0mrS88phMWaoVA6h74QfX_S0Km9Ne14pch4EEQ08E86vS_bWV-4UiNF6-5rhOjPAEsh2hEdwtOo1",
+        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCHzF2ArCYVDUbZmI5k-3Auz7nNqDBA4WqGQ1_r8IIU8jjqDVNVlooZAqi6nibGOpGadYKu5ScBbKKgWnsr9ydHbAltNtedVgEgaBaLKfU3mkvw3s76vF3PLWIMxVCHi2JEtw-gzEwPkPdyYeDOy4DPmUnWHKUK0VL90C9XVINWLVarO1OgZfW830QxaJX5WPLTzllZIizBk3oRRULosxsviytiqWvpYwa3i9q7yI-j",
+        rating: "4.8 ★ (12 loans)",
+        description: "Clean hardcover edition without tears or missing pages. Has high-yield margin notes for Bio 81 and Bio 82. Great for semester reviews.",
+        isFavorite: true,
+        isAvailable: true
+      },
+      {
+        id: "item-3",
+        title: "Sony WH-1000XM4 Noise Cancelling",
+        category: "tech",
+        categoryName: "Tech & Electronics",
+        dailyPrice: 4.00,
+        depositHold: 30.00,
+        condition: "Excellent",
+        location: "Green Library • 0.1 mi",
+        campus: "Stanford Campus",
+        lenderName: "Elena R.",
+        lenderDept: "Engineering • Senior",
+        lenderAvatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuDPK1wGgvcZzVIu09lEX1h_MzqjkCm43D_4Gld-fUyrR9IOfggN9H8l2cyKaQMsay2y4vJ_DLobml1FlJd0Ala2y1FLIQdTzFyYBHhYNvgc9JS5svtcYjYuHmxH000cZoAk7B2YX9tpxlpUfQjdI0l-7qkb2jzCotbZSLOEbmhCufoSzHFGW-2d8lPok-lStjxEb0oy5NWMdVzckaT0O6ERhshe9ub0pDFa3hvavx5J",
+        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBkiquaYFgXakbP2mClmnfb7Va95cC2ekw5VVdqNTX6jzILz4X_lJKi8F7grlVAE-D9QiYeYNyjJfBNCInzQNdNbTdhKGLlWQxRmNdrhjptxFxbyvnmSlNKt4noiBYmHuVR9dyRrTDmvqLd6x9ViR5S6d4p7abPPi0nVk1HllDhaVaucdQJVULxFyeoPQ-MIcFK2c62h2EK7TIpoWfeB3YsuX_Kqfn_xkqORUID6qZG",
+        rating: "5.0 ★ (26 loans)",
+        description: "Active noise cancellation over-ear headphones. Unrivaled for deep focus in Green Library or noisy dormitory lounges. 30-hour battery life.",
+        isFavorite: false,
+        isAvailable: true
+      },
+      {
+        id: "item-4",
+        title: "Heavy Duty Kryptonite U-Lock with Cable",
+        category: "sports",
+        categoryName: "Sports & Outdoor",
+        dailyPrice: 1.50,
+        depositHold: 10.00,
+        condition: "Sturdy",
+        location: "Tressider Quad • 0.3 mi",
+        campus: "Stanford Campus",
+        lenderName: "David K.",
+        lenderDept: "Economics • Junior",
+        lenderAvatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuCHidFGGvejNyhkUBYrLtdf6YBBJH4cdUC8PrAvMSsLsYw29f3rxNOr1LXFSuNGwGsWjv-ou9bedavLx1oiQXsiW3MD674jEP9umUigltN6OXY-sEur0CQveiqITJGNH2LX-cl2jcU0Vef-R_KhMIEo1PwG_hbf0mrS88phMWaoVA6h74QfX_S0Km9Ne14pch4EEQ08E86vS_bWV-4UiNF6-5rhOjPAEsh2hEdwtOo1",
+        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuD8LJ5er6DzREDNtgIhPowV_RLu0QJ7E6WBjDYlDPkdDFUGYbzCXQAQv_5mxifD6texvT-FrKICtTvmQPgroK95DNV0jUrDaWNxDd1l-3csq3mAfU02tGPToGD5bh2P1lSXX_gF5WvYXB2pghXiBoURCAhoQSxeyhMiSl8mPumqbg16PpeRys7ZfhVcdEAALS07xemOog2RtG5rnYGZ1_D_opGEsZdWgn7fzbV_BbD3",
+        rating: "4.9 ★ (14 loans)",
+        description: "Hardened steel bicycle lock with 4ft looped steel cable. Includes 2 keys. Essential for keeping bikes and e-scooters protected on campus.",
+        isFavorite: false,
+        isAvailable: true
+      },
+      {
+        id: "item-5",
+        title: "Java Software Solutions (8th Ed)",
+        category: "books",
+        categoryName: "Textbooks",
+        dailyPrice: 2.00,
+        depositHold: 15.00,
+        condition: "Like New",
+        location: "Gates CS Building • 0.2 mi",
+        campus: "Stanford Campus",
+        lenderName: "Kevin M.",
+        lenderDept: "CS • Junior",
+        lenderAvatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuDPK1wGgvcZzVIu09lEX1h_MzqjkCm43D_4Gld-fUyrR9IOfggN9H8l2cyKaQMsay2y4vJ_DLobml1FlJd0Ala2y1FLIQdTzFyYBHhYNvgc9JS5svtcYjYuHmxH000cZoAk7B2YX9tpxlpUfQjdI0l-7qkb2jzCotbZSLOEbmhCufoSzHFGW-2d8lPok-lStjxEb0oy5NWMdVzckaT0O6ERhshe9ub0pDFa3hvavx5J",
+        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDM-3UvkaYlTm0DmafG2spCGujBwntxSSe3OWHJz2R8uZKO50r7sHrasD3L-RWNH5rIg8TcLJD2yYvO4w8Abv0xkONRIw6-ue9a5vRe7wg2Zt8vo1anc-i4vu_mL-m7Tfd8tYeYSzOnTUdi2JqAxO67ILac5J9NFvaF0b6rMr6D2wQUv_sCTRorNe4KdsJtEdMqwUsvQHfiCUTDcJlkq0kCviYFnDezQVCzX1cNNSRq",
+        rating: "4.7 ★ (9 loans)",
+        description: "Foundations of program design, object-oriented concepts, recursion, and data structures. Recommended for CS 106A/B coursework and midterms.",
+        isFavorite: false,
+        isAvailable: true
+      },
+      {
+        id: "item-6",
+        title: "Logitech MX Master 3S Wireless Mouse",
+        category: "tech",
+        categoryName: "Tech & Electronics",
+        dailyPrice: 2.50,
+        depositHold: 25.00,
+        condition: "Pristine",
+        location: "Design Loft • 0.3 mi",
+        campus: "Stanford Campus",
+        lenderName: "Jordan T.",
+        lenderDept: "Product Design",
+        lenderAvatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuCHidFGGvejNyhkUBYrLtdf6YBBJH4cdUC8PrAvMSsLsYw29f3rxNOr1LXFSuNGwGsWjv-ou9bedavLx1oiQXsiW3MD674jEP9umUigltN6OXY-sEur0CQveiqITJGNH2LX-cl2jcU0Vef-R_KhMIEo1PwG_hbf0mrS88phMWaoVA6h74QfX_S0Km9Ne14pch4EEQ08E86vS_bWV-4UiNF6-5rhOjPAEsh2hEdwtOo1",
+        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuD7gwQjV590U9vx14Fk3gWAVGNeM94g7uvPbrLTk2sSK8gny8hVVMT7_0_gm89wFpynlso1Q9OX3izu6Wd4PNJLwwEJNRNjDD2aJQl_5o0aKz5Q1ma_k-mNZwBS7eSiO6fd43lyYEJQMNYJTyVboZBYo00lgRiaz0tR2Zw_aomqYqDQpCp93tw6nEGJjG_rCBVbXdJ1kTE1eCchh_pJHvktAPkVxwhBPFeAVLkhixo7",
+        rating: "4.9 ★ (19 loans)",
+        description: "Ergonomic quiet click mouse with electromagnetic MagSpeed scroll wheel. Perfect for design studios, CAD, Figma, or programming.",
+        isFavorite: true,
+        isAvailable: true
+      }
+    ];
+
+    let items = [...CATALOG];
+    let activeItem = items[0];
+    let selectedCategory = "all";
+    let searchQuery = "";
+    let onlyAvailable = false;
+    let maxPriceFilter = 10;
+    let selectedHub = "all";
+    let borrowDays = 3;
+
+    // User profile listings
+    const USER_LISTINGS = [
+      {
+        title: "Sony WH-1000XM4 Headphones",
+        status: "Available",
+        price: "$4.00/day",
+        deposit: "$25 deposit",
+        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCAwKDMWqe8acdVK9kxankRWZgGzcx5_lFznz8AMG6Hte0UPrlg1APkseU_C_zyepqJKyfbQRk-xibjVacGn22TCLLlMz_fQbvkHaHiZgQSNYqQfqvuY3BSzzHWn4M9brAE1FkqK5BV8r9Xq_8ZVd7vjbh97SNdl35buYfzLvZsmnhCrEVIEspce692f5LiXYlkuQt-Ljp7BLeaHhIB4dxbzZprhqg72irpVE0Q95L8"
+      },
+      {
+        title: "Campbell Biology 12th Ed.",
+        status: "On Loan (Due Nov 2)",
+        price: "$2.50/day",
+        deposit: "$15 deposit",
+        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCLiHnCxyctkr1_eHE-9ACxsB9QZebXGjhiMg3vMpBDviUv3w1-wnefH6L4tF0ZE3RhsLBwtvhx0cebAiHsfhPkTuSpnpmPoIoIlnNGCfKLkYxsOrYmZ8-DGxE8LUDCmrA8Y9M0UiwJaqFdhxAkb6OTns4ySXaLM7376py-YAMwNhxg0mITqsUnp43kYaDArcJ6gF_NItrnoeD6US0xbjRDr0wOBeWfQ_E15Gdh8aJi"
+      }
+    ];
+
+    // Initialize application
+    document.addEventListener("DOMContentLoaded", () => {
+      initAuth();
+      renderMarketplace();
+      renderProfileListings();
+      loadItemDetail(items[0].id);
+    });
+
+    // ================= ROUTING & VIEW NAVIGATION =================
+    function navigateView(viewName) {
+      const views = ["marketplace", "item-detail", "my-loans", "profile", "how-it-works"];
+      views.forEach(v => {
+        const el = document.getElementById(`view-${v}`);
+        if (el) {
+          if (v === viewName) {
+            el.classList.remove("hidden");
+          } else {
+            el.classList.add("hidden");
+          }
+        }
+      });
+
+      // Update Nav Link highlighters
+      document.querySelectorAll(".nav-link").forEach(link => {
+        if (link.getAttribute("data-view") === viewName) {
+          link.className = "nav-link px-3 py-2 rounded-xl text-sm font-semibold text-secondary bg-blue-50/80 transition-colors";
+        } else {
+          link.className = "nav-link px-3 py-2 rounded-xl text-sm font-semibold text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors";
+        }
+      });
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    // ================= MARKETPLACE RENDERING & FILTERS =================
+    function renderMarketplace() {
+      const grid = document.getElementById("marketplaceGrid");
+      const emptyBox = document.getElementById("marketplaceEmpty");
+      const countBadge = document.getElementById("catalogResultCount");
+
+      const filtered = items.filter(item => {
+        const matchCat = selectedCategory === "all" || item.category === selectedCategory;
+        const matchSearch = !searchQuery || 
+          item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          item.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          item.lenderName.toLowerCase().includes(searchQuery.toLowerCase());
+        const matchAvail = !onlyAvailable || item.isAvailable;
+        const matchPrice = item.dailyPrice <= maxPriceFilter;
+        const matchHub = selectedHub === "all" || item.location.toLowerCase().includes(selectedHub.toLowerCase());
+        return matchCat && matchSearch && matchAvail && matchPrice && matchHub;
+      });
+
+      countBadge.textContent = `${filtered.length} item${filtered.length === 1 ? '' : 's'}`;
+
+      if (filtered.length === 0) {
+        grid.innerHTML = "";
+        emptyBox.classList.remove("hidden");
+        emptyBox.classList.add("flex");
+        return;
+      }
+
+      emptyBox.classList.add("hidden");
+      emptyBox.classList.remove("flex");
+
+      grid.innerHTML = filtered.map(item => `
+        <article class="bg-white rounded-3xl overflow-hidden border border-surface-container shadow-subtle hover:shadow-card-hover transition-all duration-300 flex flex-col group cursor-pointer" onclick="openItemDetailPage('${item.id}')">
+          <!-- Thumbnail Image -->
+          <div class="relative w-full aspect-[4/3] bg-surface-container-low overflow-hidden">
+            <img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+            
+            <!-- Price Tag Pill -->
+            <span class="absolute top-3 right-3 px-3 py-1 rounded-full bg-primary/95 backdrop-blur-md text-white font-display font-extrabold text-xs shadow-md">
+              $${item.dailyPrice.toFixed(2)}<span class="font-normal text-blue-200 text-[10px]">/d</span>
+            </span>
+
+            <!-- Wishlist Heart -->
+            <button onclick="toggleCardFavorite(event, '${item.id}')" aria-label="Favorite" class="absolute bottom-3 right-3 w-8 h-8 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center ${item.isFavorite ? 'text-error' : 'text-outline'} hover:text-error transition-colors shadow-sm active:scale-90">
+              <span class="material-symbols-outlined text-[18px]" style="${item.isFavorite ? 'font-variation-settings: \'FILL\' 1;' : ''}">favorite</span>
+            </button>
+
+            <!-- Condition Chip -->
+            <span class="absolute bottom-3 left-3 px-2.5 py-0.5 rounded-lg bg-white/90 backdrop-blur-md text-primary font-bold text-[10px]">
+              ${item.condition}
+            </span>
+          </div>
+
+          <!-- Card Content -->
+          <div class="p-5 flex flex-col flex-1 justify-between gap-3">
+            <div>
+              <div class="flex items-center justify-between gap-1 mb-1">
+                <span class="text-[11px] font-bold text-secondary uppercase tracking-wider">${item.categoryName}</span>
+                <span class="text-[11px] text-emerald-600 font-semibold flex items-center gap-1">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Available
+                </span>
+              </div>
+              <h3 class="font-display font-bold text-base text-primary line-clamp-1 group-hover:text-secondary transition-colors">${item.title}</h3>
+              <p class="text-xs text-on-surface-variant line-clamp-2 mt-1">${item.description}</p>
+            </div>
+
+            <!-- Footer: Lender info & pickup spot -->
+            <div class="pt-3 border-t border-surface-container flex items-center justify-between text-xs">
+              <div class="flex items-center gap-2">
+                <div class="w-6 h-6 rounded-full overflow-hidden ring-1 ring-blue-100 shrink-0">
+                  <img src="${item.lenderAvatar}" alt="${item.lenderName}" class="w-full h-full object-cover">
+                </div>
+                <span class="font-semibold text-primary truncate max-w-[100px]">${item.lenderName}</span>
+              </div>
+              <span class="text-outline text-[11px] flex items-center gap-0.5 truncate max-w-[120px]">
+                <span class="material-symbols-outlined text-[13px]">pin_drop</span>
+                ${item.location.split('•')[0]}
+              </span>
+            </div>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    function filterCategory(catKey) {
+      selectedCategory = catKey;
+      document.querySelectorAll(".cat-pill").forEach(pill => {
+        if (pill.getAttribute("data-cat") === catKey) {
+          pill.className = "cat-pill active px-4 py-2 rounded-xl text-xs font-bold transition-all bg-primary text-white shadow-sm flex items-center gap-1.5";
+        } else {
+          pill.className = "cat-pill px-4 py-2 rounded-xl text-xs font-semibold transition-all bg-white text-on-surface hover:bg-surface-container-low border border-surface-container flex items-center gap-1.5";
+        }
+      });
+      renderMarketplace();
+    }
+
+    function handleSearch(val) {
+      searchQuery = val.trim();
+      const clearBtn = document.getElementById("globalSearchClearBtn");
+      if (clearBtn) {
+        if (searchQuery) clearBtn.classList.remove("hidden");
+        else clearBtn.classList.add("hidden");
+      }
+      renderMarketplace();
+    }
+
+    function clearSearch() {
+      const input = document.getElementById("globalDesktopSearch");
+      if (input) input.value = "";
+      searchQuery = "";
+      const clearBtn = document.getElementById("globalSearchClearBtn");
+      if (clearBtn) clearBtn.classList.add("hidden");
+      renderMarketplace();
+    }
+
+    function toggleAvailableFilter(isChecked) {
+      onlyAvailable = isChecked;
+      renderMarketplace();
+    }
+
+    function handlePriceRange(val) {
+      maxPriceFilter = parseFloat(val);
+      document.getElementById("priceFilterDisplay").textContent = `$${maxPriceFilter.toFixed(2)}/day`;
+      renderMarketplace();
+    }
+
+    function handleHubFilter(hubVal) {
+      selectedHub = hubVal;
+      renderMarketplace();
+    }
+
+    function handleSort(sortType) {
+      if (sortType === "price-asc") items.sort((a, b) => a.dailyPrice - b.dailyPrice);
+      else if (sortType === "price-desc") items.sort((a, b) => b.dailyPrice - a.dailyPrice);
+      else if (sortType === "rating") items.sort((a, b) => parseFloat(b.rating) - parseFloat(a.rating));
+      else items = [...CATALOG];
+      renderMarketplace();
+    }
+
+    function resetFilters() {
+      selectedCategory = "all";
+      searchQuery = "";
+      onlyAvailable = false;
+      maxPriceFilter = 10;
+      selectedHub = "all";
+      document.getElementById("filterAvailCheckbox").checked = false;
+      document.getElementById("priceRangeSlider").value = 10;
+      document.getElementById("priceFilterDisplay").textContent = "$10.00/day";
+      document.getElementById("hubSelector").value = "all";
+      clearSearch();
+      filterCategory("all");
+      showToast("Filters reset to default", "info");
+    }
+
+    function toggleCardFavorite(e, itemId) {
+      e.stopPropagation();
+      const item = items.find(i => i.id === itemId);
+      if (item) {
+        item.isFavorite = !item.isFavorite;
+        renderMarketplace();
+        showToast(item.isFavorite ? `Saved "${item.title}" to Wishlist ❤️` : "Removed from Wishlist", "info");
+      }
+    }
+
+    // ================= ITEM DETAILS PAGE =================
+    function openItemDetailPage(itemId) {
+      loadItemDetail(itemId);
+      navigateView("item-detail");
+    }
+
+    function loadItemDetail(itemId) {
+      const item = items.find(i => i.id === itemId) || items[0];
+      activeItem = item;
+
+      document.getElementById("detailHeroImage").src = item.image;
+      document.getElementById("detailConditionBadge").innerHTML = `<span class="material-symbols-outlined text-[14px] text-secondary">verified</span> ${item.condition}`;
+      document.getElementById("detailLocationBadge").innerHTML = `<span class="material-symbols-outlined text-[13px] text-blue-300">location_on</span> ${item.location}`;
+      document.getElementById("detailDepositText").textContent = `$${item.depositHold.toFixed(2)} Refundable`;
+      document.getElementById("detailRatingText").textContent = item.rating;
+      document.getElementById("detailDescriptionText").textContent = item.description;
+
+      document.getElementById("detailLenderAvatar").src = item.lenderAvatar;
+      document.getElementById("detailLenderName").textContent = item.lenderName;
+      document.getElementById("detailLenderDept").textContent = item.lenderDept;
+
+      document.getElementById("detailCategoryLabel").textContent = item.categoryName;
+      document.getElementById("detailTitleText").textContent = item.title;
+      document.getElementById("detailPickupSpot").textContent = item.location;
+      document.getElementById("detailDailyPriceDisplay").textContent = `$${item.dailyPrice.toFixed(2)}`;
+
+      borrowDays = 3;
+      updateDetailMath();
+
+      // Favorite toggle icon
+      const favIcon = document.getElementById("detailFavIcon");
+      if (item.isFavorite) {
+        favIcon.textContent = "favorite";
+        favIcon.style.fontVariationSettings = "'FILL' 1";
+        document.getElementById("detailFavBtn").classList.add("text-error");
+      } else {
+        favIcon.textContent = "favorite_border";
+        favIcon.style.fontVariationSettings = "'FILL' 0";
+        document.getElementById("detailFavBtn").classList.remove("text-error");
+      }
+    }
+
+    function modifyDetailDays(delta) {
+      borrowDays = Math.max(1, Math.min(14, borrowDays + delta));
+      updateDetailMath();
+    }
+
+    function updateDetailMath() {
+      const rentalCost = activeItem.dailyPrice * borrowDays;
+      document.getElementById("detailDaysCounter").textContent = `${borrowDays} Day${borrowDays > 1 ? 's' : ''}`;
+      document.getElementById("detailDatesRange").textContent = `Nov 1 → Nov ${1 + borrowDays}`;
+      document.getElementById("detailBreakdownMath").textContent = `${borrowDays} Days × $${activeItem.dailyPrice.toFixed(2)}`;
+      document.getElementById("detailBreakdownRental").textContent = `$${rentalCost.toFixed(2)}`;
+      document.getElementById("detailBreakdownDeposit").textContent = `$${activeItem.depositHold.toFixed(2)}`;
+      document.getElementById("detailTotalDue").textContent = `$${rentalCost.toFixed(2)}`;
+      document.getElementById("detailSubmitBtnText").textContent = `Request to Borrow ($${rentalCost.toFixed(2)})`;
+    }
+
+    function toggleActiveItemFavorite() {
+      if (activeItem) {
+        activeItem.isFavorite = !activeItem.isFavorite;
+        loadItemDetail(activeItem.id);
+        renderMarketplace();
+        showToast(activeItem.isFavorite ? "Added to Wishlist ❤️" : "Removed from Wishlist", "info");
+      }
+    }
+
+    function executeBorrowRequest() {
+      const rentalTotal = (activeItem.dailyPrice * borrowDays).toFixed(2);
+      showToast(`Borrow request for ${activeItem.title} sent to ${activeItem.lenderName}! ($${rentalTotal})`, "success");
+      
+      const badge = document.getElementById("dashRequestsCount");
+      if (badge) badge.textContent = parseInt(badge.textContent || 3) + 1;
+      
+      setTimeout(() => {
+        navigateView("my-loans");
+        switchLoansTab("requests");
+      }, 500);
+    }
+
+    // ================= LOANS TAB SWITCHER =================
+    function switchLoansTab(tabKey) {
+      const tabs = ["borrowing", "lending", "requests"];
+      tabs.forEach(t => {
+        const pane = document.getElementById(`loansPane${capitalize(t)}`);
+        const btn = document.getElementById(`tabBtn${capitalize(t)}`);
+        if (t === tabKey) {
+          if (pane) pane.classList.remove("hidden");
+          if (btn) btn.className = "flex-1 py-2 px-4 rounded-xl text-xs font-bold bg-secondary text-white shadow-sm transition-all flex items-center justify-center gap-2";
+        } else {
+          if (pane) pane.classList.add("hidden");
+          if (btn) btn.className = "flex-1 py-2 px-4 rounded-xl text-xs font-bold text-on-surface-variant hover:text-primary transition-all flex items-center justify-center gap-2";
+        }
+      });
+    }
+
+    function capitalize(str) {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
+    // ================= HANDOVER & QR MODAL =================
+    function openReturnModal(title, owner, deposit, location) {
+      document.getElementById("returnModalItemTitle").textContent = `Return ${title}`;
+      document.getElementById("returnModalSubtitle").textContent = `Meet ${owner} at ${location} to release ${deposit} deposit.`;
+      
+      const modal = document.getElementById("handoverModal");
+      modal.classList.remove("opacity-0", "pointer-events-none");
+    }
+
+    function closeReturnModal() {
+      const modal = document.getElementById("handoverModal");
+      modal.classList.add("opacity-0", "pointer-events-none");
+    }
+
+    function confirmReturn() {
+      closeReturnModal();
+      showToast("Handover verified! Security deposit refunded to your account ⚡ +50 Karma Points", "success");
+    }
+
+    function acceptRequest(cardId, itemTitle) {
+      const card = document.getElementById(cardId);
+      if (card) {
+        card.classList.add("opacity-50", "pointer-events-none");
+      }
+      showToast(`Accepted handover for "${itemTitle}". Chat connected!`, "success");
+    }
+
+    function dismissRequest(cardId, itemTitle) {
+      const card = document.getElementById(cardId);
+      if (card) card.remove();
+      showToast(`Declined request for "${itemTitle}"`, "info");
+    }
+
+    // ================= PROFILE & LISTINGS =================
+    function renderProfileListings() {
+      const container = document.getElementById("profileListingsContainer");
+      if (!container) return;
+
+      container.innerHTML = USER_LISTINGS.map((item, idx) => `
+        <div class="bg-surface-container-low/60 rounded-2xl p-4 border border-surface-container flex items-center justify-between gap-4">
+          <div class="flex items-center gap-3">
+            <div class="w-14 h-14 rounded-xl overflow-hidden bg-white border border-slate-100 shrink-0">
+              <img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover">
+            </div>
+            <div>
+              <span class="text-[10px] font-bold text-secondary uppercase tracking-wider">${item.status}</span>
+              <h4 class="font-display font-bold text-sm text-primary">${item.title}</h4>
+              <p class="text-xs text-on-surface-variant">${item.price} • ${item.deposit}</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <button onclick="showToast('Editing ${item.title}', 'info')" class="p-2 rounded-xl bg-white hover:bg-surface-container text-primary shadow-sm text-xs font-semibold">
+              <span class="material-symbols-outlined text-[16px]">edit</span>
+            </button>
+            <button onclick="removeUserListing(${idx})" class="p-2 rounded-xl bg-white hover:bg-red-50 text-error shadow-sm text-xs font-semibold">
+              <span class="material-symbols-outlined text-[16px]">delete</span>
+            </button>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function removeUserListing(idx) {
+      USER_LISTINGS.splice(idx, 1);
+      renderProfileListings();
+      showToast("Listing removed from your catalog", "info");
+    }
+
+    function openEditProfileModal() {
+      document.getElementById("editProfileModal").classList.remove("opacity-0", "pointer-events-none");
+    }
+
+    function closeEditProfileModal() {
+      document.getElementById("editProfileModal").classList.add("opacity-0", "pointer-events-none");
+    }
+
+    function saveProfile() {
+      const name = document.getElementById("editNameInput").value;
+      const dorm = document.getElementById("editDormInput").value;
+      document.getElementById("profileFullName").textContent = name;
+      document.getElementById("topNavUserName").textContent = name;
+      document.getElementById("profileDormText").textContent = dorm;
+      closeEditProfileModal();
+      showToast("Profile details updated successfully", "success");
+    }
+
+    // ================= ADD NEW LISTING =================
+    function openAddItemModal() {
+      document.getElementById("addItemModal").classList.remove("opacity-0", "pointer-events-none");
+      document.getElementById("addItemModalBox").classList.remove("scale-95");
+    }
+
+    function closeAddItemModal() {
+      document.getElementById("addItemModalBox").classList.add("scale-95");
+      document.getElementById("addItemModal").classList.add("opacity-0", "pointer-events-none");
+    }
+
+    function submitNewListing() {
+      const title = document.getElementById("newItemTitle").value;
+      const cat = document.getElementById("newItemCategory").value;
+      const cond = document.getElementById("newItemCondition").value;
+      const price = parseFloat(document.getElementById("newItemDailyPrice").value) || 3.00;
+      const deposit = parseFloat(document.getElementById("newItemDeposit").value) || 20.00;
+      const loc = document.getElementById("newItemLocation").value || "Wilbur Hall";
+      const desc = document.getElementById("newItemDescription").value || "Working student equipment in clean condition.";
+
+      const newItem = {
+        id: `item-${Date.now()}`,
+        title,
+        category: cat,
+        categoryName: cat.charAt(0).toUpperCase() + cat.slice(1),
+        dailyPrice: price,
+        depositHold: deposit,
+        condition: cond,
+        location: loc,
+        campus: "Stanford Campus",
+        lenderName: "Alex Rivera",
+        lenderDept: "Junior • Computer Science",
+        lenderAvatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuCHidFGGvejNyhkUBYrLtdf6YBBJH4cdUC8PrAvMSsLsYw29f3rxNOr1LXFSuNGwGsWjv-ou9bedavLx1oiQXsiW3MD674jEP9umUigltN6OXY-sEur0CQveiqITJGNH2LX-cl2jcU0Vef-R_KhMIEo1PwG_hbf0mrS88phMWaoVA6h74QfX_S0Km9Ne14pch4EEQ08E86vS_bWV-4UiNF6-5rhOjPAEsh2hEdwtOo1",
+        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuB1HLeRSpdgX3LeoQ9mKLRt0X8SHRfjH-LLTBXn9iGVr2G2W-sbi6wLcDAmJHmAkp9a45-S86r-gBeooxf-ZHCzhnScTw_fb64wyFXHeYIB6Y2rhFj9Xwq8H3Jyo1MiRTL6sYNsNbbOLooGqLV8-tsClXqov9PCWGaswUaD8ATn6-PiMI7rw0UjAlEze1KZU8_A4u1qY4KyORJbuyQs7NNmzKB8rgmOz4INaa5dseI2",
+        rating: "5.0 ★ (New)",
+        description: desc,
+        isFavorite: false,
+        isAvailable: true
+      };
+
+      items.unshift(newItem);
+      USER_LISTINGS.unshift({
+        title,
+        status: "Available",
+        price: `$${price.toFixed(2)}/day`,
+        deposit: `$${deposit.toFixed(2)} deposit`,
+        image: newItem.image
+      });
+
+      renderMarketplace();
+      renderProfileListings();
+      closeAddItemModal();
+      showToast(`Listing "${title}" posted to LendLoop! 🚀`, "success");
+      navigateView("marketplace");
+    }
+
+    // ================= CAMPUS SWITCHER =================
+    function toggleCampusModal() {
+      const modal = document.getElementById("campusModal");
+      modal.classList.toggle("opacity-0");
+      modal.classList.toggle("pointer-events-none");
+    }
+
+    function selectCampus(name, hubSubtitle) {
+      document.getElementById("navCampusLabel").textContent = name;
+      toggleCampusModal();
+      showToast(`Switched network hub to ${name}`, "success");
+    }
+
+    // ================= AUTHENTICATION & GATEWAY CONTROLLER =================
+    let isAuthenticated = false; // Initially false: gateway displays before entering
+
+    let currentUser = {
+      name: "Alex J. Chen",
+      email: "alex.chen@stanford.edu",
+      studentId: "SU-9824102",
+      department: "Computer Science & Engineering",
+      year: "Junior",
+      dorm: "Wilbur Hall 304",
+      campus: "Stanford University"
+    };
+
+    function initAuth() {
+      // Check if session was authenticated
+      const savedAuth = sessionStorage.getItem("lendloop_authenticated");
+      if (savedAuth === "true") {
+        setAuthenticated(true, false);
+      } else {
+        setAuthenticated(false, false);
+      }
+    }
+
+    function setAuthenticated(status, showNotification = true) {
+      isAuthenticated = status;
+      const gateway = document.getElementById("authGatewayView");
+      const appShell = document.getElementById("mainAppShell");
+      
+      if (status) {
+        if (gateway) gateway.classList.add("hidden");
+        if (appShell) appShell.classList.remove("hidden");
+        updateUserDisplay();
+        renderMarketplace();
+        renderProfileListings();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        if (showNotification) {
+          showToast(`Welcome to LendLoop, ${currentUser.name.split(' ')[0]}! Connected to Stanford University network.`, "success");
+        }
+      } else {
+        if (gateway) gateway.classList.remove("hidden");
+        if (appShell) appShell.classList.add("hidden");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    }
+
+    function switchGatewayTab(tab) {
+      const tabLogin = document.getElementById("gatewayTabLogin");
+      const tabRegister = document.getElementById("gatewayTabRegister");
+      const loginPanel = document.getElementById("authLoginPanel");
+      const registerPanel = document.getElementById("authRegisterPanel");
+      const loginVisual = document.getElementById("loginVisualCard");
+      const registerVisual = document.getElementById("registerVisualCard");
+
+      if (tab === "login") {
+        tabLogin.className = "flex-1 py-2.5 text-center font-bold text-xs sm:text-sm rounded-xl bg-primary text-white shadow-sm transition-all flex items-center justify-center gap-1.5 cursor-pointer";
+        tabRegister.className = "flex-1 py-2.5 text-center font-semibold text-xs sm:text-sm rounded-xl text-on-surface-variant hover:text-primary transition-all flex items-center justify-center gap-1.5 cursor-pointer";
+        
+        loginPanel.classList.remove("hidden");
+        registerPanel.classList.add("hidden");
+        
+        if (loginVisual) loginVisual.classList.remove("hidden");
+        if (registerVisual) registerVisual.classList.add("hidden");
+      } else {
+        tabRegister.className = "flex-1 py-2.5 text-center font-bold text-xs sm:text-sm rounded-xl bg-primary text-white shadow-sm transition-all flex items-center justify-center gap-1.5 cursor-pointer";
+        tabLogin.className = "flex-1 py-2.5 text-center font-semibold text-xs sm:text-sm rounded-xl text-on-surface-variant hover:text-primary transition-all flex items-center justify-center gap-1.5 cursor-pointer";
+        
+        registerPanel.classList.remove("hidden");
+        loginPanel.classList.add("hidden");
+        
+        if (loginVisual) loginVisual.classList.add("hidden");
+        if (registerVisual) registerVisual.classList.remove("hidden");
+      }
+    }
+
+    function handleGatewayLogin(e) {
+      if (e) e.preventDefault();
+      const emailInput = document.getElementById("gatewayLoginEmail");
+      const email = emailInput ? emailInput.value.trim() : "alex.chen@stanford.edu";
+      
+      if (!email.toLowerCase().includes(".edu")) {
+        showToast("Please enter a verified campus university (.edu) email", "info");
+        return;
+      }
+      
+      currentUser.email = email;
+      sessionStorage.setItem("lendloop_authenticated", "true");
+      setAuthenticated(true, true);
+    }
+
+    function handleGatewayRegister(e) {
+      if (e) e.preventDefault();
+      const nameInput = document.getElementById("reg-name");
+      const studentIdInput = document.getElementById("reg-studentid");
+      const emailInput = document.getElementById("reg-email");
+      const deptInput = document.getElementById("reg-dept");
+      const yearInput = document.getElementById("selected-year");
+      const passInput = document.getElementById("reg-pass");
+      const confirmPassInput = document.getElementById("reg-confirm-pass");
+
+      const name = nameInput ? nameInput.value.trim() : "Alex J. Chen";
+      const studentId = studentIdInput ? studentIdInput.value.trim() : "SU-9824102";
+      const email = emailInput ? emailInput.value.trim() : "alex.chen@stanford.edu";
+      const dept = deptInput ? deptInput.options[deptInput.selectedIndex].text : "Computer Science & Engineering";
+      const year = yearInput ? yearInput.value : "Junior";
+
+      if (!email.toLowerCase().includes(".edu")) {
+        showToast("Must enter a verified campus .edu email address", "info");
+        return;
+      }
+
+      if (passInput && confirmPassInput && passInput.value !== confirmPassInput.value) {
+        showToast("Passwords do not match", "error");
+        return;
+      }
+
+      currentUser.name = name;
+      currentUser.studentId = studentId;
+      currentUser.email = email;
+      currentUser.department = dept;
+      currentUser.year = year;
+
+      sessionStorage.setItem("lendloop_authenticated", "true");
+      setAuthenticated(true, true);
+    }
+
+    function handleGoogleSignIn() {
+      sessionStorage.setItem("lendloop_authenticated", "true");
+      setAuthenticated(true, true);
+    }
+
+    function handleLogout() {
+      sessionStorage.removeItem("lendloop_authenticated");
+      setAuthenticated(false, false);
+      showToast("Signed out of LendLoop. Please log in to continue.", "info");
+    }
+
+    function togglePasswordVisibility(inputId, btn) {
+      const input = document.getElementById(inputId);
+      if (!input) return;
+      const isPass = input.type === "password";
+      input.type = isPass ? "text" : "password";
+      const icon = btn.querySelector(".material-symbols-outlined");
+      if (icon) {
+        icon.textContent = isPass ? "visibility_off" : "visibility";
+      }
+    }
+
+    function selectYear(btn, year) {
+      document.querySelectorAll(".year-pill").forEach(pill => {
+        pill.className = "year-pill py-1.5 text-center rounded-xl text-xs text-on-surface-variant hover:bg-white transition-all cursor-pointer";
+      });
+      btn.className = "year-pill py-1.5 text-center rounded-xl text-xs bg-primary text-white font-bold shadow-sm transition-all cursor-pointer";
+      const hiddenInput = document.getElementById("selected-year");
+      if (hiddenInput) hiddenInput.value = year;
+    }
+
+    function updateUserDisplay() {
+      const navName = document.getElementById("topNavUserName");
+      const profileName = document.getElementById("profileFullName");
+      if (navName) navName.textContent = currentUser.name;
+      if (profileName) profileName.textContent = currentUser.name;
+    }
+
+    // Modal compatibility stubs
+    function openAuthModal(mode = "login") {
+      handleLogout();
+      switchGatewayTab(mode);
+    }
+    function closeAuthModal() {}
+    function switchAuthTab(tab) {
+      switchGatewayTab(tab);
+    }
+    function submitAuth() {
+      handleGatewayLogin();
+    }
+
+    // ================= UTILITIES & FLYOUTS =================
+    function toggleNotificationsDropdown(event) {
+      if (event) event.stopPropagation();
+      document.getElementById("notificationsDropdown").classList.toggle("hidden");
+      document.getElementById("profileDropdown").classList.add("hidden");
+    }
+
+    function toggleProfileDropdown(event) {
+      if (event) event.stopPropagation();
+      document.getElementById("profileDropdown").classList.toggle("hidden");
+      document.getElementById("notificationsDropdown").classList.add("hidden");
+    }
+
+    function closeDropdowns() {
+      const p = document.getElementById("profileDropdown");
+      const n = document.getElementById("notificationsDropdown");
+      if (p) p.classList.add("hidden");
+      if (n) n.classList.add("hidden");
+    }
+
+    window.addEventListener("click", (e) => {
+      if (!e.target.closest("#profileDropdown") && !e.target.closest("#notificationsDropdown")) {
+        closeDropdowns();
+      }
+    });
+
+    // ================= TOAST NOTIFICATION UTILITY =================
+    function showToast(message, type = "info") {
+      const container = document.getElementById("toastContainer");
+      if (!container) return;
+
+      const toast = document.createElement("div");
+      const bg = type === "success" 
+        ? "bg-primary text-white border border-blue-400/40" 
+        : "bg-white text-on-surface border border-surface-container shadow-dropdown";
+      
+      const icon = type === "success" ? "check_circle" : "info";
+      const iconColor = type === "success" ? "text-emerald-400" : "text-secondary";
+
+      toast.className = `toast-animate flex items-center gap-2.5 px-4 py-3 rounded-2xl shadow-xl text-xs font-semibold backdrop-blur-xl pointer-events-auto max-w-sm ${bg}`;
+      toast.innerHTML = `
+        <span class="material-symbols-outlined text-[18px] ${iconColor} shrink-0">${icon}</span>
+        <span class="leading-tight">${message}</span>
+      `;
+
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        toast.style.opacity = "0";
+        toast.style.transform = "translateY(10px)";
+        toast.style.transition = "all 0.3s ease";
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+  </script>
+</body>
+</html>
