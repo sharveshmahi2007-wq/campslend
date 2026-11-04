@@ -26,6 +26,24 @@ try:
     db = mongo_client["campuslend_db"]
     HAS_MONGO = True
     print("[*] Successfully connected to MongoDB at localhost:27017 (campuslend_db)")
+    # Seed default demo member if not present
+    db.students.update_one(
+        {"email": "25z295@psgitech.ac.in"},
+        {"$setOnInsert": {
+            "studentId": "25Z295",
+            "name": "Sharvesh Mahi",
+            "email": "25z295@psgitech.ac.in",
+            "password": "sharveshmahi",
+            "department": "Computer Science & Engineering",
+            "yearOfStudy": "1st Year",
+            "dormLocation": "Campus Hostel Block A",
+            "campus": "PSG iTech Campus",
+            "role": "STUDENT",
+            "trustScore": 100,
+            "activeLoansCount": 0
+        }},
+        upsert=True
+    )
 except Exception as e:
     HAS_MONGO = False
     print(f"[!] MongoDB not reachable via pymongo ({e}). Running with in-memory fallback store.")
@@ -75,12 +93,17 @@ MEM_ITEMS = [
 MEM_LOANS = []
 MEM_STUDENTS = [
     {
-        "studentId": "SU-9824102",
-        "name": "Alex J. Chen",
-        "email": "alex.chen@stanford.edu",
+        "studentId": "25Z295",
+        "name": "Sharvesh Mahi",
+        "email": "25z295@psgitech.ac.in",
+        "password": "sharveshmahi",
         "department": "Computer Science & Engineering",
-        "yearOfStudy": "Junior",
-        "dormLocation": "Wilbur Hall 304"
+        "yearOfStudy": "1st Year",
+        "dormLocation": "Campus Hostel Block A",
+        "campus": "PSG iTech Campus",
+        "role": "STUDENT",
+        "trustScore": 100,
+        "activeLoansCount": 0
     }
 ]
 
@@ -203,21 +226,32 @@ class CampusLendAPIHandler(BaseHTTPRequestHandler):
 
         # 3. GET /api/students/{id}
         if path.startswith("/api/students/"):
-            s_id = path.replace("/api/students/", "")
+            s_id = path.replace("/api/students/", "").strip().lower()
             if HAS_MONGO:
-                student = db.students.find_one({"studentId": s_id}) or db.students.find_one({"_id": s_id})
+                student = db.students.find_one({
+                    "$or": [
+                        {"studentId": {"$regex": f"^{s_id}$", "$options": "i"}},
+                        {"email": {"$regex": f"^{s_id}$", "$options": "i"}},
+                        {"_id": s_id}
+                    ]
+                })
                 if student:
                     student["id"] = str(student.get("_id", student.get("studentId", "")))
                     if "passwordHash" in student:
                         del student["passwordHash"]
+                    if "password" in student:
+                        del student["password"]
                     if "_id" in student:
                         del student["_id"]
                     self._send_json(student)
                     return
             else:
                 for s in MEM_STUDENTS:
-                    if s.get("studentId") == s_id:
-                        self._send_json(s)
+                    if s.get("studentId", "").lower() == s_id or s.get("email", "").lower() == s_id:
+                        ret = dict(s)
+                        if "password" in ret:
+                            del ret["password"]
+                        self._send_json(ret)
                         return
             self._send_json({"error": "Student not found"}, 404)
             return
@@ -284,32 +318,47 @@ class CampusLendAPIHandler(BaseHTTPRequestHandler):
 
         # 2. POST /api/auth/login
         if path == "/api/auth/login":
-            email = body.get("email", "").strip().lower()
+            email_or_id = body.get("email", "").strip().lower()
+            password = body.get("password", "")
             student = None
+
             if HAS_MONGO:
-                student = db.students.find_one({"email": {"$regex": f"^{email}$", "$options": "i"}})
+                student = db.students.find_one({
+                    "$or": [
+                        {"email": {"$regex": f"^{email_or_id}$", "$options": "i"}},
+                        {"studentId": {"$regex": f"^{email_or_id}$", "$options": "i"}}
+                    ]
+                })
                 if student:
+                    stored_pass = student.get("password") or student.get("passwordHash")
+                    if stored_pass and stored_pass != password:
+                        self._send_json({"error": "Incorrect password. Please try again."}, 401)
+                        return
                     student["id"] = str(student.get("_id", student.get("studentId", "")))
                     if "passwordHash" in student:
                         del student["passwordHash"]
+                    if "password" in student:
+                        del student["password"]
                     if "_id" in student:
                         del student["_id"]
             else:
                 for s in MEM_STUDENTS:
-                    if s.get("email", "").lower() == email:
-                        student = s
+                    if s.get("email", "").lower() == email_or_id or s.get("studentId", "").lower() == email_or_id:
+                        if s.get("password") and s.get("password") != password:
+                            self._send_json({"error": "Incorrect password. Please try again."}, 401)
+                            return
+                        student = dict(s)
+                        if "password" in student:
+                            del student["password"]
                         break
 
+            # ONLY registered members can log in!
             if not student:
-                # Default guest / demo student
-                student = {
-                    "studentId": "SU-9824102",
-                    "name": "Alex J. Chen",
-                    "email": email or "alex.chen@stanford.edu",
-                    "department": "Computer Science & Engineering",
-                    "yearOfStudy": "Junior",
-                    "dormLocation": "Wilbur Hall 304"
-                }
+                self._send_json({
+                    "error": "Account not registered. Please register first before logging in.",
+                    "registered": False
+                }, 404)
+                return
 
             token = f"token_{int(time.time())}_{student.get('studentId')}"
             self._send_json({
@@ -322,16 +371,25 @@ class CampusLendAPIHandler(BaseHTTPRequestHandler):
 
         # 3. POST /api/auth/register
         if path == "/api/auth/register":
-            student_id = body.get("studentId", f"SU-{int(time.time() % 10000000)}")
+            student_id = body.get("studentId", "").strip() or f"STU-{int(time.time() % 10000000)}"
+            email = body.get("email", "").strip().lower()
+            password = body.get("password", "sharveshmahi")
+            name = body.get("name", "Student Peer").strip()
+            dept = body.get("department", "Computer Science & Engineering")
+            year = body.get("yearOfStudy", "1st Year")
+            dorm = body.get("dormLocation", "Campus Hostel")
+            campus = body.get("campus", "PSG iTech Campus")
+
             new_student = {
                 "_id": student_id,
                 "studentId": student_id,
-                "name": body.get("name", "Student Peer"),
-                "email": body.get("email", "student@stanford.edu"),
-                "department": body.get("department", "General Studies"),
-                "yearOfStudy": body.get("yearOfStudy", "Freshman"),
-                "dormLocation": body.get("dormLocation", "Campus Dorm"),
-                "campus": "Stanford University",
+                "name": name,
+                "email": email,
+                "password": password,
+                "department": dept,
+                "yearOfStudy": year,
+                "dormLocation": dorm,
+                "campus": campus,
                 "role": "STUDENT",
                 "trustScore": 100,
                 "activeLoansCount": 0
@@ -339,19 +397,35 @@ class CampusLendAPIHandler(BaseHTTPRequestHandler):
 
             if HAS_MONGO:
                 try:
-                    db.students.insert_one(new_student)
-                    del new_student["_id"]
+                    db.students.update_one(
+                        {"$or": [{"email": email}, {"studentId": student_id}]},
+                        {"$set": new_student},
+                        upsert=True
+                    )
                 except Exception as e:
                     pass
             else:
-                MEM_STUDENTS.append(new_student)
+                found = False
+                for i, s in enumerate(MEM_STUDENTS):
+                    if s.get("email", "").lower() == email or s.get("studentId", "").lower() == student_id.lower():
+                        MEM_STUDENTS[i] = new_student
+                        found = True
+                        break
+                if not found:
+                    MEM_STUDENTS.append(new_student)
+
+            ret_student = dict(new_student)
+            if "password" in ret_student:
+                del ret_student["password"]
+            if "_id" in ret_student:
+                del ret_student["_id"]
 
             token = f"token_{int(time.time())}_{student_id}"
             self._send_json({
                 "token": token,
                 "type": "Bearer",
-                "student": new_student,
-                "message": "Student account registered successfully"
+                "student": ret_student,
+                "message": "Student account registered successfully! You can now log in."
             }, 201)
             return
 

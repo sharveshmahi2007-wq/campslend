@@ -38,8 +38,8 @@ window.TRANSLATIONS = {
     "gateway.id_safe": "100% ID Safe",
 
     // Gateway Login Form
-    "login.email_label": "College Email (.edu)",
-    "login.campus_domain": "Verified campus domain",
+    "login.email_label": "College Email / Student ID",
+    "login.campus_domain": "Verified campus member",
     "login.password_label": "Password",
     "login.forgot_password": "Forgot password?",
     "login.remember_me": "Remember me on this campus device",
@@ -52,7 +52,7 @@ window.TRANSLATIONS = {
     "reg.name_label": "Full Legal / Campus Name",
     "reg.studentid_label": "Student ID Number",
     "reg.email_label": "College Email Address",
-    "reg.email_hint": "Ends in .edu",
+    "reg.email_hint": "e.g. .ac.in / .edu",
     "reg.dept_label": "Department / Major",
     "reg.dept_cs": "Computer Science & Engineering",
     "reg.dept_bio": "Biological Sciences & Pre-Med",
@@ -342,7 +342,10 @@ window.TRANSLATIONS = {
     "toast.welcome_user": "Welcome to LendLoop",
     "toast.borrow_request_sent": "Borrow request sent",
     "toast.language_changed": "Language switched to English",
-    "toast.invalid_email": "Please enter a verified campus university (.edu) email",
+    "toast.invalid_email": "Please enter a valid campus email address",
+    "toast.account_not_found": "Account not registered! You must register first before logging in.",
+    "toast.incorrect_password": "Incorrect password. Please enter the valid password.",
+    "toast.registration_success": "Registration successful! Welcome to LendLoop.",
     "toast.password_mismatch": "Passwords do not match",
     "toast.invalid_image": "Please select a valid image file (PNG, JPG, WEBP)",
     "toast.image_too_large": "Image size must be under 5MB"
@@ -686,7 +689,10 @@ window.TRANSLATIONS = {
     "toast.welcome_user": "LendLoop-க்கு நல்வரவு",
     "toast.borrow_request_sent": "இரவல் கோரிக்கை அனுப்பப்பட்டது",
     "toast.language_changed": "மொழி தமிழுக்கு மாற்றப்பட்டது",
-    "toast.invalid_email": "சரிபார்க்கப்பட்ட வளாக பல்கலைக்கழக (.edu) மின்னஞ்சலை உள்ளிடவும்",
+    "toast.invalid_email": "சரியான வளாக மின்னஞ்சல் முகவரியை உள்ளிடவும்",
+    "toast.account_not_found": "கணக்கு பதிவு செய்யப்படவில்லை! உள்நுழைவதற்கு முன் பதிவு செய்யவும்.",
+    "toast.incorrect_password": "தவறான கடவுச்சொல். சரியான கடவுச்சொல்லை உள்ளிடவும்.",
+    "toast.registration_success": "பதிவு வெற்றிகரமாக முடிந்தது! LendLoop-க்கு நல்வரவு.",
     "toast.password_mismatch": "கடவுச்சொற்கள் பொருந்தவில்லை",
     "toast.invalid_image": "சரியான படக் கோப்பைத் தேர்ந்தெடுக்கவும் (PNG, JPG, WEBP)",
     "toast.image_too_large": "படத்தின் அளவு 5MB-க்குள் இருக்க வேண்டும்"

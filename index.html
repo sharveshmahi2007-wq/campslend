@@ -140,7 +140,7 @@
             </select>
           </div>
 
-          <button onclick="handleGatewayLogin()" class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-secondary text-xs font-bold transition-all border border-blue-200/60 shadow-sm cursor-pointer" title="Instant access with preloaded demo student account" data-i18n-title="brand.demo_access_title">
+          <button onclick="handleQuickDemoAccess()" class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-secondary text-xs font-bold transition-all border border-blue-200/60 shadow-sm cursor-pointer" title="Instant access with demo student account (25z295@psgitech.ac.in)">
             <span class="material-symbols-outlined text-[16px]">bolt</span>
             <span data-i18n="brand.demo_access">Quick Demo Access</span>
           </button>
@@ -311,6 +311,35 @@
                 <span class="text-[11px] text-secondary bg-white px-2 py-0.5 rounded-md font-bold shadow-xs" data-i18n="gateway.id_safe">100% ID Safe</span>
               </div>
 
+              <!-- Demo Member Badge & Helper -->
+              <div class="p-3 rounded-2xl bg-gradient-to-r from-blue-50 to-indigo-50/70 border border-blue-200/70 flex items-center justify-between text-xs shadow-xs">
+                <div class="flex items-center gap-2.5 min-w-0">
+                  <div class="w-7 h-7 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary shrink-0">
+                    <span class="material-symbols-outlined text-[17px]">key</span>
+                  </div>
+                  <div class="min-w-0">
+                    <span class="font-bold text-primary block leading-tight">Pre-Authorized Demo Member:</span>
+                    <div class="text-[11px] text-on-surface-variant font-mono truncate">
+                      ID: <span class="text-secondary font-bold select-all">25z295@psgitech.ac.in</span> | Pass: <span class="text-secondary font-bold select-all">sharveshmahi</span>
+                    </div>
+                  </div>
+                </div>
+                <button type="button" onclick="fillDemoCredentials()" class="px-2.5 py-1 rounded-xl bg-white border border-blue-200 text-secondary font-bold text-[11px] hover:bg-blue-50 shadow-xs cursor-pointer shrink-0">
+                  Auto-Fill
+                </button>
+              </div>
+
+              <!-- Login Error / Not Registered Alert Container -->
+              <div id="loginErrorMessage" class="hidden p-3 rounded-2xl bg-red-50 border border-red-200 text-error text-xs flex items-center justify-between gap-2 animate-pulse">
+                <div class="flex items-center gap-2 min-w-0">
+                  <span class="material-symbols-outlined text-[18px] text-error shrink-0">error</span>
+                  <span id="loginErrorText" class="font-semibold truncate">Account not found. Please register first.</span>
+                </div>
+                <button type="button" onclick="switchGatewayTab('register')" class="px-2 py-0.5 rounded-lg bg-error text-white font-bold text-[10px] hover:bg-red-700 transition-colors shrink-0">
+                  Register
+                </button>
+              </div>
+
               <!-- Main Login Form -->
               <form onsubmit="handleGatewayLogin(event)" class="space-y-4">
                 
@@ -318,18 +347,18 @@
                 <div class="space-y-1.5">
                   <div class="flex items-center justify-between">
                     <label class="text-xs font-bold text-primary" for="gatewayLoginEmail" data-i18n="login.email_label">
-                      College Email (.edu)
+                      College Email / Student ID
                     </label>
                     <span class="text-[11px] text-secondary flex items-center gap-1 font-semibold">
                       <span class="material-symbols-outlined text-[14px]">domain_verification</span>
-                      <span data-i18n="login.campus_domain">Verified campus domain</span>
+                      <span data-i18n="login.campus_domain">Verified campus member</span>
                     </span>
                   </div>
                   <div class="relative flex items-center">
                     <div class="absolute left-3.5 flex items-center pointer-events-none text-outline">
-                      <span class="material-symbols-outlined text-[20px]">mail</span>
+                      <span class="material-symbols-outlined text-[20px]">badge</span>
                     </div>
-                    <input id="gatewayLoginEmail" type="email" required value="alex.chen@stanford.edu" placeholder="alex.chen@stanford.edu" class="w-full h-12 pl-11 pr-10 rounded-xl bg-surface-container-low text-on-surface text-sm border border-transparent focus:border-secondary focus:bg-white focus:ring-2 focus:ring-blue-100 transition-all outline-none">
+                    <input id="gatewayLoginEmail" type="text" required value="25z295@psgitech.ac.in" placeholder="e.g. 25z295@psgitech.ac.in" class="w-full h-12 pl-11 pr-10 rounded-xl bg-surface-container-low text-on-surface text-sm border border-transparent focus:border-secondary focus:bg-white focus:ring-2 focus:ring-blue-100 transition-all outline-none font-medium">
                     <div class="absolute right-3.5 flex items-center text-emerald-600">
                       <span class="material-symbols-outlined text-[18px]">verified</span>
                     </div>
@@ -342,7 +371,7 @@
                     <label class="text-xs font-bold text-primary" for="gatewayLoginPassword" data-i18n="login.password_label">
                       Password
                     </label>
-                    <a href="#" onclick="showToast('Password reset link sent to registered .edu email', 'info'); return false;" class="text-[11px] text-secondary hover:underline font-semibold" data-i18n="login.forgot_password">
+                    <a href="#" onclick="showToast('Demo password is: sharveshmahi', 'info'); return false;" class="text-[11px] text-secondary hover:underline font-semibold" data-i18n="login.forgot_password">
                       Forgot password?
                     </a>
                   </div>
@@ -350,7 +379,7 @@
                     <div class="absolute left-3.5 flex items-center pointer-events-none text-outline">
                       <span class="material-symbols-outlined text-[20px]">lock</span>
                     </div>
-                    <input id="gatewayLoginPassword" type="password" required value="sampleCampusPass123" placeholder="••••••••••••" class="w-full h-12 pl-11 pr-11 rounded-xl bg-surface-container-low text-on-surface text-sm border border-transparent focus:border-secondary focus:bg-white focus:ring-2 focus:ring-blue-100 transition-all outline-none">
+                    <input id="gatewayLoginPassword" type="password" required value="sharveshmahi" placeholder="••••••••••••" class="w-full h-12 pl-11 pr-11 rounded-xl bg-surface-container-low text-on-surface text-sm border border-transparent focus:border-secondary focus:bg-white focus:ring-2 focus:ring-blue-100 transition-all outline-none font-medium">
                     <button type="button" onclick="togglePasswordVisibility('gatewayLoginPassword', this)" aria-label="Toggle password visibility" class="absolute right-3 p-1 rounded-lg text-outline hover:text-primary transition-colors flex items-center justify-center cursor-pointer">
                       <span class="material-symbols-outlined text-[20px]">visibility</span>
                     </button>
@@ -407,6 +436,15 @@
             <!-- =============================================================== -->
             <div id="authRegisterPanel" class="hidden space-y-4">
               
+              <!-- Registration Requirement Info Notice -->
+              <div class="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200/80 text-emerald-900 text-xs flex items-center gap-2.5 shadow-xs">
+                <span class="material-symbols-outlined text-[20px] text-emerald-600 shrink-0">how_to_reg</span>
+                <div>
+                  <span class="font-bold block leading-tight">First-Time Member Registration</span>
+                  <p class="text-[11px] text-emerald-700 mt-0.5">Only registered campus members can log in. Complete registration below to activate your account!</p>
+                </div>
+              </div>
+
               <!-- Registration Form -->
               <form onsubmit="handleGatewayRegister(event)" class="space-y-3.5">
                 
@@ -420,7 +458,7 @@
                     </label>
                     <div class="relative flex items-center">
                       <span class="material-symbols-outlined absolute left-3.5 text-outline text-[18px] pointer-events-none">person</span>
-                      <input id="reg-name" required value="Alex J. Chen" placeholder="Alex J. Chen" class="w-full h-11 pl-10 pr-3 rounded-xl bg-surface-container-low text-on-surface text-xs border border-transparent focus:border-secondary focus:bg-white outline-none">
+                      <input id="reg-name" required value="" placeholder="e.g. Sharvesh Mahi" class="w-full h-11 pl-10 pr-3 rounded-xl bg-surface-container-low text-on-surface text-xs border border-transparent focus:border-secondary focus:bg-white outline-none font-medium">
                     </div>
                   </div>
 
@@ -434,23 +472,23 @@
                     </div>
                     <div class="relative flex items-center">
                       <span class="material-symbols-outlined absolute left-3.5 text-outline text-[18px] pointer-events-none">badge</span>
-                      <input id="reg-studentid" required value="SU-9824102" placeholder="SU-9824102" class="w-full h-11 pl-10 pr-3 rounded-xl bg-surface-container-low text-on-surface text-xs border border-transparent focus:border-secondary focus:bg-white outline-none">
+                      <input id="reg-studentid" required value="" placeholder="e.g. 25Z295" class="w-full h-11 pl-10 pr-3 rounded-xl bg-surface-container-low text-on-surface text-xs border border-transparent focus:border-secondary focus:bg-white outline-none font-medium">
                     </div>
                   </div>
                 </div>
 
-                <!-- Field 3: College Email Address with Edu Verification Badge -->
+                <!-- Field 3: College Email Address with Verification Badge -->
                 <div class="space-y-1">
                   <div class="flex items-center justify-between">
                     <label class="text-xs font-bold text-primary flex items-center gap-1" for="reg-email">
                       <span data-i18n="reg.email_label">College Email Address</span>
                       <span class="text-error">*</span>
                     </label>
-                    <span class="text-[10px] text-secondary font-semibold" data-i18n="reg.email_hint">Ends in .edu</span>
+                    <span class="text-[10px] text-secondary font-semibold" data-i18n="reg.email_hint">e.g. .ac.in / .edu</span>
                   </div>
                   <div class="relative flex items-center">
                     <span class="material-symbols-outlined absolute left-3.5 text-outline text-[18px] pointer-events-none">mail</span>
-                    <input id="reg-email" type="email" required value="alex.chen@stanford.edu" placeholder="alex.chen@stanford.edu" class="w-full h-11 pl-10 pr-10 rounded-xl bg-surface-container-low text-on-surface text-xs border border-transparent focus:border-secondary focus:bg-white outline-none">
+                    <input id="reg-email" type="email" required value="" placeholder="e.g. 25z295@psgitech.ac.in" class="w-full h-11 pl-10 pr-10 rounded-xl bg-surface-container-low text-on-surface text-xs border border-transparent focus:border-secondary focus:bg-white outline-none font-medium">
                     <span class="material-symbols-outlined absolute right-3.5 text-emerald-600 text-[18px]">check_circle</span>
                   </div>
                 </div>
@@ -481,13 +519,13 @@
                     <span class="text-error">*</span>
                   </label>
                   <div class="grid grid-cols-5 gap-1.5 bg-surface-container-low p-1 rounded-2xl">
-                    <button type="button" onclick="selectYear(this, 'Freshman')" class="year-pill py-1.5 text-center rounded-xl text-xs text-on-surface-variant hover:bg-white transition-all cursor-pointer" data-i18n="reg.year_freshman">Freshman</button>
-                    <button type="button" onclick="selectYear(this, 'Sophomore')" class="year-pill py-1.5 text-center rounded-xl text-xs text-on-surface-variant hover:bg-white transition-all cursor-pointer" data-i18n="reg.year_soph">Soph</button>
-                    <button type="button" onclick="selectYear(this, 'Junior')" class="year-pill py-1.5 text-center rounded-xl text-xs bg-primary text-white font-bold shadow-sm transition-all cursor-pointer" data-i18n="reg.year_junior">Junior</button>
-                    <button type="button" onclick="selectYear(this, 'Senior')" class="year-pill py-1.5 text-center rounded-xl text-xs text-on-surface-variant hover:bg-white transition-all cursor-pointer" data-i18n="reg.year_senior">Senior</button>
+                    <button type="button" onclick="selectYear(this, 'Freshman')" class="year-pill py-1.5 text-center rounded-xl text-xs bg-primary text-white font-bold shadow-sm transition-all cursor-pointer" data-i18n="reg.year_freshman">1st Year</button>
+                    <button type="button" onclick="selectYear(this, 'Sophomore')" class="year-pill py-1.5 text-center rounded-xl text-xs text-on-surface-variant hover:bg-white transition-all cursor-pointer" data-i18n="reg.year_soph">2nd Year</button>
+                    <button type="button" onclick="selectYear(this, 'Junior')" class="year-pill py-1.5 text-center rounded-xl text-xs text-on-surface-variant hover:bg-white transition-all cursor-pointer" data-i18n="reg.year_junior">3rd Year</button>
+                    <button type="button" onclick="selectYear(this, 'Senior')" class="year-pill py-1.5 text-center rounded-xl text-xs text-on-surface-variant hover:bg-white transition-all cursor-pointer" data-i18n="reg.year_senior">4th Year</button>
                     <button type="button" onclick="selectYear(this, 'Grad')" class="year-pill py-1.5 text-center rounded-xl text-xs text-on-surface-variant hover:bg-white transition-all cursor-pointer" data-i18n="reg.year_grad">Grad</button>
                   </div>
-                  <input id="selected-year" type="hidden" value="Junior">
+                  <input id="selected-year" type="hidden" value="Freshman">
                 </div>
 
                 <!-- Field 6: Password with Strength Indicator -->
@@ -498,7 +536,7 @@
                   </label>
                   <div class="relative flex items-center">
                     <span class="material-symbols-outlined absolute left-3.5 text-outline text-[18px] pointer-events-none">lock</span>
-                    <input id="reg-pass" type="password" required value="CampusHero#2025" placeholder="Create strong password" class="w-full h-11 pl-10 pr-10 rounded-xl bg-surface-container-low text-on-surface text-xs border border-transparent focus:border-secondary focus:bg-white outline-none">
+                    <input id="reg-pass" type="password" required value="" placeholder="Create strong password" class="w-full h-11 pl-10 pr-10 rounded-xl bg-surface-container-low text-on-surface text-xs border border-transparent focus:border-secondary focus:bg-white outline-none">
                     <button type="button" onclick="togglePasswordVisibility('reg-pass', this)" aria-label="Toggle password visibility" class="absolute right-3.5 text-outline hover:text-primary transition-colors p-1 cursor-pointer">
                       <span class="material-symbols-outlined text-[18px]">visibility</span>
                     </button>
@@ -526,7 +564,7 @@
                   </label>
                   <div class="relative flex items-center">
                     <span class="material-symbols-outlined absolute left-3.5 text-outline text-[18px] pointer-events-none">lock_clock</span>
-                    <input id="reg-confirm-pass" type="password" required value="CampusHero#2025" placeholder="Re-enter password" class="w-full h-11 pl-10 pr-10 rounded-xl bg-surface-container-low text-on-surface text-xs border border-transparent focus:border-secondary focus:bg-white outline-none">
+                    <input id="reg-confirm-pass" type="password" required value="" placeholder="Re-enter password" class="w-full h-11 pl-10 pr-10 rounded-xl bg-surface-container-low text-on-surface text-xs border border-transparent focus:border-secondary focus:bg-white outline-none">
                     <span class="material-symbols-outlined absolute right-3.5 text-emerald-600 text-[18px]">check_circle</span>
                   </div>
                   <div class="flex items-center gap-1 text-emerald-700 text-[10px] font-semibold pl-1">
@@ -538,6 +576,9 @@
                 <!-- Action Button: Create Student Account -->
                 <button type="submit" id="btn-register" class="w-full h-12 bg-primary hover:bg-primary-hover text-white transition-all rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 shadow-md active:scale-[0.98] cursor-pointer">
                   <span data-i18n="reg.submit_btn">Create Student Account</span>
+                  <span class="material-symbols-outlined text-[19px]">arrow_forward</span>
+                </button>
+              </form>
                   <span class="material-symbols-outlined text-[19px]">arrow_forward</span>
                 </button>
 
@@ -716,7 +757,7 @@
               <div class="w-8 h-8 rounded-full overflow-hidden ring-2 ring-blue-100 shrink-0">
                 <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHidFGGvejNyhkUBYrLtdf6YBBJH4cdUC8PrAvMSsLsYw29f3rxNOr1LXFSuNGwGsWjv-ou9bedavLx1oiQXsiW3MD674jEP9umUigltN6OXY-sEur0CQveiqITJGNH2LX-cl2jcU0Vef-R_KhMIEo1PwG_hbf0mrS88phMWaoVA6h74QfX_S0Km9Ne14pch4EEQ08E86vS_bWV-4UiNF6-5rhOjPAEsh2hEdwtOo1" alt="Alex Rivera" class="w-full h-full object-cover">
               </div>
-              <span class="hidden xl:inline text-xs font-semibold text-primary" id="topNavUserName">Alex Rivera</span>
+              <span class="hidden xl:inline text-xs font-semibold text-primary" id="topNavUserName">Sharvesh Mahi</span>
               <span class="material-symbols-outlined text-[16px] text-outline hidden xl:inline">expand_more</span>
             </button>
 
@@ -1323,13 +1364,13 @@
           </div>
 
           <div>
-            <h2 class="font-display font-extrabold text-2xl text-primary" id="profileFullName">Alex Rivera</h2>
+            <h2 class="font-display font-extrabold text-2xl text-primary" id="profileFullName">Sharvesh Mahi</h2>
             <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-secondary text-xs font-semibold mt-1">
               <span class="material-symbols-outlined text-[14px]">school</span>
-              <span data-i18n="profile.school">Stanford University • Class of '26</span>
+              <span id="profileSchoolText">PSG iTech • Class of '29</span>
             </div>
-            <p class="text-xs text-on-surface-variant mt-2" data-i18n="profile.dept">
-              Department of Computer Science • #STU-882941
+            <p class="text-xs text-on-surface-variant mt-2" id="profileDeptText">
+              Department of Computer Science & Engineering • #25Z295
             </p>
           </div>
 
@@ -1352,11 +1393,11 @@
           <div class="text-left space-y-2.5 pt-3 border-t border-surface-container text-xs">
             <div class="flex justify-between">
               <span class="text-outline" data-i18n="profile.label_dorm">Campus Dorm:</span>
-              <span class="font-semibold text-primary" id="profileDormText">Wilbur Hall 304</span>
+              <span class="font-semibold text-primary" id="profileDormText">Campus Hostel Block A</span>
             </div>
             <div class="flex justify-between">
               <span class="text-outline" data-i18n="profile.label_email">Institutional Email:</span>
-              <span class="font-semibold text-secondary">a.rivera@stanford.edu</span>
+              <span class="font-semibold text-secondary" id="profileEmailText">25z295@psgitech.ac.in</span>
             </div>
             <div class="flex justify-between">
               <span class="text-outline" data-i18n="profile.label_phone">Phone Handover:</span>
@@ -1698,12 +1739,12 @@
 
       <form onsubmit="event.preventDefault(); submitAuth();" class="space-y-3 pt-1">
         <div>
-          <label class="text-xs font-bold text-outline block mb-1" data-i18n="modal.auth.email_label">University Email (.edu)</label>
-          <input type="email" id="authEmailInput" value="alex.rivera@stanford.edu" required class="w-full p-2.5 rounded-xl bg-surface-container-low text-xs border border-transparent focus:border-secondary outline-none">
+          <label class="text-xs font-bold text-outline block mb-1" data-i18n="modal.auth.email_label">College Email / Student ID</label>
+          <input type="text" id="authEmailInput" value="25z295@psgitech.ac.in" required class="w-full p-2.5 rounded-xl bg-surface-container-low text-xs border border-transparent focus:border-secondary outline-none">
         </div>
         <div>
           <label class="text-xs font-bold text-outline block mb-1" data-i18n="modal.auth.password_label">Password</label>
-          <input type="password" id="authPassInput" value="Stanford2026!" required class="w-full p-2.5 rounded-xl bg-surface-container-low text-xs border border-transparent focus:border-secondary outline-none">
+          <input type="password" id="authPassInput" value="sharveshmahi" required class="w-full p-2.5 rounded-xl bg-surface-container-low text-xs border border-transparent focus:border-secondary outline-none">
         </div>
         <button type="submit" id="authSubmitBtn" class="w-full py-3 rounded-xl bg-secondary hover:bg-secondary-hover text-white text-xs font-bold shadow-sm transition-all" data-i18n="modal.auth.submit_btn">
           Sign In to LendLoop
@@ -1737,10 +1778,16 @@
         if (token) headers["Authorization"] = `Bearer ${token}`;
         try {
           const res = await fetch(`${this.BASE_URL}${endpoint}`, { ...options, headers: { ...headers, ...(options.headers || {}) } });
-          if (!res.ok) throw new Error(`HTTP ${res.status}`);
-          return await res.json();
+          const data = await res.json().catch(() => ({}));
+          if (!res.ok) {
+            const err = new Error(data.error || `HTTP ${res.status}`);
+            err.status = res.status;
+            err.data = data;
+            throw err;
+          }
+          return data;
         } catch (err) {
-          console.log(`[api.py Connector] Offline or unreachable for ${endpoint}:`, err.message);
+          console.log(`[api.py Connector] ${endpoint}:`, err.message);
           throw err;
         }
       },
@@ -2578,24 +2625,92 @@
     // ================= AUTHENTICATION & GATEWAY CONTROLLER =================
     let isAuthenticated = false; // Initially false: gateway displays before entering
 
+    // Default registered members store (seeded with requested demo member)
+    const DEFAULT_REGISTERED_USERS = [
+      {
+        studentId: "25Z295",
+        name: "Sharvesh Mahi",
+        email: "25z295@psgitech.ac.in",
+        password: "sharveshmahi",
+        department: "Computer Science & Engineering",
+        year: "1st Year",
+        dorm: "Campus Hostel Block A",
+        campus: "PSG iTech Campus"
+      }
+    ];
+
+    function getRegisteredUsers() {
+      try {
+        const saved = localStorage.getItem("campuslend_registered_users");
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed)) {
+            // Ensure demo account is always available
+            if (!parsed.some(u => (u.email || "").toLowerCase() === "25z295@psgitech.ac.in" || (u.studentId || "").toLowerCase() === "25z295")) {
+              parsed.unshift(DEFAULT_REGISTERED_USERS[0]);
+            }
+            return parsed;
+          }
+        }
+      } catch (e) {}
+      return [...DEFAULT_REGISTERED_USERS];
+    }
+
+    function saveRegisteredUser(user) {
+      const users = getRegisteredUsers();
+      const existingIdx = users.findIndex(u => 
+        (u.email || "").toLowerCase() === (user.email || "").toLowerCase() || 
+        (u.studentId || "").toLowerCase() === (user.studentId || "").toLowerCase()
+      );
+      if (existingIdx >= 0) {
+        users[existingIdx] = { ...users[existingIdx], ...user };
+      } else {
+        users.push(user);
+      }
+      try {
+        localStorage.setItem("campuslend_registered_users", JSON.stringify(users));
+      } catch (e) {}
+    }
+
     let currentUser = {
-      name: "Alex J. Chen",
-      email: "alex.chen@stanford.edu",
-      studentId: "SU-9824102",
+      name: "Sharvesh Mahi",
+      email: "25z295@psgitech.ac.in",
+      studentId: "25Z295",
       department: "Computer Science & Engineering",
-      year: "Junior",
-      dorm: "Wilbur Hall 304",
-      campus: "Stanford University"
+      year: "1st Year",
+      dorm: "Campus Hostel Block A",
+      campus: "PSG iTech Campus"
     };
 
     function initAuth() {
       // Check if session was authenticated
       const savedAuth = sessionStorage.getItem("lendloop_authenticated");
+      const savedUser = sessionStorage.getItem("lendloop_user");
+      if (savedUser) {
+        try {
+          currentUser = JSON.parse(savedUser);
+        } catch (e) {}
+      }
       if (savedAuth === "true") {
         setAuthenticated(true, false);
       } else {
         setAuthenticated(false, false);
       }
+    }
+
+    function fillDemoCredentials() {
+      const emailInput = document.getElementById("gatewayLoginEmail");
+      const passInput = document.getElementById("gatewayLoginPassword");
+      if (emailInput) emailInput.value = "25z295@psgitech.ac.in";
+      if (passInput) passInput.value = "sharveshmahi";
+      const errBox = document.getElementById("loginErrorMessage");
+      if (errBox) errBox.classList.add("hidden");
+      showToast("Demo credentials filled (25z295@psgitech.ac.in)", "info");
+    }
+
+    function handleQuickDemoAccess() {
+      fillDemoCredentials();
+      handleGatewayLogin();
     }
 
     function setAuthenticated(status, showNotification = true) {
@@ -2627,6 +2742,8 @@
       const registerPanel = document.getElementById("authRegisterPanel");
       const loginVisual = document.getElementById("loginVisualCard");
       const registerVisual = document.getElementById("registerVisualCard");
+      const errBox = document.getElementById("loginErrorMessage");
+      if (errBox) errBox.classList.add("hidden");
 
       if (tab === "login") {
         tabLogin.className = "flex-1 py-2.5 text-center font-bold text-xs sm:text-sm rounded-xl bg-primary text-white shadow-sm transition-all flex items-center justify-center gap-1.5 cursor-pointer";
@@ -2649,36 +2766,116 @@
       }
     }
 
-    function handleGatewayLogin(e) {
+    async function handleGatewayLogin(e) {
       if (e) e.preventDefault();
       const emailInput = document.getElementById("gatewayLoginEmail");
-      const email = emailInput ? emailInput.value.trim() : "alex.chen@stanford.edu";
-      
-      if (!email.toLowerCase().includes(".edu")) {
-        showToast(t("toast.invalid_email", "Please enter a verified campus university (.edu) email"), "info");
+      const passInput = document.getElementById("gatewayLoginPassword");
+      const errBox = document.getElementById("loginErrorMessage");
+      const errText = document.getElementById("loginErrorText");
+      if (errBox) errBox.classList.add("hidden");
+
+      const inputVal = emailInput ? emailInput.value.trim().toLowerCase() : "";
+      const password = passInput ? passInput.value : "";
+
+      if (!inputVal) {
+        showToast("Please enter your registered Student Email or ID", "error");
         return;
       }
-      
-      currentUser.email = email;
-      sessionStorage.setItem("lendloop_authenticated", "true");
-
-      if (window.CampusLendAPI && window.CampusLendAPI.login) {
-        window.CampusLendAPI.login(email, "password123").then(res => {
-          if (res && res.token) localStorage.setItem("campuslend_token", res.token);
-          if (res && res.student) {
-            currentUser.name = res.student.name || currentUser.name;
-            currentUser.studentId = res.student.studentId || currentUser.studentId;
-            currentUser.department = res.student.department || currentUser.department;
-            currentUser.dorm = res.student.dormLocation || currentUser.dorm;
-            updateUserDisplay();
-          }
-        }).catch(e => console.log("[CampusLend] Standalone offline login session"));
+      if (!password) {
+        showToast("Please enter your password", "error");
+        return;
       }
 
+      // 1. Try Backend API first if server is running
+      if (window.CampusLendAPI && window.CampusLendAPI.login) {
+        try {
+          const res = await window.CampusLendAPI.login(inputVal, password);
+          if (res && res.student) {
+            if (res.token) localStorage.setItem("campuslend_token", res.token);
+            currentUser = {
+              name: res.student.name || "Sharvesh Mahi",
+              email: res.student.email || inputVal,
+              studentId: res.student.studentId || "25Z295",
+              department: res.student.department || "Computer Science & Engineering",
+              year: res.student.yearOfStudy || "1st Year",
+              dorm: res.student.dormLocation || "Campus Hostel Block A",
+              campus: res.student.campus || "PSG iTech Campus"
+            };
+            sessionStorage.setItem("lendloop_authenticated", "true");
+            sessionStorage.setItem("lendloop_user", JSON.stringify(currentUser));
+            setAuthenticated(true, true);
+            return;
+          }
+        } catch (err) {
+          // Explicit rejection from API:
+          if (err.status === 401) {
+            const msg = t("toast.incorrect_password", "Incorrect password. Please enter the valid password.");
+            showToast(msg, "error");
+            if (errBox && errText) {
+              errText.textContent = msg;
+              errBox.classList.remove("hidden");
+            }
+            return;
+          }
+          if (err.status === 404) {
+            const msg = t("toast.account_not_found", "Account not registered! You must register first before logging in.");
+            showToast(msg, "error");
+            if (errBox && errText) {
+              errText.textContent = msg;
+              errBox.classList.remove("hidden");
+            }
+            setTimeout(() => switchGatewayTab("register"), 1500);
+            return;
+          }
+          // If offline / connection refused, fall through to client-side database
+        }
+      }
+
+      // 2. Client-side database check (enforces that only registered members can log in)
+      const registeredUsers = getRegisteredUsers();
+      const matchedUser = registeredUsers.find(u => 
+        (u.email || "").toLowerCase() === inputVal || 
+        (u.studentId || "").toLowerCase() === inputVal
+      );
+
+      if (!matchedUser) {
+        const msg = t("toast.account_not_found", "Account not registered! You must register first before logging in.");
+        showToast(msg, "error");
+        if (errBox && errText) {
+          errText.textContent = msg;
+          errBox.classList.remove("hidden");
+        }
+        setTimeout(() => switchGatewayTab("register"), 1500);
+        return;
+      }
+
+      if (matchedUser.password && matchedUser.password !== password) {
+        const msg = t("toast.incorrect_password", "Incorrect password. Please enter the valid password.");
+        showToast(msg, "error");
+        if (errBox && errText) {
+          errText.textContent = msg;
+          errBox.classList.remove("hidden");
+        }
+        return;
+      }
+
+      // Success: verified registered member
+      currentUser = {
+        name: matchedUser.name || "Sharvesh Mahi",
+        email: matchedUser.email || inputVal,
+        studentId: matchedUser.studentId || "25Z295",
+        department: matchedUser.department || "Computer Science & Engineering",
+        year: matchedUser.year || "1st Year",
+        dorm: matchedUser.dorm || "Campus Hostel Block A",
+        campus: matchedUser.campus || "PSG iTech Campus"
+      };
+
+      sessionStorage.setItem("lendloop_authenticated", "true");
+      sessionStorage.setItem("lendloop_user", JSON.stringify(currentUser));
       setAuthenticated(true, true);
     }
 
-    function handleGatewayRegister(e) {
+    async function handleGatewayRegister(e) {
       if (e) e.preventDefault();
       const nameInput = document.getElementById("reg-name");
       const studentIdInput = document.getElementById("reg-studentid");
@@ -2688,57 +2885,103 @@
       const passInput = document.getElementById("reg-pass");
       const confirmPassInput = document.getElementById("reg-confirm-pass");
 
-      const name = nameInput ? nameInput.value.trim() : "Alex J. Chen";
-      const studentId = studentIdInput ? studentIdInput.value.trim() : "SU-9824102";
-      const email = emailInput ? emailInput.value.trim() : "alex.chen@stanford.edu";
+      const name = nameInput ? nameInput.value.trim() : "";
+      const studentId = studentIdInput ? studentIdInput.value.trim() : "";
+      const email = emailInput ? emailInput.value.trim().toLowerCase() : "";
       const dept = deptInput ? deptInput.options[deptInput.selectedIndex].text : "Computer Science & Engineering";
-      const year = yearInput ? yearInput.value : "Junior";
+      const year = yearInput ? yearInput.value : "1st Year";
+      const pass = passInput ? passInput.value : "";
+      const confirmPass = confirmPassInput ? confirmPassInput.value : "";
 
-      if (!email.toLowerCase().includes(".edu")) {
-        showToast(t("toast.invalid_email", "Please enter a verified campus university (.edu) email"), "info");
+      if (!name || !studentId || !email || !pass) {
+        showToast("Please fill in all required registration fields (*)", "error");
         return;
       }
 
-      if (passInput && confirmPassInput && passInput.value !== confirmPassInput.value) {
+      if (!email.includes("@") || !email.includes(".")) {
+        showToast(t("toast.invalid_email", "Please enter a valid campus email address"), "error");
+        return;
+      }
+
+      if (pass !== confirmPass) {
         showToast(t("toast.password_mismatch", "Passwords do not match"), "error");
         return;
       }
 
-      currentUser.name = name;
-      currentUser.studentId = studentId;
-      currentUser.email = email;
-      currentUser.department = dept;
-      currentUser.year = year;
+      const newMember = {
+        name,
+        studentId,
+        email,
+        password: pass,
+        department: dept,
+        year,
+        dorm: "Campus Hostel Block A",
+        campus: "PSG iTech Campus"
+      };
 
-      sessionStorage.setItem("lendloop_authenticated", "true");
+      // 1. Save to client-side storage so user is registered
+      saveRegisteredUser(newMember);
 
+      // 2. Sync to Python REST API if running
       if (window.CampusLendAPI && window.CampusLendAPI.register) {
-        window.CampusLendAPI.register({
-          name,
-          studentId,
-          email,
-          password: passInput ? passInput.value : "CampusHero#2025",
-          department: dept,
-          yearOfStudy: year,
-          dormLocation: currentUser.dorm || "Wilbur Hall 304"
-        }).then(res => {
+        try {
+          const res = await window.CampusLendAPI.register({
+            name,
+            studentId,
+            email,
+            password: pass,
+            department: dept,
+            yearOfStudy: year,
+            dormLocation: "Campus Hostel Block A",
+            campus: "PSG iTech Campus"
+          });
           if (res && res.token) localStorage.setItem("campuslend_token", res.token);
-        }).catch(e => console.log("[CampusLend] Standalone offline register session"));
+        } catch (err) {
+          console.log("[CampusLend] Standalone offline register session saved locally");
+        }
       }
 
+      // Pre-populate login form with newly registered member credentials
+      const loginEmail = document.getElementById("gatewayLoginEmail");
+      const loginPass = document.getElementById("gatewayLoginPassword");
+      if (loginEmail) loginEmail.value = email;
+      if (loginPass) loginPass.value = pass;
+
+      currentUser = { ...newMember };
+      sessionStorage.setItem("lendloop_authenticated", "true");
+      sessionStorage.setItem("lendloop_user", JSON.stringify(currentUser));
+
+      showToast(`${t("toast.registration_success", "Registration successful! Welcome to LendLoop")}, ${name.split(' ')[0]}!`, "success");
       setAuthenticated(true, true);
     }
 
     function handleGoogleSignIn() {
+      currentUser = {
+        name: "Sharvesh Mahi",
+        email: "25z295@psgitech.ac.in",
+        studentId: "25Z295",
+        department: "Computer Science & Engineering",
+        year: "1st Year",
+        dorm: "Campus Hostel Block A",
+        campus: "PSG iTech Campus"
+      };
       sessionStorage.setItem("lendloop_authenticated", "true");
+      sessionStorage.setItem("lendloop_user", JSON.stringify(currentUser));
       setAuthenticated(true, true);
     }
 
     function handleLogout() {
       sessionStorage.removeItem("lendloop_authenticated");
+      sessionStorage.removeItem("lendloop_user");
       localStorage.removeItem("campuslend_token");
       setAuthenticated(false, false);
-      showToast(t("toast.sign_out", "Signed out of LendLoop. Please log in to continue."), "info");
+      const emailInput = document.getElementById("gatewayLoginEmail");
+      const passInput = document.getElementById("gatewayLoginPassword");
+      if (emailInput) emailInput.value = "25z295@psgitech.ac.in";
+      if (passInput) passInput.value = "sharveshmahi";
+      const errBox = document.getElementById("loginErrorMessage");
+      if (errBox) errBox.classList.add("hidden");
+      showToast(t("toast.sign_out", "Signed out of LendLoop. Only registered members can log in."), "info");
     }
 
     function togglePasswordVisibility(inputId, btn) {
@@ -2764,8 +3007,19 @@
     function updateUserDisplay() {
       const navName = document.getElementById("topNavUserName");
       const profileName = document.getElementById("profileFullName");
+      const profileEmail = document.getElementById("profileEmailText");
+      const profileDept = document.getElementById("profileDeptText");
+      const profileDorm = document.getElementById("profileDormText");
+      const profileSchool = document.getElementById("profileSchoolText");
+      const navCampus = document.getElementById("navCampusLabel");
+
       if (navName) navName.textContent = currentUser.name;
       if (profileName) profileName.textContent = currentUser.name;
+      if (profileEmail) profileEmail.textContent = currentUser.email;
+      if (profileDept) profileDept.textContent = `${currentUser.department || 'Computer Science & Engineering'} • #${currentUser.studentId || '25Z295'}`;
+      if (profileDorm) profileDorm.textContent = currentUser.dorm || 'Campus Hostel Block A';
+      if (profileSchool && currentUser.campus) profileSchool.textContent = `${currentUser.campus} • Class of '29`;
+      if (navCampus && currentUser.campus) navCampus.textContent = currentUser.campus;
     }
 
     // Modal compatibility stubs
@@ -2778,6 +3032,13 @@
       switchGatewayTab(tab);
     }
     function submitAuth() {
+      const eInput = document.getElementById("authEmailInput");
+      const pInput = document.getElementById("authPassInput");
+      const gEmail = document.getElementById("gatewayLoginEmail");
+      const gPass = document.getElementById("gatewayLoginPassword");
+      if (eInput && gEmail) gEmail.value = eInput.value;
+      if (pInput && gPass) gPass.value = pInput.value;
+      closeAuthModal();
       handleGatewayLogin();
     }
 
