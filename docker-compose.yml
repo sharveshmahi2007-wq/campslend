@@ -1,6 +1,7 @@
 version: '3.8'
 
 services:
+  # 1. MongoDB Database
   mongodb:
     image: mongo:7.0
     container_name: campuslend-mongodb
@@ -11,8 +12,31 @@ services:
       - mongo-data:/data/db
       - ./backend/src/main/resources/data/init_database.js:/docker-entrypoint-initdb.d/init_database.js:ro
     environment:
-      - MONGO_INITDB_DATABASE=campuslend_db
+      - MONGO_INITDB_DATABASE=lend
+    networks:
+      - campuslend-net
 
+  # 2. CampusLend Web Application & Python REST API (api.py + index.html)
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: campuslend-app
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+      - MONGO_URI=mongodb://mongodb:27017/
+      - MONGO_DB_NAME=lend
+    env_file:
+      - .env
+    depends_on:
+      - mongodb
+    networks:
+      - campuslend-net
+
+  # 3. Mongo Express (Web UI for database viewing at http://localhost:8081)
   mongo-express:
     image: mongo-express:latest
     container_name: campuslend-mongo-express
@@ -25,7 +49,12 @@ services:
       - ME_CONFIG_BASICAUTH=false
     depends_on:
       - mongodb
+    networks:
+      - campuslend-net
+
+networks:
+  campuslend-net:
+    driver: bridge
 
 volumes:
   mongo-data:
-

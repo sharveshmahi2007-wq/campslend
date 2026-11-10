@@ -9,7 +9,7 @@ public class RegisterRequest {
     @NotBlank(message = "Name is required")
     private String name;
 
-    @NotBlank(message = "Student ID is required")
+    @NotBlank(message = "Student ID / Roll No is required")
     private String studentId;
 
     @NotBlank(message = "Email is required")
@@ -24,6 +24,8 @@ public class RegisterRequest {
     @NotBlank(message = "Password is required")
     @Size(min = 6, message = "Password must be at least 6 characters")
     private String password;
+
+    private String verificationToken;
 
     public RegisterRequest() {
     }
@@ -75,5 +77,12 @@ public class RegisterRequest {
     public void setPassword(String password) {
         this.password = password;
     }
-}
 
+    public String getVerificationToken() {
+        return verificationToken;
+    }
+
+    public void setVerificationToken(String verificationToken) {
+        this.verificationToken = verificationToken;
+    }
+}

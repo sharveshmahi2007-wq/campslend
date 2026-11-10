@@ -128,7 +128,7 @@
         <div class="flex items-center gap-3">
           <div class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container text-primary text-xs font-semibold">
             <span class="material-symbols-outlined text-[15px] text-secondary">verified_user</span>
-            <span data-i18n="brand.verified_colleges">Stanford • Berkeley • MIT • Harvard</span>
+            <span data-i18n="brand.verified_colleges">PSG iTech • Anna University • PSG College of Technology</span>
           </div>
 
           <!-- Language Selector for Gateway -->
@@ -140,7 +140,7 @@
             </select>
           </div>
 
-          <button onclick="handleQuickDemoAccess()" class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-secondary text-xs font-bold transition-all border border-blue-200/60 shadow-sm cursor-pointer" title="Instant access with demo student account (25z295@psgitech.ac.in)">
+          <button onclick="handleQuickDemoAccess()" class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-secondary text-xs font-bold transition-all border border-blue-200/60 shadow-sm cursor-pointer" title="Instant access with demo member account (25z295@psgitech.ac.in)">
             <span class="material-symbols-outlined text-[16px]">bolt</span>
             <span data-i18n="brand.demo_access">Quick Demo Access</span>
           </button>
@@ -172,7 +172,7 @@
                 <span data-i18n="gateway.hero_h2_part1">Borrow Smart.</span><br><span class="text-emerald-400" data-i18n="gateway.hero_h2_part2">Share More.</span>
               </h2>
               <p class="text-xs text-blue-200 leading-relaxed" data-i18n="gateway.hero_desc">
-                Connect with verified classmates at Stanford to borrow graphing calculators, textbooks, tech gear, and camera kits safely.
+                Connect with verified classmates at PSG Institute of Technology and Applied Research (PSG iTech) to borrow calculators, textbooks, tech gear, and lab kits safely.
               </p>
             </div>
 
@@ -190,12 +190,12 @@
                       <span class="material-symbols-outlined text-[18px]">school</span>
                     </div>
                     <div class="flex flex-col">
-                      <span class="text-xs font-bold leading-tight" data-i18n="gateway.students_active">4,800+ Students Active</span>
-                      <span class="text-[10px] text-blue-200" data-i18n="gateway.colleges_list">Stanford, Berkeley, MIT & more</span>
+                      <span class="text-xs font-bold leading-tight" data-i18n="gateway.students_active">2,400+ Students Active</span>
+                      <span class="text-[10px] text-blue-200" data-i18n="gateway.colleges_list">PSG iTech Campus, Coimbatore</span>
                     </div>
                   </div>
                   <span class="px-2.5 py-1 rounded-full bg-white/20 backdrop-blur-md text-white text-[11px] font-bold" data-i18n="gateway.trust_rating">
-                    98% Trust Rating
+                    99% Trust Rating
                   </span>
                 </div>
               </div>
@@ -210,9 +210,9 @@
                   <span class="material-symbols-outlined text-[14px]">star</span>
                 </div>
                 <p class="text-blue-100 text-[11px] italic leading-tight" data-i18n="gateway.testimonial_quote">
-                  "Saved $120 on a TI-84 Plus CE for my Math midterm. Picked it up 10 mins later at Wilbur Hall!"
+                  "Saved Rs.800 on an FX-991CW Calculator for my Engineering Math exam. Picked it up 10 mins later at Hostel Block A!"
                 </p>
-                <span class="text-[10px] text-blue-300 block font-semibold" data-i18n="gateway.testimonial_author">— Maya L., Sophomore CS</span>
+                <span class="text-[10px] text-blue-300 block font-semibold" data-i18n="gateway.testimonial_author">— Maya L., 2nd Year CSE</span>
               </div>
             </div>
 
@@ -254,7 +254,7 @@
             </div>
             <div class="flex items-center gap-2">
               <span class="material-symbols-outlined text-emerald-400 text-[18px]">shield</span>
-              <span class="text-blue-100 font-semibold" data-i18n="gateway.deposit_shield">$1,000 Deposit Shield</span>
+              <span class="text-blue-100 font-semibold" data-i18n="gateway.deposit_shield">₹10,000 Deposit Shield</span>
             </div>
           </div>
         </div>
@@ -302,17 +302,8 @@
             <!-- =============================================================== -->
             <div id="authLoginPanel" class="space-y-5">
               
-              <!-- Verification Highlight Badge from campuslend_login code.html -->
-              <div class="flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-blue-50 text-primary border border-blue-100">
-                <div class="flex items-center gap-2 min-w-0">
-                  <span class="material-symbols-outlined text-[20px] text-secondary flex-shrink-0">check_circle</span>
-                  <span class="text-xs font-semibold truncate" data-i18n="gateway.edu_verified_badge">.edu verified student network</span>
-                </div>
-                <span class="text-[11px] text-secondary bg-white px-2 py-0.5 rounded-md font-bold shadow-xs" data-i18n="gateway.id_safe">100% ID Safe</span>
-              </div>
-
-              <!-- Demo Member Badge & Helper -->
-              <div class="p-3 rounded-2xl bg-gradient-to-r from-blue-50 to-indigo-50/70 border border-blue-200/70 flex items-center justify-between text-xs shadow-xs">
+              <!-- Pre-Authorized Demo Member Banner -->
+              <div class="p-3 rounded-2xl bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200/80 flex items-center justify-between text-xs shadow-xs">
                 <div class="flex items-center gap-2.5 min-w-0">
                   <div class="w-7 h-7 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary shrink-0">
                     <span class="material-symbols-outlined text-[17px]">key</span>
@@ -329,15 +320,13 @@
                 </button>
               </div>
 
-              <!-- Login Error / Not Registered Alert Container -->
-              <div id="loginErrorMessage" class="hidden p-3 rounded-2xl bg-red-50 border border-red-200 text-error text-xs flex items-center justify-between gap-2 animate-pulse">
+              <!-- Verification Highlight Badge -->
+              <div class="flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-blue-50 text-primary border border-blue-100">
                 <div class="flex items-center gap-2 min-w-0">
-                  <span class="material-symbols-outlined text-[18px] text-error shrink-0">error</span>
-                  <span id="loginErrorText" class="font-semibold truncate">Account not found. Please register first.</span>
+                  <span class="material-symbols-outlined text-[20px] text-secondary flex-shrink-0">check_circle</span>
+                  <span class="text-xs font-semibold truncate" data-i18n="gateway.edu_verified_badge">@psgitech.ac.in verified student network</span>
                 </div>
-                <button type="button" onclick="switchGatewayTab('register')" class="px-2 py-0.5 rounded-lg bg-error text-white font-bold text-[10px] hover:bg-red-700 transition-colors shrink-0">
-                  Register
-                </button>
+                <span class="text-[11px] text-secondary bg-white px-2 py-0.5 rounded-md font-bold shadow-xs" data-i18n="gateway.id_safe">100% ID Safe</span>
               </div>
 
               <!-- Main Login Form -->
@@ -347,18 +336,18 @@
                 <div class="space-y-1.5">
                   <div class="flex items-center justify-between">
                     <label class="text-xs font-bold text-primary" for="gatewayLoginEmail" data-i18n="login.email_label">
-                      College Email / Student ID
+                      College Email / Roll No (@psgitech.ac.in)
                     </label>
                     <span class="text-[11px] text-secondary flex items-center gap-1 font-semibold">
                       <span class="material-symbols-outlined text-[14px]">domain_verification</span>
-                      <span data-i18n="login.campus_domain">Verified campus member</span>
+                      <span data-i18n="login.campus_domain">Official PSG iTech member</span>
                     </span>
                   </div>
                   <div class="relative flex items-center">
                     <div class="absolute left-3.5 flex items-center pointer-events-none text-outline">
                       <span class="material-symbols-outlined text-[20px]">badge</span>
                     </div>
-                    <input id="gatewayLoginEmail" type="text" required value="25z295@psgitech.ac.in" placeholder="e.g. 25z295@psgitech.ac.in" class="w-full h-12 pl-11 pr-10 rounded-xl bg-surface-container-low text-on-surface text-sm border border-transparent focus:border-secondary focus:bg-white focus:ring-2 focus:ring-blue-100 transition-all outline-none font-medium">
+                    <input id="gatewayLoginEmail" type="text" required value="25z295@psgitech.ac.in" placeholder="25z295@psgitech.ac.in" class="w-full h-12 pl-11 pr-10 rounded-xl bg-surface-container-low text-on-surface text-sm border border-transparent focus:border-secondary focus:bg-white focus:ring-2 focus:ring-blue-100 transition-all outline-none font-medium">
                     <div class="absolute right-3.5 flex items-center text-emerald-600">
                       <span class="material-symbols-outlined text-[18px]">verified</span>
                     </div>
@@ -371,7 +360,7 @@
                     <label class="text-xs font-bold text-primary" for="gatewayLoginPassword" data-i18n="login.password_label">
                       Password
                     </label>
-                    <a href="#" onclick="showToast('Demo password is: sharveshmahi', 'info'); return false;" class="text-[11px] text-secondary hover:underline font-semibold" data-i18n="login.forgot_password">
+                    <a href="#" onclick="showToast('Demo password: sharveshmahi', 'info'); return false;" class="text-[11px] text-secondary hover:underline font-semibold" data-i18n="login.forgot_password">
                       Forgot password?
                     </a>
                   </div>
@@ -436,15 +425,6 @@
             <!-- =============================================================== -->
             <div id="authRegisterPanel" class="hidden space-y-4">
               
-              <!-- Registration Requirement Info Notice -->
-              <div class="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200/80 text-emerald-900 text-xs flex items-center gap-2.5 shadow-xs">
-                <span class="material-symbols-outlined text-[20px] text-emerald-600 shrink-0">how_to_reg</span>
-                <div>
-                  <span class="font-bold block leading-tight">First-Time Member Registration</span>
-                  <p class="text-[11px] text-emerald-700 mt-0.5">Only registered campus members can log in. Complete registration below to activate your account!</p>
-                </div>
-              </div>
-
               <!-- Registration Form -->
               <form onsubmit="handleGatewayRegister(event)" class="space-y-3.5">
                 
@@ -458,7 +438,7 @@
                     </label>
                     <div class="relative flex items-center">
                       <span class="material-symbols-outlined absolute left-3.5 text-outline text-[18px] pointer-events-none">person</span>
-                      <input id="reg-name" required value="" placeholder="e.g. Sharvesh Mahi" class="w-full h-11 pl-10 pr-3 rounded-xl bg-surface-container-low text-on-surface text-xs border border-transparent focus:border-secondary focus:bg-white outline-none font-medium">
+                      <input id="reg-name" required value="" placeholder="e.g. Sharvesh Mahi" class="w-full h-11 pl-10 pr-3 rounded-xl bg-surface-container-low text-on-surface text-xs border border-transparent focus:border-secondary focus:bg-white outline-none">
                     </div>
                   </div>
 
@@ -472,25 +452,70 @@
                     </div>
                     <div class="relative flex items-center">
                       <span class="material-symbols-outlined absolute left-3.5 text-outline text-[18px] pointer-events-none">badge</span>
-                      <input id="reg-studentid" required value="" placeholder="e.g. 25Z295" class="w-full h-11 pl-10 pr-3 rounded-xl bg-surface-container-low text-on-surface text-xs border border-transparent focus:border-secondary focus:bg-white outline-none font-medium">
+                      <input id="reg-studentid" required value="" placeholder="e.g. 25Z295" class="w-full h-11 pl-10 pr-3 rounded-xl bg-surface-container-low text-on-surface text-xs border border-transparent focus:border-secondary focus:bg-white outline-none">
                     </div>
                   </div>
                 </div>
 
-                <!-- Field 3: College Email Address with Verification Badge -->
-                <div class="space-y-1">
+                <!-- Field 3: College Email Address with PSG iTech OTP Verification -->
+                <div class="space-y-2">
                   <div class="flex items-center justify-between">
                     <label class="text-xs font-bold text-primary flex items-center gap-1" for="reg-email">
-                      <span data-i18n="reg.email_label">College Email Address</span>
+                      <span data-i18n="reg.email_label">PSG iTech College Email</span>
                       <span class="text-error">*</span>
                     </label>
-                    <span class="text-[10px] text-secondary font-semibold" data-i18n="reg.email_hint">e.g. .ac.in / .edu</span>
+                    <span class="text-[10px] text-secondary font-semibold" data-i18n="reg.email_hint">Must end in @psgitech.ac.in</span>
                   </div>
-                  <div class="relative flex items-center">
-                    <span class="material-symbols-outlined absolute left-3.5 text-outline text-[18px] pointer-events-none">mail</span>
-                    <input id="reg-email" type="email" required value="" placeholder="e.g. 25z295@psgitech.ac.in" class="w-full h-11 pl-10 pr-10 rounded-xl bg-surface-container-low text-on-surface text-xs border border-transparent focus:border-secondary focus:bg-white outline-none font-medium">
-                    <span class="material-symbols-outlined absolute right-3.5 text-emerald-600 text-[18px]">check_circle</span>
+                  
+                  <div class="flex gap-2">
+                    <div class="relative flex-1 flex items-center">
+                      <span class="material-symbols-outlined absolute left-3.5 text-outline text-[18px] pointer-events-none">mail</span>
+                      <input id="reg-email" type="email" required value="" placeholder="e.g. 25z295@psgitech.ac.in" class="w-full h-11 pl-10 pr-3 rounded-xl bg-surface-container-low text-on-surface text-xs border border-transparent focus:border-secondary focus:bg-white outline-none">
+                    </div>
+                    <button type="button" id="btn-send-otp" onclick="handleSendOtp()" class="h-11 px-3.5 rounded-xl bg-secondary hover:bg-secondary-hover text-white text-xs font-bold transition-all flex items-center gap-1.5 shrink-0 shadow-sm cursor-pointer">
+                      <span>Send OTP</span>
+                      <span class="material-symbols-outlined text-[15px]">send</span>
+                    </button>
                   </div>
+
+                  <!-- OTP Input Card (Revealed after Send OTP is clicked) -->
+                  <div id="regOtpSection" class="hidden p-3.5 rounded-xl bg-blue-50/80 border border-blue-200 space-y-2.5">
+                    <div class="flex items-center justify-between text-xs">
+                      <span class="font-bold text-primary flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-[16px] text-secondary">mark_email_read</span>
+                        <span>Enter 6-Digit College OTP</span>
+                      </span>
+                      <span id="otpCooldownTimer" class="text-[11px] text-secondary font-semibold">Valid for 5 mins</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <div class="relative flex-1">
+                        <span class="material-symbols-outlined absolute left-3 text-outline text-[18px] pointer-events-none">password</span>
+                        <input id="reg-otp-code" type="text" maxlength="6" placeholder="• • • • • •" class="w-full h-10 pl-9 pr-3 rounded-lg bg-white text-on-surface text-center tracking-[4px] font-bold text-sm border border-blue-200 focus:border-secondary outline-none">
+                      </div>
+                      <button type="button" id="btn-verify-otp" onclick="handleVerifyOtp()" class="h-10 px-4 rounded-lg bg-primary hover:bg-primary-hover text-white text-xs font-bold transition-all flex items-center gap-1 shrink-0 cursor-pointer">
+                        <span>Verify OTP</span>
+                        <span class="material-symbols-outlined text-[16px]">check</span>
+                      </button>
+                    </div>
+                    <div class="flex items-center justify-between text-[11px]">
+                      <span id="otpAttemptWarning" class="text-on-surface-variant font-medium">Max 5 attempts allowed</span>
+                      <button type="button" id="btn-resend-otp" onclick="handleSendOtp(true)" disabled class="text-secondary font-semibold hover:underline disabled:opacity-40 disabled:no-underline cursor-pointer">
+                        Resend OTP
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Verified Status Banner -->
+                  <div id="regVerifiedBanner" class="hidden flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold">
+                    <div class="flex items-center gap-2">
+                      <span class="material-symbols-outlined text-[18px] text-emerald-600">verified</span>
+                      <span>Official PSG iTech Student Email Verified</span>
+                    </div>
+                    <span class="text-[10px] bg-emerald-200 text-emerald-900 px-2 py-0.5 rounded-md uppercase tracking-wider font-extrabold">Verified</span>
+                  </div>
+
+                  <!-- Hidden Verification Token Holder -->
+                  <input type="hidden" id="reg-verification-token" value="">
                 </div>
 
                 <!-- Field 4: Department / Major Selection -->
@@ -578,9 +603,6 @@
                   <span data-i18n="reg.submit_btn">Create Student Account</span>
                   <span class="material-symbols-outlined text-[19px]">arrow_forward</span>
                 </button>
-              </form>
-                  <span class="material-symbols-outlined text-[19px]">arrow_forward</span>
-                </button>
 
                 <!-- Divider -->
                 <div class="flex items-center gap-3 my-1">
@@ -618,7 +640,7 @@
               <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
               <span data-i18n="reg.ssl_gateway">256-Bit SSL Campus Gateway</span>
             </span>
-            <span data-i18n="reg.stanford_hub">Stanford University Hub</span>
+            <span data-i18n="reg.stanford_hub">PSG iTech Campus Hub</span>
           </div>
 
         </div>
@@ -631,9 +653,9 @@
       <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
         <span data-i18n="footer.copyright">© 2026 LendLoop Inc. Peer-to-Peer Campus Sharing. Built for students, by students.</span>
         <div class="flex items-center gap-4 text-[11px]">
-          <span class="hover:underline cursor-pointer" onclick="showToast('Campus verified .edu safety standard active', 'info')" data-i18n="footer.security_standard">Security Standard</span>
+          <span class="hover:underline cursor-pointer" onclick="showToast('Campus verified @psgitech.ac.in safety standard active', 'info')" data-i18n="footer.security_standard">Security Standard</span>
           <span class="hover:underline cursor-pointer" onclick="showToast('LendLoop 100% Peer Honor Guarantee', 'info')" data-i18n="footer.honor_code">Honor Code</span>
-          <span class="hover:underline cursor-pointer" onclick="showToast('Contact support: help@lendloop.edu', 'info')" data-i18n="footer.helpdesk">Campus Helpdesk</span>
+          <span class="hover:underline cursor-pointer" onclick="showToast('Contact support: campuslend@psgitech.ac.in', 'info')" data-i18n="footer.helpdesk">Campus Helpdesk</span>
         </div>
       </div>
     </footer>
@@ -670,7 +692,7 @@
           <div class="relative hidden md:block">
             <button onclick="toggleCampusModal()" class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container-low hover:bg-surface-container text-primary text-xs font-semibold border border-blue-100/80 transition-colors">
               <span class="material-symbols-outlined text-[16px] text-secondary">school</span>
-              <span id="navCampusLabel" class="truncate max-w-[140px]" data-i18n="nav.campus_hub">Stanford Campus</span>
+              <span id="navCampusLabel" class="truncate max-w-[140px]" data-i18n="nav.campus_hub">PSG iTech Campus</span>
               <span class="material-symbols-outlined text-[14px] text-outline">expand_more</span>
             </button>
           </div>
@@ -755,7 +777,7 @@
           <div class="relative">
             <button onclick="toggleProfileDropdown(event)" class="flex items-center gap-2 p-1 pl-2 rounded-xl hover:bg-surface-container-low transition-colors cursor-pointer">
               <div class="w-8 h-8 rounded-full overflow-hidden ring-2 ring-blue-100 shrink-0">
-                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHidFGGvejNyhkUBYrLtdf6YBBJH4cdUC8PrAvMSsLsYw29f3rxNOr1LXFSuNGwGsWjv-ou9bedavLx1oiQXsiW3MD674jEP9umUigltN6OXY-sEur0CQveiqITJGNH2LX-cl2jcU0Vef-R_KhMIEo1PwG_hbf0mrS88phMWaoVA6h74QfX_S0Km9Ne14pch4EEQ08E86vS_bWV-4UiNF6-5rhOjPAEsh2hEdwtOo1" alt="Alex Rivera" class="w-full h-full object-cover">
+                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHidFGGvejNyhkUBYrLtdf6YBBJH4cdUC8PrAvMSsLsYw29f3rxNOr1LXFSuNGwGsWjv-ou9bedavLx1oiQXsiW3MD674jEP9umUigltN6OXY-sEur0CQveiqITJGNH2LX-cl2jcU0Vef-R_KhMIEo1PwG_hbf0mrS88phMWaoVA6h74QfX_S0Km9Ne14pch4EEQ08E86vS_bWV-4UiNF6-5rhOjPAEsh2hEdwtOo1" alt="Sharvesh Mahi" class="w-full h-full object-cover">
               </div>
               <span class="hidden xl:inline text-xs font-semibold text-primary" id="topNavUserName">Sharvesh Mahi</span>
               <span class="material-symbols-outlined text-[16px] text-outline hidden xl:inline">expand_more</span>
@@ -764,10 +786,10 @@
             <!-- Profile Menu Flyout -->
             <div id="profileDropdown" class="hidden absolute right-0 mt-2 w-64 bg-white rounded-2xl shadow-dropdown border border-surface-container p-2 z-50">
               <div class="px-3 py-2 border-b border-surface-container mb-1">
-                <p class="font-display font-bold text-sm text-primary">Alex Rivera</p>
-                <p class="text-xs text-on-surface-variant truncate">a.rivera@stanford.edu</p>
+                <p class="font-display font-bold text-sm text-primary" id="dropdownUserName">Sharvesh Mahi</p>
+                <p class="text-xs text-on-surface-variant truncate" id="dropdownUserEmail">25z295@psgitech.ac.in</p>
                 <div class="inline-flex items-center gap-1 mt-1 px-2 py-0.5 rounded-full bg-emerald-light text-emerald-dark font-semibold text-[10px]">
-                  <span class="material-symbols-outlined text-[12px]">verified</span> <span data-i18n="nav.profile_verified_badge">Verified Stanford Student</span>
+                  <span class="material-symbols-outlined text-[12px]">verified</span> <span data-i18n="nav.profile_verified_badge">Verified PSG iTech Student</span>
                 </div>
               </div>
               <button onclick="navigateView('profile'); closeDropdowns();" class="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-semibold text-on-surface hover:bg-surface-container-low rounded-xl text-left">
@@ -861,13 +883,13 @@
           <div class="space-y-2">
             <div class="flex items-center justify-between">
               <label class="text-xs font-bold uppercase tracking-wider text-outline" data-i18n="filter.max_daily_rate">Max Daily Rate</label>
-              <span class="text-xs font-bold text-secondary" id="priceFilterDisplay">$5.00/day</span>
+              <span class="text-xs font-bold text-secondary" id="priceFilterDisplay">₹150/day</span>
             </div>
-            <input type="range" min="1" max="10" step="0.5" value="5" id="priceRangeSlider" oninput="handlePriceRange(this.value)" class="w-full accent-secondary cursor-pointer">
+            <input type="range" min="10" max="150" step="5" value="150" id="priceRangeSlider" oninput="handlePriceRange(this.value)" class="w-full accent-secondary cursor-pointer">
             <div class="flex justify-between text-[10px] text-outline">
-              <span>$1/d</span>
-              <span>$5/d</span>
-              <span>$10/d</span>
+              <span>₹10/d</span>
+              <span>₹75/d</span>
+              <span>₹150/d</span>
             </div>
           </div>
 
@@ -989,7 +1011,7 @@
             <div class="p-4 border-t border-surface-container bg-surface-container-low/50 grid grid-cols-3 gap-3 text-center">
               <div class="bg-white p-2.5 rounded-xl border border-surface-container">
                 <span class="text-[11px] text-outline block" data-i18n="detail.security_deposit">Security Deposit</span>
-                <span class="font-display font-bold text-sm text-primary" id="detailDepositText">$20.00 Refundable</span>
+                <span class="font-display font-bold text-sm text-primary" id="detailDepositText">₹300 Refundable</span>
               </div>
               <div class="bg-white p-2.5 rounded-xl border border-surface-container">
                 <span class="text-[11px] text-outline block" data-i18n="detail.max_period">Max Period</span>
@@ -1072,7 +1094,7 @@
             <!-- Pricing Banner -->
             <div class="bg-surface-container-low p-4 rounded-2xl flex items-baseline justify-between">
               <div>
-                <span class="font-display font-extrabold text-3xl text-primary" id="detailDailyPriceDisplay">$3.50</span>
+                <span class="font-display font-extrabold text-3xl text-primary" id="detailDailyPriceDisplay">₹50</span>
                 <span class="text-xs text-on-surface-variant font-medium" data-i18n="detail.day_per">/ day</span>
               </div>
               <span class="text-xs font-semibold text-secondary bg-white px-2.5 py-1 rounded-full shadow-sm" data-i18n="detail.escrow_covered">
@@ -1102,27 +1124,27 @@
             <!-- Price Breakdown Calculation Table -->
             <div class="space-y-2 pt-2 border-t border-surface-container text-xs">
               <div class="flex justify-between text-on-surface-variant">
-                <span id="detailBreakdownMath">3 Days × $3.50</span>
-                <span id="detailBreakdownRental">$10.50</span>
+                <span id="detailBreakdownMath">3 Days × ₹50</span>
+                <span id="detailBreakdownRental">₹150</span>
               </div>
               <div class="flex justify-between text-on-surface-variant">
                 <span data-i18n="detail.escrow_guarantee">Campus Trust & Escrow Guarantee</span>
-                <span class="text-emerald-brand font-bold" data-i18n="detail.free">Free ($0.00)</span>
+                <span class="text-emerald-brand font-bold" data-i18n="detail.free">Free (₹0)</span>
               </div>
               <div class="flex justify-between text-on-surface-variant">
                 <span data-i18n="detail.deposit_line">Security Deposit (100% Refundable)</span>
-                <span id="detailBreakdownDeposit">$20.00</span>
+                <span id="detailBreakdownDeposit">₹300</span>
               </div>
               <div class="flex justify-between pt-2 border-t border-surface-container font-display font-bold text-base text-primary">
                 <span data-i18n="detail.total_due">Total Due Now</span>
-                <span class="text-secondary font-extrabold text-xl" id="detailTotalDue">$10.50</span>
+                <span class="text-secondary font-extrabold text-xl" id="detailTotalDue">₹150</span>
               </div>
             </div>
 
             <!-- Request CTA -->
             <button onclick="executeBorrowRequest()" class="w-full py-3.5 px-4 rounded-2xl bg-secondary hover:bg-secondary-hover text-white font-display font-bold text-sm shadow-md hover:shadow-lg transition-all active:scale-[0.99] flex items-center justify-center gap-2">
               <span class="material-symbols-outlined text-[18px]">send</span>
-              <span id="detailSubmitBtnText">Request to Borrow ($10.50)</span>
+              <span id="detailSubmitBtnText">Request to Borrow (₹150)</span>
             </button>
             <p class="text-[11px] text-center text-outline" data-i18n="detail.no_charge_notice">
               You won't be charged until the lender confirms the in-person handover.
@@ -1169,7 +1191,7 @@
             <span class="material-symbols-outlined text-[20px]">payments</span>
           </div>
           <span class="font-display text-3xl font-extrabold text-emerald-900" id="dashLendingCount">4</span>
-          <span class="text-[11px] text-emerald-700 font-semibold block mt-1" data-i18n="loans.stat_active_earnings">+$42.00 active earnings</span>
+          <span class="text-[11px] text-emerald-700 font-semibold block mt-1" data-i18n="loans.stat_active_earnings">+₹450 active earnings</span>
         </div>
 
         <div onclick="switchLoansTab('requests')" class="bg-white p-5 rounded-2xl border border-surface-container shadow-subtle hover:shadow-card cursor-pointer transition-all">
@@ -1209,138 +1231,17 @@
 
       <!-- TAB PANE: BORROWING -->
       <div id="loansPaneBorrowing" class="space-y-4">
-        
-        <!-- Active Borrow 1: TI-84 Plus CE Calculator -->
-        <div class="bg-white rounded-3xl p-6 border border-surface-container shadow-subtle hover:shadow-card transition-all flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-          <div class="flex items-center gap-4">
-            <div class="w-20 h-20 rounded-2xl overflow-hidden bg-surface-container-low shrink-0 border border-slate-100">
-              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCwzEoEAOySUGjNOHtVUJfX4kzk2JoXBWr8O_2W6OlPBOBEyzFpdkwPF9maQ9UpdNsMNhfCUS2r3co300xpXSH1WgDkybFb8GNzCGFQuiKrPsYr-hmZl5O8hYxVk-y9cXuGdkTrUC89_-faqEUSw6bHHB1b3BkIkLNRObwI4vphIge7osJfNg6G1RmPKoEmOoxAuMrEH7yfzjBIMWa_DCjAE0B1vTF0hLqb6MycvIIR" alt="Calculator" class="w-full h-full object-cover">
-            </div>
-            <div>
-              <div class="flex items-center gap-2 mb-1">
-                <span class="px-2.5 py-0.5 rounded-full bg-blue-50 text-secondary text-[11px] font-bold" data-i18n="loans.badge_borrowed">BORROWED</span>
-                <span class="text-xs text-outline">Wilbur Quad Pickup</span>
-              </div>
-              <h3 class="font-display font-bold text-lg text-primary">TI-84 Plus CE Graphing Calculator</h3>
-              <p class="text-xs text-on-surface-variant mt-0.5">
-                Owner: <strong>Sarah Lin</strong> (Sophomore • Applied Math) • $3.50/day
-              </p>
-            </div>
-          </div>
-
-          <div class="flex flex-col md:items-end gap-3 w-full md:w-auto pt-3 md:pt-0 border-t md:border-t-0 border-surface-container">
-            <div class="flex items-center gap-3 text-xs">
-              <span class="text-secondary font-bold bg-blue-50 px-2.5 py-1 rounded-full flex items-center gap-1">
-                <span class="material-symbols-outlined text-[14px]">event</span> <span data-i18n="loans.due_in_3days">Due in 3 days (Nov 4)</span>
-              </span>
-              <span class="text-outline" data-i18n="loans.deposit_held">$20.00 Deposit Held</span>
-            </div>
-            <div class="flex items-center gap-2 w-full md:w-auto">
-              <button onclick="showToast('Opened chat with Sarah Lin', 'info')" class="flex-1 md:flex-initial px-3 py-2 rounded-xl bg-surface-container-low hover:bg-surface-container text-primary font-semibold text-xs flex items-center justify-center gap-1">
-                <span class="material-symbols-outlined text-[16px]">chat</span> <span data-i18n="loans.chat_btn">Chat</span>
-              </button>
-              <button onclick="openReturnModal('TI-84 Plus CE Graphing Calculator', 'Sarah Lin', '$20.00', 'Wilbur Hall Lobby')" class="flex-1 md:flex-initial px-4 py-2 rounded-xl bg-secondary hover:bg-secondary-hover text-white font-semibold text-xs flex items-center justify-center gap-1.5 shadow-sm">
-                <span class="material-symbols-outlined text-[16px]">assignment_return</span> <span data-i18n="loans.return_release_btn">Return & Release Escrow</span>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Active Borrow 2: Rotring Engineering Drawing Kit (Overdue) -->
-        <div class="bg-white rounded-3xl p-6 border-2 border-red-200 shadow-subtle hover:shadow-card transition-all flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-          <div class="flex items-center gap-4">
-            <div class="w-20 h-20 rounded-2xl overflow-hidden bg-surface-container-low shrink-0 border border-slate-100">
-              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZWL68BaBKd6KhJdKVU9eQVkuF0tJiGah9DjEZoAeOf-BnX03u0vCpqpKE-9blCTEFY4eV2ddWj0uh8avgWzJhwyqUPJAMsTG-ukRzpwZNIW6jb8OEy_XVjHVGE1MvO2N7DkvVUXG0QA9WHG-KcEOFRvKofQZxeXJjP3iVkw0r5MV1ZQGNTH8sdfEbbkXkGzjEF0P3tosOVd82au01v3vMjN-76bWm7W3z1GXeV7ab" alt="Kit" class="w-full h-full object-cover">
-            </div>
-            <div>
-              <div class="flex items-center gap-2 mb-1">
-                <span class="px-2.5 py-0.5 rounded-full bg-red-100 text-error text-[11px] font-bold animate-pulse" data-i18n="loans.badge_overdue">OVERDUE</span>
-                <span class="text-xs text-error font-semibold" data-i18n="loans.due_yesterday">Due Yesterday (+ $1.50 fee)</span>
-              </div>
-              <h3 class="font-display font-bold text-lg text-primary">Rotring Engineering Drafting Kit</h3>
-              <p class="text-xs text-on-surface-variant mt-0.5">
-                Owner: <strong>Maya S.</strong> (Mechanical Engineering Jr) • Tressider Union
-              </p>
-            </div>
-          </div>
-
-          <div class="flex flex-col md:items-end gap-3 w-full md:w-auto pt-3 md:pt-0 border-t md:border-t-0 border-surface-container">
-            <div class="flex items-center gap-2 text-xs">
-              <span class="text-error font-bold" data-i18n="loans.escrow_deposit">$15.00 Escrow Deposit</span>
-            </div>
-            <div class="flex items-center gap-2 w-full md:w-auto">
-              <button onclick="showToast('Opened chat with Maya S.', 'info')" class="flex-1 md:flex-initial px-3 py-2 rounded-xl bg-surface-container-low hover:bg-surface-container text-primary font-semibold text-xs flex items-center justify-center gap-1">
-                <span class="material-symbols-outlined text-[16px]">chat</span> <span data-i18n="loans.chat_btn">Chat</span>
-              </button>
-              <button onclick="openReturnModal('Rotring Engineering Drafting Kit', 'Maya S.', '$15.00', 'Tressider Union')" class="flex-1 md:flex-initial px-4 py-2 rounded-xl bg-error hover:bg-red-700 text-white font-semibold text-xs flex items-center justify-center gap-1.5 shadow-sm">
-                <span class="material-symbols-outlined text-[16px]">bolt</span> <span data-i18n="loans.return_now_btn">Return Now</span>
-              </button>
-            </div>
-          </div>
-        </div>
-
+        <!-- Dynamically rendered by renderLoansDashboard() -->
       </div>
 
       <!-- TAB PANE: LENDING -->
       <div id="loansPaneLending" class="hidden space-y-4">
-        <!-- Item Lent Out 1 -->
-        <div class="bg-white rounded-3xl p-6 border border-surface-container shadow-subtle flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-          <div class="flex items-center gap-4">
-            <div class="w-20 h-20 rounded-2xl overflow-hidden bg-surface-container-low shrink-0 border border-slate-100">
-              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuD7gwQjV590U9vx14Fk3gWAVGNeM94g7uvPbrLTk2sSK8gny8hVVMT7_0_gm89wFpynlso1Q9OX3izu6Wd4PNJLwwEJNRNjDD2aJQl_5o0aKz5Q1ma_k-mNZwBS7eSiO6fd43lyYEJQMNYJTyVboZBYo00lgRiaz0tR2Zw_aomqYqDQpCp93tw6nEGJjG_rCBVbXdJ1kTE1eCchh_pJHvktAPkVxwhBPFeAVLkhixo7" alt="Mouse" class="w-full h-full object-cover">
-            </div>
-            <div>
-              <div class="flex items-center gap-2 mb-1">
-                <span class="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[11px] font-bold" data-i18n="loans.badge_lent_out">LENT OUT</span>
-                <span class="text-xs text-emerald-700 font-semibold" data-i18n="loans.returns_nov6">Returns Nov 6</span>
-              </div>
-              <h3 class="font-display font-bold text-lg text-primary">Logitech MX Master 3S Mouse</h3>
-              <p class="text-xs text-on-surface-variant mt-0.5">
-                Borrower: <strong>Jordan T.</strong> (Stern Hall • Product Design) • Earned $17.50
-              </p>
-            </div>
-          </div>
-
-          <div class="flex items-center gap-2">
-            <button onclick="showToast('Sent ping message to Jordan T.', 'info')" class="px-3 py-2 rounded-xl bg-surface-container-low hover:bg-surface-container text-primary font-semibold text-xs flex items-center gap-1">
-              <span class="material-symbols-outlined text-[16px]">chat</span> <span data-i18n="loans.message_btn">Message</span>
-            </button>
-            <button onclick="showToast('Return confirmed. $17.50 transferred to your campus balance!', 'success')" class="px-4 py-2 rounded-xl bg-primary hover:bg-primary-hover text-white font-semibold text-xs flex items-center gap-1.5 shadow-sm">
-              <span class="material-symbols-outlined text-[16px]">check_circle</span> <span data-i18n="loans.mark_returned_btn">Mark Returned</span>
-            </button>
-          </div>
-        </div>
+        <!-- Dynamically rendered by renderLoansDashboard() -->
       </div>
 
       <!-- TAB PANE: REQUESTS -->
       <div id="loansPaneRequests" class="hidden space-y-4">
-        <!-- Request Card 1 -->
-        <div class="bg-white rounded-3xl p-6 border border-surface-container shadow-subtle flex flex-col md:flex-row items-start md:items-center justify-between gap-6" id="reqCard1">
-          <div class="flex items-center gap-4">
-            <div class="w-20 h-20 rounded-2xl overflow-hidden bg-surface-container-low shrink-0 border border-slate-100">
-              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBw5EJSfzwMOKh7CHb1318qHLtHVHxxCTQU8Kcz-uXwL0-jIbnyKqFL1FQL803NdVQZkLDXXLUkbnn1OAXQHJ1rFFnYXK5aG7pNGpHoBdoZML2e1sIrQ2L99B_CH9X8RSGe4V6oyPCfq73jCP1xW6qpIZ9rSvC8MboAv3TS_vo01sVW1JtUeLmUwrhFL71Exiho87iD-ulGXygtVEMXyWtMAAbyeghydJIDAl8J8mgP" alt="Textbook" class="w-full h-full object-cover">
-            </div>
-            <div>
-              <div class="flex items-center gap-2 mb-1">
-                <span class="px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[11px] font-bold" data-i18n="loans.badge_incoming_req">INCOMING REQUEST</span>
-                <span class="text-xs text-primary font-bold"><span data-i18n="loans.total_earnings">Total Earnings</span>: $6.00</span>
-              </div>
-              <h3 class="font-display font-bold text-lg text-primary">Java Software Solutions (8th Ed)</h3>
-              <p class="text-xs text-on-surface-variant mt-0.5">
-                <span data-i18n="loans.requested_by">Requested by:</span> <strong>Marcus T.</strong> (Junior • Bio/CS) • 3 Days rental
-              </p>
-            </div>
-          </div>
-
-          <div class="flex items-center gap-2">
-            <button onclick="dismissRequest('reqCard1', 'Java Software Solutions')" class="px-3 py-2 rounded-xl bg-surface-container-low hover:bg-red-50 text-outline hover:text-error font-semibold text-xs" data-i18n="loans.decline_btn">
-              Decline
-            </button>
-            <button onclick="acceptRequest('reqCard1', 'Java Software Solutions')" class="px-4 py-2 rounded-xl bg-secondary hover:bg-secondary-hover text-white font-semibold text-xs shadow-sm" data-i18n="loans.accept_handover_btn">
-              Accept Handover
-            </button>
-          </div>
-        </div>
+        <!-- Dynamically rendered by renderLoansDashboard() -->
       </div>
 
     </div>
@@ -1356,9 +1257,9 @@
         <div class="lg:col-span-4 bg-white rounded-3xl p-6 border border-surface-container shadow-card space-y-6 text-center">
           <div class="relative w-28 h-28 mx-auto">
             <div class="w-full h-full rounded-full overflow-hidden ring-4 ring-blue-100 shadow-md">
-              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHidFGGvejNyhkUBYrLtdf6YBBJH4cdUC8PrAvMSsLsYw29f3rxNOr1LXFSuNGwGsWjv-ou9bedavLx1oiQXsiW3MD674jEP9umUigltN6OXY-sEur0CQveiqITJGNH2LX-cl2jcU0Vef-R_KhMIEo1PwG_hbf0mrS88phMWaoVA6h74QfX_S0Km9Ne14pch4EEQ08E86vS_bWV-4UiNF6-5rhOjPAEsh2hEdwtOo1" alt="Alex Rivera" class="w-full h-full object-cover">
+              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHidFGGvejNyhkUBYrLtdf6YBBJH4cdUC8PrAvMSsLsYw29f3rxNOr1LXFSuNGwGsWjv-ou9bedavLx1oiQXsiW3MD674jEP9umUigltN6OXY-sEur0CQveiqITJGNH2LX-cl2jcU0Vef-R_KhMIEo1PwG_hbf0mrS88phMWaoVA6h74QfX_S0Km9Ne14pch4EEQ08E86vS_bWV-4UiNF6-5rhOjPAEsh2hEdwtOo1" alt="Sharvesh Mahi" class="w-full h-full object-cover">
             </div>
-            <div class="absolute -bottom-1 -right-1 w-8 h-8 rounded-full bg-secondary text-white flex items-center justify-center shadow-md" title="Stanford Verified Student">
+            <div class="absolute -bottom-1 -right-1 w-8 h-8 rounded-full bg-secondary text-white flex items-center justify-center shadow-md" title="PSG iTech Verified Student">
               <span class="material-symbols-outlined text-[18px]">verified</span>
             </div>
           </div>
@@ -1367,7 +1268,7 @@
             <h2 class="font-display font-extrabold text-2xl text-primary" id="profileFullName">Sharvesh Mahi</h2>
             <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-secondary text-xs font-semibold mt-1">
               <span class="material-symbols-outlined text-[14px]">school</span>
-              <span id="profileSchoolText">PSG iTech • Class of '29</span>
+              <span id="profileSchoolText">PSG Institute of Technology • Class of '29</span>
             </div>
             <p class="text-xs text-on-surface-variant mt-2" id="profileDeptText">
               Department of Computer Science & Engineering • #25Z295
@@ -1392,16 +1293,16 @@
 
           <div class="text-left space-y-2.5 pt-3 border-t border-surface-container text-xs">
             <div class="flex justify-between">
-              <span class="text-outline" data-i18n="profile.label_dorm">Campus Dorm:</span>
+              <span class="text-outline" data-i18n="profile.label_dorm">Campus Hostel:</span>
               <span class="font-semibold text-primary" id="profileDormText">Campus Hostel Block A</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-outline" data-i18n="profile.label_email">Institutional Email:</span>
+              <span class="text-outline" data-i18n="profile.label_email">College Email:</span>
               <span class="font-semibold text-secondary" id="profileEmailText">25z295@psgitech.ac.in</span>
             </div>
             <div class="flex justify-between">
               <span class="text-outline" data-i18n="profile.label_phone">Phone Handover:</span>
-              <span class="font-semibold text-primary">+1 (650) 555-0194</span>
+              <span class="font-semibold text-primary">+91 98400 12345</span>
             </div>
           </div>
 
@@ -1444,7 +1345,7 @@
                 <span class="material-symbols-outlined text-secondary text-[20px]">verified_user</span>
                 <div>
                   <span class="font-semibold text-primary block" data-i18n="profile.sso_active">University Single Sign-On Active</span>
-                  <span class="text-outline" data-i18n="profile.sso_desc">Connected to Stanford 2FA Shibboleth</span>
+                  <span class="text-outline" data-i18n="profile.sso_desc">Connected to PSG iTech SSO & Campus ID</span>
                 </div>
               </div>
               <span class="text-emerald-700 font-bold bg-emerald-50 px-2.5 py-1 rounded-full" data-i18n="profile.active_badge">Active</span>
@@ -1578,12 +1479,12 @@
 
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="text-xs font-bold uppercase tracking-wider text-outline block mb-1" data-i18n="modal.add.daily_rate">Daily Rate ($/day)</label>
-            <input type="number" step="0.5" min="0.5" value="3.00" id="newItemDailyPrice" required class="w-full p-2.5 rounded-xl bg-surface-container-low text-xs border border-transparent focus:border-secondary outline-none">
+            <label class="text-xs font-bold uppercase tracking-wider text-outline block mb-1" data-i18n="modal.add.daily_rate">Daily Rate (₹/day)</label>
+            <input type="number" step="5" min="1" value="50" id="newItemDailyPrice" required class="w-full p-2.5 rounded-xl bg-surface-container-low text-xs border border-transparent focus:border-secondary outline-none">
           </div>
           <div>
-            <label class="text-xs font-bold uppercase tracking-wider text-outline block mb-1" data-i18n="modal.add.deposit">Refundable Deposit ($)</label>
-            <input type="number" step="1" min="0" value="20.00" id="newItemDeposit" required class="w-full p-2.5 rounded-xl bg-surface-container-low text-xs border border-transparent focus:border-secondary outline-none">
+            <label class="text-xs font-bold uppercase tracking-wider text-outline block mb-1" data-i18n="modal.add.deposit">Refundable Deposit (₹)</label>
+            <input type="number" step="10" min="0" value="200" id="newItemDeposit" required class="w-full p-2.5 rounded-xl bg-surface-container-low text-xs border border-transparent focus:border-secondary outline-none">
           </div>
         </div>
 
@@ -1648,7 +1549,7 @@
       </div>
 
       <div class="bg-surface-container-low px-3 py-1.5 rounded-xl font-mono text-xs font-bold text-primary tracking-wider">
-        <span data-i18n="modal.handover.token">TOKEN:</span> <span id="returnSecurityToken">LL-STAN-9842</span>
+        <span data-i18n="modal.handover.token">TOKEN:</span> <span id="returnSecurityToken">LL-PSG-25Z295</span>
       </div>
 
       <button onclick="confirmReturn()" class="w-full py-3 rounded-xl bg-secondary hover:bg-secondary-hover text-white text-xs font-bold shadow-sm transition-all flex items-center justify-center gap-1.5">
@@ -1673,18 +1574,18 @@
       <p class="text-xs text-on-surface-variant" data-i18n="modal.campus.desc">LendLoop connects verified students within walking distance of dorms and quads.</p>
       
       <div class="space-y-2">
-        <button onclick="selectCampus('Stanford Campus', 'Wilbur Quad Hub')" class="w-full p-3 rounded-xl bg-blue-50 text-secondary font-bold text-xs flex items-center justify-between border border-blue-100">
-          <span class="flex items-center gap-2"><span class="material-symbols-outlined text-[18px]">school</span> Stanford University</span>
+        <button onclick="selectCampus('PSG iTech Campus', 'Neelambur Hub')" class="w-full p-3 rounded-xl bg-blue-50 text-secondary font-bold text-xs flex items-center justify-between border border-blue-100">
+          <span class="flex items-center gap-2"><span class="material-symbols-outlined text-[18px]">school</span> PSG iTech Neelambur</span>
           <span class="material-symbols-outlined text-[16px]">check</span>
         </button>
-        <button onclick="selectCampus('UC Berkeley', 'Sproul Plaza Hub')" class="w-full p-3 rounded-xl hover:bg-surface-container-low text-on-surface font-semibold text-xs flex items-center justify-between">
-          <span class="flex items-center gap-2"><span class="material-symbols-outlined text-[18px] text-outline">school</span> UC Berkeley</span>
+        <button onclick="selectCampus('Anna University', 'Guindy Hub')" class="w-full p-3 rounded-xl hover:bg-surface-container-low text-on-surface font-semibold text-xs flex items-center justify-between">
+          <span class="flex items-center gap-2"><span class="material-symbols-outlined text-[18px] text-outline">school</span> Anna University</span>
         </button>
-        <button onclick="selectCampus('MIT', 'Kendall Quad Hub')" class="w-full p-3 rounded-xl hover:bg-surface-container-low text-on-surface font-semibold text-xs flex items-center justify-between">
-          <span class="flex items-center gap-2"><span class="material-symbols-outlined text-[18px] text-outline">school</span> MIT Campus</span>
+        <button onclick="selectCampus('PSG Tech', 'Peelamedu Hub')" class="w-full p-3 rounded-xl hover:bg-surface-container-low text-on-surface font-semibold text-xs flex items-center justify-between">
+          <span class="flex items-center gap-2"><span class="material-symbols-outlined text-[18px] text-outline">school</span> PSG College of Technology</span>
         </button>
-        <button onclick="selectCampus('Harvard', 'Harvard Yard Hub')" class="w-full p-3 rounded-xl hover:bg-surface-container-low text-on-surface font-semibold text-xs flex items-center justify-between">
-          <span class="flex items-center gap-2"><span class="material-symbols-outlined text-[18px] text-outline">school</span> Harvard University</span>
+        <button onclick="selectCampus('CIT Coimbatore', 'CIT Hub')" class="w-full p-3 rounded-xl hover:bg-surface-container-low text-on-surface font-semibold text-xs flex items-center justify-between">
+          <span class="flex items-center gap-2"><span class="material-symbols-outlined text-[18px] text-outline">school</span> Coimbatore Institute of Technology</span>
         </button>
       </div>
     </div>
@@ -1705,11 +1606,11 @@
       <form onsubmit="event.preventDefault(); saveProfile();" class="space-y-3">
         <div>
           <label class="text-xs font-bold text-outline block mb-1" data-i18n="modal.profile.name_label">Full Legal Name</label>
-          <input type="text" id="editNameInput" value="Alex Rivera" required class="w-full p-2.5 rounded-xl bg-surface-container-low text-xs border border-transparent focus:border-secondary outline-none">
+          <input type="text" id="editNameInput" value="Sharvesh Mahi" required class="w-full p-2.5 rounded-xl bg-surface-container-low text-xs border border-transparent focus:border-secondary outline-none">
         </div>
         <div>
           <label class="text-xs font-bold text-outline block mb-1" data-i18n="modal.profile.dorm_label">Campus Residence / Dorm</label>
-          <input type="text" id="editDormInput" value="Wilbur Hall 304" required class="w-full p-2.5 rounded-xl bg-surface-container-low text-xs border border-transparent focus:border-secondary outline-none">
+          <input type="text" id="editDormInput" value="Hostel Block A 204" required class="w-full p-2.5 rounded-xl bg-surface-container-low text-xs border border-transparent focus:border-secondary outline-none">
         </div>
         <button type="submit" class="w-full py-2.5 rounded-xl bg-primary text-white text-xs font-bold shadow-sm" data-i18n="modal.profile.save_btn">Save Changes</button>
       </form>
@@ -1739,7 +1640,7 @@
 
       <form onsubmit="event.preventDefault(); submitAuth();" class="space-y-3 pt-1">
         <div>
-          <label class="text-xs font-bold text-outline block mb-1" data-i18n="modal.auth.email_label">College Email / Student ID</label>
+          <label class="text-xs font-bold text-outline block mb-1" data-i18n="modal.auth.email_label">College Email (@psgitech.ac.in)</label>
           <input type="text" id="authEmailInput" value="25z295@psgitech.ac.in" required class="w-full p-2.5 rounded-xl bg-surface-container-low text-xs border border-transparent focus:border-secondary outline-none">
         </div>
         <div>
@@ -1771,25 +1672,29 @@
   <script>
     // ================= DIRECT PYTHON API CONNECTOR (api.py) =================
     const CampusLendAPI = {
-      BASE_URL: "http://localhost:8080/api",
+      BASE_URL: (window.location && window.location.origin && window.location.origin.startsWith("http")) ? `${window.location.origin}/api` : "http://localhost:8080/api",
       async apiRequest(endpoint, options = {}) {
         const headers = { "Content-Type": "application/json", "Accept": "application/json" };
         const token = localStorage.getItem("campuslend_token");
         if (token) headers["Authorization"] = `Bearer ${token}`;
         try {
           const res = await fetch(`${this.BASE_URL}${endpoint}`, { ...options, headers: { ...headers, ...(options.headers || {}) } });
-          const data = await res.json().catch(() => ({}));
+          const json = await res.json().catch(() => ({}));
           if (!res.ok) {
-            const err = new Error(data.error || `HTTP ${res.status}`);
-            err.status = res.status;
-            err.data = data;
-            throw err;
+            const errorMsg = json.error || json.message || `HTTP ${res.status}`;
+            throw new Error(errorMsg);
           }
-          return data;
+          return json;
         } catch (err) {
-          console.log(`[api.py Connector] ${endpoint}:`, err.message);
+          console.log(`[CampusLend API] Request error for ${endpoint}:`, err.message);
           throw err;
         }
+      },
+      sendOtp(email) {
+        return this.apiRequest("/auth/send-otp", { method: "POST", body: JSON.stringify({ email }) });
+      },
+      verifyOtp(email, otp) {
+        return this.apiRequest("/auth/verify-otp", { method: "POST", body: JSON.stringify({ email, otp }) });
       },
       login(email, password) {
         return this.apiRequest("/auth/login", { method: "POST", body: JSON.stringify({ email, password }) });
@@ -1812,8 +1717,31 @@
       createItem(itemData) {
         return this.apiRequest("/items", { method: "POST", body: JSON.stringify(itemData) });
       },
-      requestLoan(itemId, borrowerId, borrowDays) {
-        return this.apiRequest("/loans/request", { method: "POST", body: JSON.stringify({ itemId, borrowerId, borrowDays }) });
+      requestLoan(payloadOrItemId, borrowerId, borrowDays, extra = {}) {
+        let body = {};
+        if (typeof payloadOrItemId === "object" && payloadOrItemId !== null) {
+          body = payloadOrItemId;
+        } else {
+          body = {
+            itemId: payloadOrItemId,
+            borrowerId: borrowerId || (window.currentUser ? window.currentUser.studentId : "25Z295"),
+            borrowDays: borrowDays || 3,
+            ...extra
+          };
+        }
+        return this.apiRequest("/loans/request", { method: "POST", body: JSON.stringify(body) });
+      },
+      getBorrowerLoans(borrowerId) {
+        return this.apiRequest(`/loans/borrower/${borrowerId}`, { method: "GET" });
+      },
+      getLenderLoans(lenderId) {
+        return this.apiRequest(`/loans/lender/${lenderId}`, { method: "GET" });
+      },
+      getStudent(id) {
+        return this.apiRequest(`/students/${id}`, { method: "GET" });
+      },
+      updateStudent(id, data) {
+        return this.apiRequest(`/students/${id}`, { method: "PUT", body: JSON.stringify(data) });
       },
       async syncRemoteCatalog(onSuccess) {
         try {
@@ -1833,17 +1761,17 @@
         title: "TI-84 Plus CE Graphing Calculator",
         category: "stationery",
         categoryName: "Calculators & Lab",
-        dailyPrice: 3.50,
-        depositHold: 20.00,
+        dailyPrice: 50.00,
+        depositHold: 300.00,
         condition: "Like New",
-        location: "Wilbur Hall • 0.2 mi",
-        campus: "Stanford Campus",
+        location: "Mech Block • 0.2 km",
+        campus: "PSG iTech Campus",
         lenderName: "Sarah Lin",
         lenderDept: "Sophomore • Applied Mathematics",
         lenderAvatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuBM8VSzPWz6gX7VI2wzCYRejzZ-cxNpuaEF-mrtYyc4P20zvX2frfHkS75qBmQ7sNSciIYrMNM5VK1ZMyXi3W8ShFLb7o-zZNhhGqJAdNUbM3Z-b77r5tSXgdPIB6dd4mzmgFolQkHmrepl88pZ7AKd6OFrAyTCVunaRI3SuyVpfaalf0FqpiFIZkBil0Rq-_pMRvPb1lpO70yIbtS2D1m0a7Z9-EWNDqXSpV3R7YzR",
         image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCwzEoEAOySUGjNOHtVUJfX4kzk2JoXBWr8O_2W6OlPBOBEyzFpdkwPF9maQ9UpdNsMNhfCUS2r3co300xpXSH1WgDkybFb8GNzCGFQuiKrPsYr-hmZl5O8hYxVk-y9cXuGdkTrUC89_-faqEUSw6bHHB1b3BkIkLNRObwI4vphIge7osJfNg6G1RmPKoEmOoxAuMrEH7yfzjBIMWa_DCjAE0B1vTF0hLqb6MycvIIR",
         rating: "4.9 ★ (18 loans)",
-        description: "Pristine Python Edition color graphing calculator with backlit display and rechargeable battery. Essential for Math 51, CS 109, Chem 31, and all midterms or finals. Sanitized and fully charged.",
+        description: "Pristine Python Edition color graphing calculator with backlit display and rechargeable battery. Essential for Engineering Math, Physics, and Lab exams. Sanitized and fully charged.",
         isFavorite: false,
         isAvailable: true
       },
@@ -1852,17 +1780,17 @@
         title: "Campbell Biology 12th Edition Hardcover",
         category: "books",
         categoryName: "Textbooks",
-        dailyPrice: 2.00,
-        depositHold: 15.00,
+        dailyPrice: 30.00,
+        depositHold: 200.00,
         condition: "Pristine",
-        location: "Stern Hall • 0.4 mi",
-        campus: "Stanford Campus",
+        location: "CSE Block • 0.3 km",
+        campus: "PSG iTech Campus",
         lenderName: "Marcus T.",
         lenderDept: "Pre-Med • Bio Dept",
         lenderAvatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuCHidFGGvejNyhkUBYrLtdf6YBBJH4cdUC8PrAvMSsLsYw29f3rxNOr1LXFSuNGwGsWjv-ou9bedavLx1oiQXsiW3MD674jEP9umUigltN6OXY-sEur0CQveiqITJGNH2LX-cl2jcU0Vef-R_KhMIEo1PwG_hbf0mrS88phMWaoVA6h74QfX_S0Km9Ne14pch4EEQ08E86vS_bWV-4UiNF6-5rhOjPAEsh2hEdwtOo1",
         image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCHzF2ArCYVDUbZmI5k-3Auz7nNqDBA4WqGQ1_r8IIU8jjqDVNVlooZAqi6nibGOpGadYKu5ScBbKKgWnsr9ydHbAltNtedVgEgaBaLKfU3mkvw3s76vF3PLWIMxVCHi2JEtw-gzEwPkPdyYeDOy4DPmUnWHKUK0VL90C9XVINWLVarO1OgZfW830QxaJX5WPLTzllZIizBk3oRRULosxsviytiqWvpYwa3i9q7yI-j",
         rating: "4.8 ★ (12 loans)",
-        description: "Clean hardcover edition without tears or missing pages. Has high-yield margin notes for Bio 81 and Bio 82. Great for semester reviews.",
+        description: "Clean hardcover edition without tears or missing pages. Has high-yield margin notes for biology and biochemistry coursework. Great for semester reviews.",
         isFavorite: true,
         isAvailable: true
       },
@@ -1871,17 +1799,17 @@
         title: "Sony WH-1000XM4 Noise Cancelling",
         category: "tech",
         categoryName: "Tech & Electronics",
-        dailyPrice: 4.00,
-        depositHold: 30.00,
+        dailyPrice: 60.00,
+        depositHold: 400.00,
         condition: "Excellent",
-        location: "Green Library • 0.1 mi",
-        campus: "Stanford Campus",
+        location: "Central Library • 0.1 km",
+        campus: "PSG iTech Campus",
         lenderName: "Elena R.",
         lenderDept: "Engineering • Senior",
         lenderAvatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuDPK1wGgvcZzVIu09lEX1h_MzqjkCm43D_4Gld-fUyrR9IOfggN9H8l2cyKaQMsay2y4vJ_DLobml1FlJd0Ala2y1FLIQdTzFyYBHhYNvgc9JS5svtcYjYuHmxH000cZoAk7B2YX9tpxlpUfQjdI0l-7qkb2jzCotbZSLOEbmhCufoSzHFGW-2d8lPok-lStjxEb0oy5NWMdVzckaT0O6ERhshe9ub0pDFa3hvavx5J",
         image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBkiquaYFgXakbP2mClmnfb7Va95cC2ekw5VVdqNTX6jzILz4X_lJKi8F7grlVAE-D9QiYeYNyjJfBNCInzQNdNbTdhKGLlWQxRmNdrhjptxFxbyvnmSlNKt4noiBYmHuVR9dyRrTDmvqLd6x9ViR5S6d4p7abPPi0nVk1HllDhaVaucdQJVULxFyeoPQ-MIcFK2c62h2EK7TIpoWfeB3YsuX_Kqfn_xkqORUID6qZG",
         rating: "5.0 ★ (26 loans)",
-        description: "Active noise cancellation over-ear headphones. Unrivaled for deep focus in Green Library or noisy dormitory lounges. 30-hour battery life.",
+        description: "Active noise cancellation over-ear headphones. Unrivaled for deep focus in Central Library or dormitory study halls. 30-hour battery life.",
         isFavorite: false,
         isAvailable: true
       },
@@ -1890,11 +1818,11 @@
         title: "Heavy Duty Kryptonite U-Lock with Cable",
         category: "sports",
         categoryName: "Sports & Outdoor",
-        dailyPrice: 1.50,
-        depositHold: 10.00,
+        dailyPrice: 20.00,
+        depositHold: 150.00,
         condition: "Sturdy",
-        location: "Tressider Quad • 0.3 mi",
-        campus: "Stanford Campus",
+        location: "College Quadrangle • 0.2 km",
+        campus: "PSG iTech Campus",
         lenderName: "David K.",
         lenderDept: "Economics • Junior",
         lenderAvatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuCHidFGGvejNyhkUBYrLtdf6YBBJH4cdUC8PrAvMSsLsYw29f3rxNOr1LXFSuNGwGsWjv-ou9bedavLx1oiQXsiW3MD674jEP9umUigltN6OXY-sEur0CQveiqITJGNH2LX-cl2jcU0Vef-R_KhMIEo1PwG_hbf0mrS88phMWaoVA6h74QfX_S0Km9Ne14pch4EEQ08E86vS_bWV-4UiNF6-5rhOjPAEsh2hEdwtOo1",
@@ -1909,17 +1837,17 @@
         title: "Java Software Solutions (8th Ed)",
         category: "books",
         categoryName: "Textbooks",
-        dailyPrice: 2.00,
-        depositHold: 15.00,
+        dailyPrice: 30.00,
+        depositHold: 200.00,
         condition: "Like New",
-        location: "Gates CS Building • 0.2 mi",
-        campus: "Stanford Campus",
+        location: "IT Block • 0.2 km",
+        campus: "PSG iTech Campus",
         lenderName: "Kevin M.",
         lenderDept: "CS • Junior",
         lenderAvatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuDPK1wGgvcZzVIu09lEX1h_MzqjkCm43D_4Gld-fUyrR9IOfggN9H8l2cyKaQMsay2y4vJ_DLobml1FlJd0Ala2y1FLIQdTzFyYBHhYNvgc9JS5svtcYjYuHmxH000cZoAk7B2YX9tpxlpUfQjdI0l-7qkb2jzCotbZSLOEbmhCufoSzHFGW-2d8lPok-lStjxEb0oy5NWMdVzckaT0O6ERhshe9ub0pDFa3hvavx5J",
         image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDM-3UvkaYlTm0DmafG2spCGujBwntxSSe3OWHJz2R8uZKO50r7sHrasD3L-RWNH5rIg8TcLJD2yYvO4w8Abv0xkONRIw6-ue9a5vRe7wg2Zt8vo1anc-i4vu_mL-m7Tfd8tYeYSzOnTUdi2JqAxO67ILac5J9NFvaF0b6rMr6D2wQUv_sCTRorNe4KdsJtEdMqwUsvQHfiCUTDcJlkq0kCviYFnDezQVCzX1cNNSRq",
         rating: "4.7 ★ (9 loans)",
-        description: "Foundations of program design, object-oriented concepts, recursion, and data structures. Recommended for CS 106A/B coursework and midterms.",
+        description: "Foundations of program design, object-oriented concepts, recursion, and data structures. Recommended for programming and data structures lab coursework.",
         isFavorite: false,
         isAvailable: true
       },
@@ -1928,17 +1856,17 @@
         title: "Logitech MX Master 3S Wireless Mouse",
         category: "tech",
         categoryName: "Tech & Electronics",
-        dailyPrice: 2.50,
-        depositHold: 25.00,
+        dailyPrice: 40.00,
+        depositHold: 300.00,
         condition: "Pristine",
-        location: "Design Loft • 0.3 mi",
-        campus: "Stanford Campus",
+        location: "Civil Block • 0.3 km",
+        campus: "PSG iTech Campus",
         lenderName: "Jordan T.",
         lenderDept: "Product Design",
         lenderAvatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuCHidFGGvejNyhkUBYrLtdf6YBBJH4cdUC8PrAvMSsLsYw29f3rxNOr1LXFSuNGwGsWjv-ou9bedavLx1oiQXsiW3MD674jEP9umUigltN6OXY-sEur0CQveiqITJGNH2LX-cl2jcU0Vef-R_KhMIEo1PwG_hbf0mrS88phMWaoVA6h74QfX_S0Km9Ne14pch4EEQ08E86vS_bWV-4UiNF6-5rhOjPAEsh2hEdwtOo1",
         image: "https://lh3.googleusercontent.com/aida-public/AB6AXuD7gwQjV590U9vx14Fk3gWAVGNeM94g7uvPbrLTk2sSK8gny8hVVMT7_0_gm89wFpynlso1Q9OX3izu6Wd4PNJLwwEJNRNjDD2aJQl_5o0aKz5Q1ma_k-mNZwBS7eSiO6fd43lyYEJQMNYJTyVboZBYo00lgRiaz0tR2Zw_aomqYqDQpCp93tw6nEGJjG_rCBVbXdJ1kTE1eCchh_pJHvktAPkVxwhBPFeAVLkhixo7",
         rating: "4.9 ★ (19 loans)",
-        description: "Ergonomic quiet click mouse with electromagnetic MagSpeed scroll wheel. Perfect for design studios, CAD, Figma, or programming.",
+        description: "Ergonomic quiet click mouse with electromagnetic MagSpeed scroll wheel. Perfect for CAD lab, coding, Figma, and design projects.",
         isFavorite: true,
         isAvailable: true
       }
@@ -1949,7 +1877,7 @@
     let selectedCategory = "all";
     let searchQuery = "";
     let onlyAvailable = false;
-    let maxPriceFilter = 10;
+    let maxPriceFilter = 150;
     let selectedHub = "all";
     let borrowDays = 3;
 
@@ -1958,15 +1886,15 @@
       {
         title: "Sony WH-1000XM4 Headphones",
         status: "Available",
-        price: "$4.00/day",
-        deposit: "$25 deposit",
+        price: "₹60/day",
+        deposit: "₹350 deposit",
         image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCAwKDMWqe8acdVK9kxankRWZgGzcx5_lFznz8AMG6Hte0UPrlg1APkseU_C_zyepqJKyfbQRk-xibjVacGn22TCLLlMz_fQbvkHaHiZgQSNYqQfqvuY3BSzzHWn4M9brAE1FkqK5BV8r9Xq_8ZVd7vjbh97SNdl35buYfzLvZsmnhCrEVIEspce692f5LiXYlkuQt-Ljp7BLeaHhIB4dxbzZprhqg72irpVE0Q95L8"
       },
       {
         title: "Campbell Biology 12th Ed.",
         status: "On Loan (Due Nov 2)",
-        price: "$2.50/day",
-        deposit: "$15 deposit",
+        price: "₹35/day",
+        deposit: "₹200 deposit",
         image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCLiHnCxyctkr1_eHE-9ACxsB9QZebXGjhiMg3vMpBDviUv3w1-wnefH6L4tF0ZE3RhsLBwtvhx0cebAiHsfhPkTuSpnpmPoIoIlnNGCfKLkYxsOrYmZ8-DGxE8LUDCmrA8Y9M0UiwJaqFdhxAkb6OTns4ySXaLM7376py-YAMwNhxg0mITqsUnp43kYaDArcJ6gF_NItrnoeD6US0xbjRDr0wOBeWfQ_E15Gdh8aJi"
       }
     ];
@@ -2071,6 +1999,8 @@
       initAuth();
       renderMarketplace();
       renderProfileListings();
+      renderLoansDashboard();
+      syncRemoteLoans();
       loadItemDetail(items[0].id);
 
       // Gracefully sync remote catalog if Spring Boot MongoDB backend is running
@@ -2085,8 +2015,8 @@
               dailyPrice: ri.dailyPrice || 0,
               depositHold: ri.securityDeposit || 0,
               condition: ri.condition || "Good",
-              location: ri.location || "Campus Hub",
-              campus: "Stanford Campus",
+              location: ri.location || "PSG iTech Campus Hub",
+              campus: "PSG iTech Campus",
               lenderName: ri.ownerName || "Student Peer",
               lenderDept: "Campus Peer",
               lenderAvatar: ri.ownerAvatar || "https://lh3.googleusercontent.com/aida-public/AB6AXuCHidFGGvejNyhkUBYrLtdf6YBBJH4cdUC8PrAvMSsLsYw29f3rxNOr1LXFSuNGwGsWjv-ou9bedavLx1oiQXsiW3MD674jEP9umUigltN6OXY-sEur0CQveiqITJGNH2LX-cl2jcU0Vef-R_KhMIEo1PwG_hbf0mrS88phMWaoVA6h74QfX_S0Km9Ne14pch4EEQ08E86vS_bWV-4UiNF6-5rhOjPAEsh2hEdwtOo1",
@@ -2167,7 +2097,7 @@
             
             <!-- Price Tag Pill -->
             <span class="absolute top-3 right-3 px-3 py-1 rounded-full bg-primary/95 backdrop-blur-md text-white font-display font-extrabold text-xs shadow-md">
-              $${item.dailyPrice.toFixed(2)}<span class="font-normal text-blue-200 text-[10px]">${t('card.day_unit', '/d')}</span>
+              ₹${Math.round(item.dailyPrice)}<span class="font-normal text-blue-200 text-[10px]">${t('card.day_unit', '/d')}</span>
             </span>
 
             <!-- Wishlist Heart -->
@@ -2250,7 +2180,7 @@
 
     function handlePriceRange(val) {
       maxPriceFilter = parseFloat(val);
-      document.getElementById("priceFilterDisplay").textContent = `$${maxPriceFilter.toFixed(2)}/day`;
+      document.getElementById("priceFilterDisplay").textContent = `₹${Math.round(maxPriceFilter)}/day`;
       renderMarketplace();
     }
 
@@ -2271,11 +2201,11 @@
       selectedCategory = "all";
       searchQuery = "";
       onlyAvailable = false;
-      maxPriceFilter = 10;
+      maxPriceFilter = 150;
       selectedHub = "all";
       document.getElementById("filterAvailCheckbox").checked = false;
-      document.getElementById("priceRangeSlider").value = 10;
-      document.getElementById("priceFilterDisplay").textContent = "$10.00/day";
+      document.getElementById("priceRangeSlider").value = 150;
+      document.getElementById("priceFilterDisplay").textContent = "₹150/day";
       document.getElementById("hubSelector").value = "all";
       clearSearch();
       filterCategory("all");
@@ -2305,7 +2235,7 @@
       document.getElementById("detailHeroImage").src = item.image;
       document.getElementById("detailConditionBadge").innerHTML = `<span class="material-symbols-outlined text-[14px] text-secondary">verified</span> ${getConditionLabel(item.condition)}`;
       document.getElementById("detailLocationBadge").innerHTML = `<span class="material-symbols-outlined text-[13px] text-blue-300">location_on</span> ${item.location}`;
-      document.getElementById("detailDepositText").textContent = `$${item.depositHold.toFixed(2)} ${t('detail.refundable', 'Refundable')}`;
+      document.getElementById("detailDepositText").textContent = `₹${Math.round(item.depositHold)} ${t('detail.refundable', 'Refundable')}`;
       document.getElementById("detailRatingText").textContent = item.rating;
       document.getElementById("detailDescriptionText").textContent = item.description;
 
@@ -2316,7 +2246,7 @@
       document.getElementById("detailCategoryLabel").textContent = getCategoryName(item.category);
       document.getElementById("detailTitleText").textContent = item.title;
       document.getElementById("detailPickupSpot").textContent = item.location;
-      document.getElementById("detailDailyPriceDisplay").textContent = `$${item.dailyPrice.toFixed(2)}`;
+      document.getElementById("detailDailyPriceDisplay").textContent = `₹${Math.round(item.dailyPrice)}`;
 
       borrowDays = 3;
       updateDetailMath();
@@ -2344,11 +2274,11 @@
       const dayUnit = borrowDays > 1 ? t('detail.days', 'Days') : t('detail.day', 'Day');
       document.getElementById("detailDaysCounter").textContent = `${borrowDays} ${dayUnit}`;
       document.getElementById("detailDatesRange").textContent = `Nov 1 → Nov ${1 + borrowDays}`;
-      document.getElementById("detailBreakdownMath").textContent = `${borrowDays} ${dayUnit} × $${activeItem.dailyPrice.toFixed(2)}`;
-      document.getElementById("detailBreakdownRental").textContent = `$${rentalCost.toFixed(2)}`;
-      document.getElementById("detailBreakdownDeposit").textContent = `$${activeItem.depositHold.toFixed(2)}`;
-      document.getElementById("detailTotalDue").textContent = `$${rentalCost.toFixed(2)}`;
-      document.getElementById("detailSubmitBtnText").textContent = `${t('detail.request_btn', 'Request to Borrow')} ($${rentalCost.toFixed(2)})`;
+      document.getElementById("detailBreakdownMath").textContent = `${borrowDays} ${dayUnit} × ₹${Math.round(activeItem.dailyPrice)}`;
+      document.getElementById("detailBreakdownRental").textContent = `₹${Math.round(rentalCost)}`;
+      document.getElementById("detailBreakdownDeposit").textContent = `₹${Math.round(activeItem.depositHold)}`;
+      document.getElementById("detailTotalDue").textContent = `₹${Math.round(rentalCost)}`;
+      document.getElementById("detailSubmitBtnText").textContent = `${t('detail.request_btn', 'Request to Borrow')} (₹${Math.round(rentalCost)})`;
     }
 
     function toggleActiveItemFavorite() {
@@ -2360,22 +2290,509 @@
       }
     }
 
-    function executeBorrowRequest() {
-      const rentalTotal = (activeItem.dailyPrice * borrowDays).toFixed(2);
-      showToast(`${t('toast.borrow_request_sent', 'Borrow request sent')} (${activeItem.title} → ${activeItem.lenderName}, $${rentalTotal})!`, "success");
-      
-      const badge = document.getElementById("dashRequestsCount");
-      if (badge) badge.textContent = parseInt(badge.textContent || 3) + 1;
-      
-      if (window.CampusLendAPI && window.CampusLendAPI.requestLoan && activeItem) {
-        window.CampusLendAPI.requestLoan(activeItem.id, currentUser.studentId || "SU-9824102", borrowDays)
-          .catch(e => console.log("[CampusLend] Standalone offline loan request recorded"));
+    // ================= LOANS & BORROWING STATE CONTROLLER =================
+    const DEFAULT_USER_BORROWS = [
+      {
+        id: "loan-active-1",
+        itemId: "item-1",
+        title: "TI-84 Plus CE Graphing Calculator",
+        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCwzEoEAOySUGjNOHtVUJfX4kzk2JoXBWr8O_2W6OlPBOBEyzFpdkwPF9maQ9UpdNsMNhfCUS2r3co300xpXSH1WgDkybFb8GNzCGFQuiKrPsYr-hmZl5O8hYxVk-y9cXuGdkTrUC89_-faqEUSw6bHHB1b3BkIkLNRObwI4vphIge7osJfNg6G1RmPKoEmOoxAuMrEH7yfzjBIMWa_DCjAE0B1vTF0hLqb6MycvIIR",
+        location: "Mech Block Quad",
+        lenderName: "Sarah Lin",
+        lenderDept: "Sophomore • Applied Math",
+        dailyPrice: 50.00,
+        deposit: 300.00,
+        totalFee: 150.00,
+        borrowDays: 3,
+        status: "BORROWED",
+        statusBadge: "BORROWED",
+        statusBadgeColor: "bg-blue-50 text-secondary border border-blue-200",
+        dueText: "Due in 3 days (Nov 14)",
+        dueBadge: "event",
+        createdAt: Date.now() - 86400000
+      },
+      {
+        id: "loan-active-2",
+        itemId: "item-drawing-kit",
+        title: "Rotring Engineering Drafting Kit",
+        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCZWL68BaBKd6KhJdKVU9eQVkuF0tJiGah9DjEZoAeOf-BnX03u0vCpqpKE-9blCTEFY4eV2ddWj0uh8avgWzJhwyqUPJAMsTG-ukRzpwZNIW6jb8OEy_XVjHVGE1MvO2N7DkvVUXG0QA9WHG-KcEOFRvKofQZxeXJjP3iVkw0r5MV1ZQGNTH8sdfEbbkXkGzjEF0P3tosOVd82au01v3vMjN-76bWm7W3z1GXeV7ab",
+        location: "Central Library",
+        lenderName: "Maya S.",
+        lenderDept: "Mechanical Engineering Jr",
+        dailyPrice: 30.00,
+        deposit: 200.00,
+        totalFee: 90.00,
+        borrowDays: 3,
+        status: "OVERDUE",
+        statusBadge: "OVERDUE",
+        statusBadgeColor: "bg-red-100 text-error border border-red-200",
+        dueText: "Due Yesterday (+ ₹50 fee)",
+        dueBadge: "warning",
+        createdAt: Date.now() - 4 * 86400000
+      }
+    ];
+
+    const DEFAULT_USER_LENDS = [
+      {
+        id: "lend-1",
+        itemId: "item-6",
+        title: "Logitech MX Master 3S Mouse",
+        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuD7gwQjV590U9vx14Fk3gWAVGNeM94g7uvPbrLTk2sSK8gny8hVVMT7_0_gm89wFpynlso1Q9OX3izu6Wd4PNJLwwEJNRNjDD2aJQl_5o0aKz5Q1ma_k-mNZwBS7eSiO6fd43lyYEJQMNYJTyVboZBYo00lgRiaz0tR2Zw_aomqYqDQpCp93tw6nEGJjG_rCBVbXdJ1kTE1eCchh_pJHvktAPkVxwhBPFeAVLkhixo7",
+        borrowerName: "Jordan T.",
+        borrowerDept: "Civil Block • Product Design",
+        earnings: "₹250",
+        status: "LENT OUT",
+        statusBadge: "LENT OUT",
+        statusBadgeColor: "bg-emerald-100 text-emerald-800 border border-emerald-200",
+        dueText: "Returns Nov 16",
+        createdAt: Date.now() - 2 * 86400000
+      }
+    ];
+
+    const DEFAULT_USER_REQUESTS = [
+      {
+        id: "reqCard1",
+        itemId: "item-5",
+        title: "Java Software Solutions (8th Ed)",
+        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBw5EJSfzwMOKh7CHb1318qHLtHVHxxCTQU8Kcz-uXwL0-jIbnyKqFL1FQL803NdVQZkLDXXLUkbnn1OAXQHJ1rFFnYXK5aG7pNGpHoBdoZML2e1sIrQ2L99B_CH9X8RSGe4V6oyPCfq73jCP1xW6qpIZ9rSvC8MboAv3TS_vo01sVW1JtUeLmUwrhFL71Exiho87iD-ulGXygtVEMXyWtMAAbyeghydJIDAl8J8mgP",
+        requesterName: "Marcus T.",
+        requesterDept: "Junior • Bio/CS",
+        rentalPeriod: "3 Days rental",
+        earnings: "₹90",
+        status: "PENDING",
+        statusBadge: "INCOMING REQUEST",
+        createdAt: Date.now() - 3600000
+      }
+    ];
+
+    function getUserBorrows() {
+      try {
+        const stored = localStorage.getItem("campuslend_user_borrows");
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (Array.isArray(parsed)) return parsed;
+        }
+      } catch (e) {}
+      localStorage.setItem("campuslend_user_borrows", JSON.stringify(DEFAULT_USER_BORROWS));
+      return [...DEFAULT_USER_BORROWS];
+    }
+
+    function saveUserBorrows(borrows) {
+      localStorage.setItem("campuslend_user_borrows", JSON.stringify(borrows));
+    }
+
+    function getUserLends() {
+      try {
+        const stored = localStorage.getItem("campuslend_user_lends");
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (Array.isArray(parsed)) return parsed;
+        }
+      } catch (e) {}
+      localStorage.setItem("campuslend_user_lends", JSON.stringify(DEFAULT_USER_LENDS));
+      return [...DEFAULT_USER_LENDS];
+    }
+
+    function saveUserLends(lends) {
+      localStorage.setItem("campuslend_user_lends", JSON.stringify(lends));
+    }
+
+    function getUserRequests() {
+      try {
+        const stored = localStorage.getItem("campuslend_user_requests");
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (Array.isArray(parsed)) return parsed;
+        }
+      } catch (e) {}
+      localStorage.setItem("campuslend_user_requests", JSON.stringify(DEFAULT_USER_REQUESTS));
+      return [...DEFAULT_USER_REQUESTS];
+    }
+
+    function saveUserRequests(requests) {
+      localStorage.setItem("campuslend_user_requests", JSON.stringify(requests));
+    }
+
+    function renderLoansDashboard() {
+      const borrows = getUserBorrows();
+      const lends = getUserLends();
+      const incomingReqs = getUserRequests();
+      const pendingBorrows = borrows.filter(b => b.status === "PENDING");
+
+      // 1. Update metric stat cards
+      const dashBorrowingCount = document.getElementById("dashBorrowingCount");
+      const tabBadgeBorrow = document.getElementById("tabBadgeBorrow");
+      if (dashBorrowingCount) dashBorrowingCount.textContent = borrows.length;
+      if (tabBadgeBorrow) tabBadgeBorrow.textContent = borrows.length;
+
+      const dashLendingCount = document.getElementById("dashLendingCount");
+      const tabBadgeLend = document.getElementById("tabBadgeLend");
+      if (dashLendingCount) dashLendingCount.textContent = lends.length;
+      if (tabBadgeLend) tabBadgeLend.textContent = lends.length;
+
+      const totalRequests = incomingReqs.length + pendingBorrows.length;
+      const dashRequestsCount = document.getElementById("dashRequestsCount");
+      const tabBadgeReq = document.getElementById("tabBadgeReq");
+      if (dashRequestsCount) dashRequestsCount.textContent = totalRequests;
+      if (tabBadgeReq) tabBadgeReq.textContent = totalRequests;
+
+      // 2. Render Borrowing Pane
+      const borrowingPane = document.getElementById("loansPaneBorrowing");
+      if (borrowingPane) {
+        if (borrows.length === 0) {
+          borrowingPane.innerHTML = `
+            <div class="text-center py-12 bg-white rounded-3xl border border-surface-container p-8">
+              <span class="material-symbols-outlined text-4xl text-outline mb-2">shopping_bag</span>
+              <h3 class="font-display font-bold text-lg text-primary">No Active Borrowings</h3>
+              <p class="text-xs text-on-surface-variant max-w-sm mx-auto mt-1 mb-4">You haven't requested any items yet. Browse the campus marketplace to borrow calculators, textbooks, tech gear and more!</p>
+              <button onclick="navigateView('marketplace')" class="px-5 py-2.5 rounded-xl bg-secondary hover:bg-secondary-hover text-white text-xs font-bold shadow-sm cursor-pointer">Browse Marketplace</button>
+            </div>
+          `;
+        } else {
+          borrowingPane.innerHTML = borrows.map(b => {
+            const isPending = b.status === "PENDING";
+            const isOverdue = b.status === "OVERDUE";
+            const borderStyle = isPending ? 'border-2 border-amber-300 shadow-md bg-amber-50/20' : (isOverdue ? 'border-2 border-red-200' : 'border border-surface-container');
+            const badgeColor = isPending ? 'bg-amber-100 text-amber-900 border border-amber-300' : (isOverdue ? 'bg-red-100 text-error border border-red-200' : 'bg-blue-50 text-secondary');
+            const statusLabel = isPending ? 'REQUEST PENDING' : (isOverdue ? 'OVERDUE' : 'BORROWED');
+            const safeTitle = (b.title || '').replace(/'/g, "\\'");
+            const safeLender = (b.lenderName || '').replace(/'/g, "\\'");
+            const safeLoc = (b.location || '').replace(/'/g, "\\'");
+
+            return `
+              <div class="bg-white rounded-3xl p-6 ${borderStyle} shadow-subtle hover:shadow-card transition-all flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                <div class="flex items-center gap-4">
+                  <div class="w-20 h-20 rounded-2xl overflow-hidden bg-surface-container-low shrink-0 border border-slate-100">
+                    <img src="${b.image}" alt="${b.title}" class="w-full h-full object-cover">
+                  </div>
+                  <div>
+                    <div class="flex items-center gap-2 mb-1">
+                      <span class="px-2.5 py-0.5 rounded-full ${badgeColor} text-[11px] font-bold">${statusLabel}</span>
+                      <span class="text-xs text-outline">${b.location}</span>
+                    </div>
+                    <h3 class="font-display font-bold text-lg text-primary">${b.title}</h3>
+                    <p class="text-xs text-on-surface-variant mt-0.5">
+                      Owner: <strong>${b.lenderName}</strong> (${b.lenderDept}) • ₹${Math.round(b.dailyPrice || 50)}/day
+                    </p>
+                  </div>
+                </div>
+
+                <div class="flex flex-col md:items-end gap-3 w-full md:w-auto pt-3 md:pt-0 border-t md:border-t-0 border-surface-container">
+                  <div class="flex items-center gap-3 text-xs">
+                    <span class="${isPending ? 'text-amber-800 bg-amber-50 font-bold border border-amber-200' : (isOverdue ? 'text-error font-bold' : 'text-secondary font-bold bg-blue-50')} px-2.5 py-1 rounded-full flex items-center gap-1">
+                      <span class="material-symbols-outlined text-[14px]">${b.dueBadge || (isPending ? 'schedule' : 'event')}</span>
+                      <span>${b.dueText}</span>
+                    </span>
+                    <span class="text-outline font-semibold">₹${Math.round(b.deposit || 200)} Escrow Deposit Held</span>
+                  </div>
+                  <div class="flex items-center gap-2 w-full md:w-auto">
+                    <button onclick="showToast('Opened chat with ${safeLender}', 'info')" class="flex-1 md:flex-initial px-3 py-2 rounded-xl bg-surface-container-low hover:bg-surface-container text-primary font-semibold text-xs flex items-center justify-center gap-1 cursor-pointer">
+                      <span class="material-symbols-outlined text-[16px]">chat</span>
+                      <span data-i18n="loans.chat_btn">Chat</span>
+                    </button>
+                    ${isPending ? `
+                      <button onclick="cancelBorrowRequest('${b.id}')" class="flex-1 md:flex-initial px-4 py-2 rounded-xl bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 font-semibold text-xs flex items-center justify-center gap-1.5 shadow-sm cursor-pointer">
+                        <span class="material-symbols-outlined text-[16px]">close</span>
+                        <span>Cancel Request</span>
+                      </button>
+                    ` : (isOverdue ? `
+                      <button onclick="openReturnModal('${safeTitle}', '${safeLender}', '₹${Math.round(b.deposit || 200)}', '${safeLoc}')" class="flex-1 md:flex-initial px-4 py-2 rounded-xl bg-error hover:bg-red-700 text-white font-semibold text-xs flex items-center justify-center gap-1.5 shadow-sm cursor-pointer">
+                        <span class="material-symbols-outlined text-[16px]">bolt</span>
+                        <span data-i18n="loans.return_now_btn">Return Now</span>
+                      </button>
+                    ` : `
+                      <button onclick="openReturnModal('${safeTitle}', '${safeLender}', '₹${Math.round(b.deposit || 300)}', '${safeLoc}')" class="flex-1 md:flex-initial px-4 py-2 rounded-xl bg-secondary hover:bg-secondary-hover text-white font-semibold text-xs flex items-center justify-center gap-1.5 shadow-sm cursor-pointer">
+                        <span class="material-symbols-outlined text-[16px]">assignment_return</span>
+                        <span data-i18n="loans.return_release_btn">Return & Release Escrow</span>
+                      </button>
+                    `)}
+                  </div>
+                </div>
+              </div>
+            `;
+          }).join("");
+        }
       }
 
+      // 3. Render Requests Pane
+      const requestsPane = document.getElementById("loansPaneRequests");
+      if (requestsPane) {
+        let reqHtml = "";
+
+        if (pendingBorrows.length > 0) {
+          reqHtml += `
+            <div class="space-y-3 mb-6">
+              <div class="flex items-center justify-between pb-1 border-b border-surface-container">
+                <h3 class="font-display font-bold text-sm text-primary flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-secondary text-[18px]">outbox</span>
+                  <span>Borrow Requests Sent by You (${pendingBorrows.length})</span>
+                </h3>
+                <span class="text-[11px] text-secondary font-semibold bg-blue-50 px-2 py-0.5 rounded-full">Awaiting peer confirmation</span>
+              </div>
+              ${pendingBorrows.map(pb => {
+                const safeTitle = (pb.title || '').replace(/'/g, "\\'");
+                const safeLender = (pb.lenderName || '').replace(/'/g, "\\'");
+                return `
+                  <div class="bg-white rounded-3xl p-6 border-2 border-amber-300 shadow-subtle flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                    <div class="flex items-center gap-4">
+                      <div class="w-20 h-20 rounded-2xl overflow-hidden bg-surface-container-low shrink-0 border border-slate-100">
+                        <img src="${pb.image}" alt="${pb.title}" class="w-full h-full object-cover">
+                      </div>
+                      <div>
+                        <div class="flex items-center gap-2 mb-1">
+                          <span class="px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 border border-amber-300 text-[11px] font-bold">OUTGOING REQUEST</span>
+                          <span class="text-xs text-primary font-bold">Total Rental: ₹${Math.round(pb.totalFee || 150)}</span>
+                        </div>
+                        <h3 class="font-display font-bold text-lg text-primary">${pb.title}</h3>
+                        <p class="text-xs text-on-surface-variant mt-0.5">
+                          Owner: <strong>${pb.lenderName}</strong> (${pb.lenderDept}) • ${pb.borrowDays || 3} Days rental • ${pb.location}
+                        </p>
+                      </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <button onclick="showToast('Opened chat with ${safeLender}', 'info')" class="px-3 py-2 rounded-xl bg-surface-container-low hover:bg-surface-container text-primary font-semibold text-xs flex items-center gap-1 cursor-pointer">
+                        <span class="material-symbols-outlined text-[16px]">chat</span>
+                        <span>Chat</span>
+                      </button>
+                      <button onclick="cancelBorrowRequest('${pb.id}')" class="px-4 py-2 rounded-xl bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 font-semibold text-xs shadow-sm cursor-pointer">
+                        Cancel Request
+                      </button>
+                    </div>
+                  </div>
+                `;
+              }).join("")}
+            </div>
+          `;
+        }
+
+        reqHtml += `
+          <div class="space-y-3">
+            <div class="flex items-center justify-between pb-1 border-b border-surface-container">
+              <h3 class="font-display font-bold text-sm text-primary flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-amber-600 text-[18px]">inbox</span>
+                <span>Incoming Requests for Your Gear (${incomingReqs.length})</span>
+              </h3>
+              <span class="text-[11px] text-outline">Action required</span>
+            </div>
+        `;
+
+        if (incomingReqs.length === 0) {
+          reqHtml += `
+            <div class="text-center py-8 bg-surface-container-low rounded-2xl p-6">
+              <span class="material-symbols-outlined text-3xl text-outline mb-1">inbox</span>
+              <p class="text-xs text-on-surface-variant">No pending incoming requests from peers right now.</p>
+            </div>
+          `;
+        } else {
+          reqHtml += incomingReqs.map(r => {
+            const safeTitle = (r.title || '').replace(/'/g, "\\'");
+            return `
+              <div class="bg-white rounded-3xl p-6 border border-surface-container shadow-subtle flex flex-col md:flex-row items-start md:items-center justify-between gap-6" id="${r.id}">
+                <div class="flex items-center gap-4">
+                  <div class="w-20 h-20 rounded-2xl overflow-hidden bg-surface-container-low shrink-0 border border-slate-100">
+                    <img src="${r.image}" alt="${r.title}" class="w-full h-full object-cover">
+                  </div>
+                  <div>
+                    <div class="flex items-center gap-2 mb-1">
+                      <span class="px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[11px] font-bold" data-i18n="loans.badge_incoming_req">INCOMING REQUEST</span>
+                      <span class="text-xs text-primary font-bold"><span data-i18n="loans.total_earnings">Total Earnings</span>: ${r.earnings}</span>
+                    </div>
+                    <h3 class="font-display font-bold text-lg text-primary">${r.title}</h3>
+                    <p class="text-xs text-on-surface-variant mt-0.5">
+                      <span data-i18n="loans.requested_by">Requested by:</span> <strong>${r.requesterName}</strong> (${r.requesterDept}) • ${r.rentalPeriod}
+                    </p>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-2">
+                  <button onclick="dismissRequest('${r.id}', '${safeTitle}')" class="px-3 py-2 rounded-xl bg-surface-container-low hover:bg-red-50 text-outline hover:text-error font-semibold text-xs cursor-pointer" data-i18n="loans.decline_btn">
+                    Decline
+                  </button>
+                  <button onclick="acceptRequest('${r.id}', '${safeTitle}')" class="px-4 py-2 rounded-xl bg-secondary hover:bg-secondary-hover text-white font-semibold text-xs shadow-sm cursor-pointer" data-i18n="loans.accept_handover_btn">
+                    Accept Handover
+                  </button>
+                </div>
+              </div>
+            `;
+          }).join("");
+        }
+
+        reqHtml += `</div>`;
+        requestsPane.innerHTML = reqHtml;
+      }
+
+      // 4. Render Lending Pane
+      const lendingPane = document.getElementById("loansPaneLending");
+      if (lendingPane) {
+        if (lends.length === 0) {
+          lendingPane.innerHTML = `
+            <div class="text-center py-12 bg-white rounded-3xl border border-surface-container p-8">
+              <span class="material-symbols-outlined text-4xl text-outline mb-2">payments</span>
+              <h3 class="font-display font-bold text-lg text-primary">No Items Currently Lent Out</h3>
+              <p class="text-xs text-on-surface-variant max-w-sm mx-auto mt-1 mb-4">List your gear for rent to earn money and karma points while helping PSG iTech peers!</p>
+              <button onclick="openAddItemModal()" class="px-5 py-2.5 rounded-xl bg-secondary hover:bg-secondary-hover text-white text-xs font-bold shadow-sm cursor-pointer">List an Item</button>
+            </div>
+          `;
+        } else {
+          lendingPane.innerHTML = lends.map(l => {
+            const safeBorrower = (l.borrowerName || '').replace(/'/g, "\\'");
+            return `
+              <div class="bg-white rounded-3xl p-6 border border-surface-container shadow-subtle flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                <div class="flex items-center gap-4">
+                  <div class="w-20 h-20 rounded-2xl overflow-hidden bg-surface-container-low shrink-0 border border-slate-100">
+                    <img src="${l.image}" alt="${l.title}" class="w-full h-full object-cover">
+                  </div>
+                  <div>
+                    <div class="flex items-center gap-2 mb-1">
+                      <span class="px-2.5 py-0.5 rounded-full ${l.statusBadgeColor || 'bg-emerald-100 text-emerald-800'} text-[11px] font-bold">${l.statusBadge || 'LENT OUT'}</span>
+                      <span class="text-xs text-emerald-700 font-semibold">${l.dueText}</span>
+                    </div>
+                    <h3 class="font-display font-bold text-lg text-primary">${l.title}</h3>
+                    <p class="text-xs text-on-surface-variant mt-0.5">
+                      Borrower: <strong>${l.borrowerName}</strong> (${l.borrowerDept}) • Earned ${l.earnings}
+                    </p>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-2">
+                  <button onclick="showToast('Sent ping message to ${safeBorrower}', 'info')" class="px-3 py-2 rounded-xl bg-surface-container-low hover:bg-surface-container text-primary font-semibold text-xs flex items-center gap-1 cursor-pointer">
+                    <span class="material-symbols-outlined text-[16px]">chat</span>
+                    <span data-i18n="loans.message_btn">Message</span>
+                  </button>
+                  <button onclick="markReturned('${l.id}')" class="px-4 py-2 rounded-xl bg-primary hover:bg-primary-hover text-white font-semibold text-xs flex items-center gap-1.5 shadow-sm cursor-pointer">
+                    <span class="material-symbols-outlined text-[16px]">check_circle</span>
+                    <span data-i18n="loans.mark_returned_btn">Mark Returned</span>
+                  </button>
+                </div>
+              </div>
+            `;
+          }).join("");
+        }
+      }
+    }
+
+    async function syncRemoteLoans() {
+      if (!window.CampusLendAPI || !currentUser || !currentUser.studentId) return;
+      try {
+        const remoteBorrows = await CampusLendAPI.getBorrowerLoans(currentUser.studentId);
+        if (Array.isArray(remoteBorrows) && remoteBorrows.length > 0) {
+          let localBorrows = getUserBorrows();
+          remoteBorrows.forEach(rb => {
+            const exists = localBorrows.find(lb => lb.id === rb.id || (lb.itemId === rb.itemId && Math.abs((lb.createdAt || 0) - (rb.createdAt ? rb.createdAt * 1000 : 0)) < 10000));
+            if (!exists) {
+              localBorrows.unshift({
+                id: rb.id,
+                itemId: rb.itemId,
+                title: rb.itemTitle || "Requested Item",
+                image: rb.itemImage || (items.find(i => i.id === rb.itemId) || {}).image || "https://lh3.googleusercontent.com/aida-public/AB6AXuCwzEoEAOySUGjNOHtVUJfX4kzk2JoXBWr8O_2W6OlPBOBEyzFpdkwPF9maQ9UpdNsMNhfCUS2r3co300xpXSH1WgDkybFb8GNzCGFQuiKrPsYr-hmZl5O8hYxVk-y9cXuGdkTrUC89_-faqEUSw6bHHB1b3BkIkLNRObwI4vphIge7osJfNg6G1RmPKoEmOoxAuMrEH7yfzjBIMWa_DCjAE0B1vTF0hLqb6MycvIIR",
+                location: rb.location || "PSG iTech Campus",
+                lenderName: rb.lenderName || "PSG iTech Classmate",
+                lenderDept: rb.lenderDept || "PSG iTech",
+                dailyPrice: rb.dailyPrice || 50.00,
+                deposit: rb.securityDeposit || 200.00,
+                totalFee: rb.totalFee || 150.00,
+                borrowDays: rb.borrowDays || 3,
+                status: rb.status || "PENDING",
+                statusBadge: rb.status === "ACCEPTED" ? "BORROWED" : "REQUEST PENDING",
+                statusBadgeColor: rb.status === "ACCEPTED" ? "bg-blue-50 text-secondary border border-blue-200" : "bg-amber-100 text-amber-900 border border-amber-300 font-bold",
+                dueText: rb.status === "ACCEPTED" ? `Due in ${rb.borrowDays || 3} days` : `Requested for ${rb.borrowDays || 3} days • Awaiting Lender Handover`,
+                dueBadge: rb.status === "ACCEPTED" ? "event" : "schedule",
+                createdAt: rb.createdAt ? rb.createdAt * 1000 : Date.now()
+              });
+            }
+          });
+          saveUserBorrows(localBorrows);
+          renderLoansDashboard();
+        }
+      } catch (e) {
+        console.log("[CampusLend] Remote loan sync notice:", e.message);
+      }
+    }
+
+    function executeBorrowRequest() {
+      if (!activeItem) return;
+      const rentalTotal = (activeItem.dailyPrice * borrowDays).toFixed(2);
+      const deposit = activeItem.depositHold || activeItem.securityDeposit || 200.00;
+
+      // 1. Create borrow record
+      const newBorrow = {
+        id: "loan-" + Date.now(),
+        itemId: activeItem.id,
+        title: activeItem.title,
+        image: activeItem.image || activeItem.imageUrl,
+        location: activeItem.location || "PSG iTech Campus",
+        lenderName: activeItem.lenderName || activeItem.ownerName || "PSG iTech Classmate",
+        lenderDept: activeItem.lenderDept || activeItem.ownerDept || "PSG iTech",
+        dailyPrice: activeItem.dailyPrice,
+        deposit: deposit,
+        totalFee: parseFloat(rentalTotal),
+        borrowDays: borrowDays,
+        status: "PENDING",
+        statusBadge: "REQUEST PENDING",
+        statusBadgeColor: "bg-amber-100 text-amber-900 border border-amber-300 font-bold",
+        dueText: `Requested for ${borrowDays} days • Awaiting Lender Handover`,
+        dueBadge: "schedule",
+        createdAt: Date.now()
+      };
+
+      // 2. Add to user's borrow list & persist
+      const borrows = getUserBorrows();
+      borrows.unshift(newBorrow);
+      saveUserBorrows(borrows);
+
+      // 3. Immediately render updated dashboard
+      renderLoansDashboard();
+
+      // 4. Send request to backend API (persisting in MongoDB)
+      if (window.CampusLendAPI && window.CampusLendAPI.requestLoan) {
+        window.CampusLendAPI.requestLoan({
+          itemId: activeItem.id,
+          itemTitle: activeItem.title,
+          itemImage: activeItem.image || activeItem.imageUrl,
+          borrowerId: currentUser.studentId || "25Z295",
+          borrowerName: currentUser.name || "Sharvesh Mahi",
+          lenderId: activeItem.ownerId || "715521104001",
+          lenderName: activeItem.lenderName || activeItem.ownerName || "PSG iTech Classmate",
+          lenderDept: activeItem.lenderDept || activeItem.ownerDept || "PSG iTech",
+          location: activeItem.location || "PSG iTech Campus",
+          borrowDays: borrowDays,
+          dailyPrice: activeItem.dailyPrice,
+          securityDeposit: deposit,
+          totalFee: parseFloat(rentalTotal)
+        }).catch(e => console.log("[CampusLend] Standalone offline loan request recorded"));
+      }
+
+      showToast(`${t('toast.borrow_request_sent', 'Borrow request sent')} (${activeItem.title} → ${newBorrow.lenderName}, ₹${Math.round(rentalTotal)})!`, "success");
+
+      // 5. Navigate to my-loans and show the borrowing tab where the item is now visible at the very top!
       setTimeout(() => {
         navigateView("my-loans");
-        switchLoansTab("requests");
-      }, 500);
+        switchLoansTab("borrowing");
+      }, 400);
+    }
+
+    function cancelBorrowRequest(borrowId) {
+      let borrows = getUserBorrows();
+      const idx = borrows.findIndex(b => b.id === borrowId);
+      if (idx >= 0) {
+        const title = borrows[idx].title;
+        borrows.splice(idx, 1);
+        saveUserBorrows(borrows);
+        renderLoansDashboard();
+        showToast(`Borrow request for "${title}" has been cancelled. Escrow hold released.`, "info");
+      }
+    }
+
+    function markReturned(lendId) {
+      let lends = getUserLends();
+      const idx = lends.findIndex(l => l.id === lendId);
+      if (idx >= 0) {
+        const item = lends[idx];
+        lends.splice(idx, 1);
+        saveUserLends(lends);
+        renderLoansDashboard();
+        showToast(`Return confirmed for "${item.title}". ${item.earnings} transferred to your campus balance!`, "success");
+      }
     }
 
     // ================= LOANS TAB SWITCHER =================
@@ -2418,16 +2835,42 @@
     }
 
     function acceptRequest(cardId, itemTitle) {
-      const card = document.getElementById(cardId);
-      if (card) {
-        card.classList.add("opacity-50", "pointer-events-none");
+      let reqs = getUserRequests();
+      const idx = reqs.findIndex(r => r.id === cardId);
+      if (idx >= 0) {
+        const req = reqs[idx];
+        reqs.splice(idx, 1);
+        saveUserRequests(reqs);
+
+        let lends = getUserLends();
+        lends.unshift({
+          id: "lend-" + Date.now(),
+          itemId: req.itemId,
+          title: req.title,
+          image: req.image,
+          borrowerName: req.requesterName,
+          borrowerDept: req.requesterDept,
+          earnings: req.earnings,
+          status: "LENT OUT",
+          statusBadge: "LENT OUT",
+          statusBadgeColor: "bg-emerald-100 text-emerald-800 border border-emerald-200",
+          dueText: "Returns in 3 days",
+          createdAt: Date.now()
+        });
+        saveUserLends(lends);
+        renderLoansDashboard();
       }
       showToast(`${t('toast.accepted_handover', 'Accepted handover. Chat connected!')} (${itemTitle})`, "success");
     }
 
     function dismissRequest(cardId, itemTitle) {
-      const card = document.getElementById(cardId);
-      if (card) card.remove();
+      let reqs = getUserRequests();
+      const idx = reqs.findIndex(r => r.id === cardId);
+      if (idx >= 0) {
+        reqs.splice(idx, 1);
+        saveUserRequests(reqs);
+        renderLoansDashboard();
+      }
       showToast(`${t('toast.declined_request', 'Declined request')}: "${itemTitle}"`, "info");
     }
 
@@ -2467,6 +2910,10 @@
     }
 
     function openEditProfileModal() {
+      const nameInput = document.getElementById("editNameInput");
+      const dormInput = document.getElementById("editDormInput");
+      if (nameInput) nameInput.value = currentUser.name || "Sharvesh Mahi";
+      if (dormInput) dormInput.value = currentUser.dorm || "PSG iTech Campus Hostel Block A";
       document.getElementById("editProfileModal").classList.remove("opacity-0", "pointer-events-none");
     }
 
@@ -2474,14 +2921,39 @@
       document.getElementById("editProfileModal").classList.add("opacity-0", "pointer-events-none");
     }
 
-    function saveProfile() {
-      const name = document.getElementById("editNameInput").value;
-      const dorm = document.getElementById("editDormInput").value;
-      document.getElementById("profileFullName").textContent = name;
-      document.getElementById("topNavUserName").textContent = name;
-      document.getElementById("profileDormText").textContent = dorm;
+    async function saveProfile() {
+      const name = document.getElementById("editNameInput").value.trim();
+      const dorm = document.getElementById("editDormInput").value.trim();
+
+      if (!name) {
+        showToast("Please enter a valid student name", "error");
+        return;
+      }
+
+      currentUser.name = name;
+      currentUser.dorm = dorm || "PSG iTech Campus Hostel Block A";
+
+      // Update UI elements across page immediately
+      updateUserDisplay();
+
+      // Persist locally across refreshes
+      sessionStorage.setItem("campuslend_current_user", JSON.stringify(currentUser));
+      saveLocalRegisteredUser(currentUser);
+
+      // Persist to MongoDB backend (lend database)
+      if (window.CampusLendAPI && window.CampusLendAPI.updateStudent) {
+        CampusLendAPI.updateStudent(currentUser.studentId || currentUser.email, {
+          name: name,
+          dormLocation: dorm
+        }).then(res => {
+          console.log("[CampusLend] Profile permanently updated in MongoDB:", res);
+        }).catch(err => {
+          console.log("[CampusLend] Saved locally:", err.message);
+        });
+      }
+
       closeEditProfileModal();
-      showToast(t("toast.profile_updated", "Profile details updated successfully"), "success");
+      showToast(t("toast.profile_updated", "Profile details updated and saved permanently!"), "success");
     }
 
     // ================= ADD NEW LISTING & PHOTO UPLOAD =================
@@ -2544,9 +3016,9 @@
       const title = document.getElementById("newItemTitle").value;
       const cat = document.getElementById("newItemCategory").value;
       const cond = document.getElementById("newItemCondition").value;
-      const price = parseFloat(document.getElementById("newItemDailyPrice").value) || 3.00;
-      const deposit = parseFloat(document.getElementById("newItemDeposit").value) || 20.00;
-      const loc = document.getElementById("newItemLocation").value || "Wilbur Hall";
+      const price = parseFloat(document.getElementById("newItemDailyPrice").value) || 50.00;
+      const deposit = parseFloat(document.getElementById("newItemDeposit").value) || 200.00;
+      const loc = document.getElementById("newItemLocation").value || "Hostel Block A";
       const desc = document.getElementById("newItemDescription").value || "Working student equipment in clean condition.";
 
       const defaultCategoryImages = {
@@ -2568,9 +3040,9 @@
         depositHold: deposit,
         condition: cond,
         location: loc,
-        campus: "Stanford Campus",
-        lenderName: currentUser.name || "Alex Rivera",
-        lenderDept: currentUser.department || "Junior • Computer Science",
+        campus: "PSG iTech Campus",
+        lenderName: currentUser.name || "Sharvesh Mahi",
+        lenderDept: currentUser.department || "Freshman • Computer Science",
         lenderAvatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuCHidFGGvejNyhkUBYrLtdf6YBBJH4cdUC8PrAvMSsLsYw29f3rxNOr1LXFSuNGwGsWjv-ou9bedavLx1oiQXsiW3MD674jEP9umUigltN6OXY-sEur0CQveiqITJGNH2LX-cl2jcU0Vef-R_KhMIEo1PwG_hbf0mrS88phMWaoVA6h74QfX_S0Km9Ne14pch4EEQ08E86vS_bWV-4UiNF6-5rhOjPAEsh2hEdwtOo1",
         image: finalItemPhoto,
         rating: "5.0 ★ (New)",
@@ -2583,8 +3055,8 @@
       USER_LISTINGS.unshift({
         title,
         status: "Available",
-        price: `$${price.toFixed(2)}/day`,
-        deposit: `$${deposit.toFixed(2)} deposit`,
+        price: `₹${Math.round(price)}/day`,
+        deposit: `₹${Math.round(deposit)} deposit`,
         image: finalItemPhoto
       });
 
@@ -2598,7 +3070,9 @@
           condition: cond,
           location: loc,
           imageUrl: finalItemPhoto,
-          ownerId: currentUser.studentId || "SU-9824102"
+          ownerId: currentUser.studentId || "25Z295",
+          ownerName: currentUser.name || "Sharvesh Mahi",
+          ownerDept: currentUser.department || "1st Year • Computer Science"
         }).catch(e => console.log("[CampusLend] Standalone offline listing saved locally"));
       }
 
@@ -2624,93 +3098,261 @@
 
     // ================= AUTHENTICATION & GATEWAY CONTROLLER =================
     let isAuthenticated = false; // Initially false: gateway displays before entering
+    let isEmailOtpVerified = false;
+    let otpCooldownInterval = null;
+    let otpCooldownRemaining = 0;
 
-    // Default registered members store (seeded with requested demo member)
-    const DEFAULT_REGISTERED_USERS = [
+    // Authorized Demo Member Details
+    let currentUser = {
+      name: "Sharvesh Mahi",
+      email: "25z295@psgitech.ac.in",
+      studentId: "25Z295",
+      department: "Computer Science & Engineering",
+      year: "Freshman",
+      dorm: "PSG iTech Campus Hostel Block A",
+      campus: "PSG Institute of Technology and Applied Research"
+    };
+
+    // Pre-authorized Registered Members Store (for offline resilience and member restriction)
+    const DEFAULT_REGISTERED_MEMBERS = [
       {
-        studentId: "25Z295",
         name: "Sharvesh Mahi",
         email: "25z295@psgitech.ac.in",
+        studentId: "25Z295",
         password: "sharveshmahi",
         department: "Computer Science & Engineering",
-        year: "1st Year",
-        dorm: "Campus Hostel Block A",
-        campus: "PSG iTech Campus"
+        year: "Freshman",
+        dorm: "PSG iTech Campus Hostel Block A",
+        campus: "PSG Institute of Technology and Applied Research"
       }
     ];
 
-    function getRegisteredUsers() {
+    function getLocalRegisteredUsers() {
       try {
-        const saved = localStorage.getItem("campuslend_registered_users");
-        if (saved) {
-          const parsed = JSON.parse(saved);
-          if (Array.isArray(parsed)) {
-            // Ensure demo account is always available
-            if (!parsed.some(u => (u.email || "").toLowerCase() === "25z295@psgitech.ac.in" || (u.studentId || "").toLowerCase() === "25z295")) {
-              parsed.unshift(DEFAULT_REGISTERED_USERS[0]);
-            }
-            return parsed;
-          }
+        const stored = localStorage.getItem("campuslend_registered_users");
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
         }
       } catch (e) {}
-      return [...DEFAULT_REGISTERED_USERS];
+      localStorage.setItem("campuslend_registered_users", JSON.stringify(DEFAULT_REGISTERED_MEMBERS));
+      return DEFAULT_REGISTERED_MEMBERS;
     }
 
-    function saveRegisteredUser(user) {
-      const users = getRegisteredUsers();
+    function saveLocalRegisteredUser(user) {
+      const users = getLocalRegisteredUsers();
       const existingIdx = users.findIndex(u => 
-        (u.email || "").toLowerCase() === (user.email || "").toLowerCase() || 
-        (u.studentId || "").toLowerCase() === (user.studentId || "").toLowerCase()
+        (u.email && u.email.toLowerCase() === (user.email || "").toLowerCase()) ||
+        (u.studentId && u.studentId.toUpperCase() === (user.studentId || "").toUpperCase())
       );
       if (existingIdx >= 0) {
         users[existingIdx] = { ...users[existingIdx], ...user };
       } else {
         users.push(user);
       }
-      try {
-        localStorage.setItem("campuslend_registered_users", JSON.stringify(users));
-      } catch (e) {}
+      localStorage.setItem("campuslend_registered_users", JSON.stringify(users));
     }
 
-    let currentUser = {
-      name: "Sharvesh Mahi",
-      email: "25z295@psgitech.ac.in",
-      studentId: "25Z295",
-      department: "Computer Science & Engineering",
-      year: "1st Year",
-      dorm: "Campus Hostel Block A",
-      campus: "PSG iTech Campus"
-    };
-
-    function initAuth() {
-      // Check if session was authenticated
-      const savedAuth = sessionStorage.getItem("lendloop_authenticated");
-      const savedUser = sessionStorage.getItem("lendloop_user");
-      if (savedUser) {
-        try {
-          currentUser = JSON.parse(savedUser);
-        } catch (e) {}
-      }
-      if (savedAuth === "true") {
-        setAuthenticated(true, false);
-      } else {
-        setAuthenticated(false, false);
-      }
-    }
-
+    // Helper to auto-fill demo credentials
     function fillDemoCredentials() {
       const emailInput = document.getElementById("gatewayLoginEmail");
       const passInput = document.getElementById("gatewayLoginPassword");
       if (emailInput) emailInput.value = "25z295@psgitech.ac.in";
       if (passInput) passInput.value = "sharveshmahi";
-      const errBox = document.getElementById("loginErrorMessage");
-      if (errBox) errBox.classList.add("hidden");
-      showToast("Demo credentials filled (25z295@psgitech.ac.in)", "info");
+      showToast("Pre-authorized demo credentials loaded (25z295@psgitech.ac.in / sharveshmahi)", "info");
     }
 
+    // Quick one-click demo login from header badge
     function handleQuickDemoAccess() {
+      switchGatewayTab("login");
       fillDemoCredentials();
-      handleGatewayLogin();
+      setTimeout(() => {
+        handleGatewayLogin();
+      }, 150);
+    }
+
+    function isPsgItechEmail(email) {
+      if (!email) return false;
+      return /^[a-zA-Z0-9._%+-]+@psgitech\.ac\.in$/i.test(email.trim());
+    }
+
+    function startOtpCooldown(seconds = 60) {
+      clearInterval(otpCooldownInterval);
+      otpCooldownRemaining = seconds;
+      const resendBtn = document.getElementById("btn-resend-otp");
+      const timerLabel = document.getElementById("otpCooldownTimer");
+      if (resendBtn) resendBtn.disabled = true;
+
+      otpCooldownInterval = setInterval(() => {
+        otpCooldownRemaining--;
+        if (otpCooldownRemaining <= 0) {
+          clearInterval(otpCooldownInterval);
+          if (resendBtn) {
+            resendBtn.disabled = false;
+            resendBtn.textContent = "Resend OTP";
+          }
+          if (timerLabel) timerLabel.textContent = "You can now resend OTP";
+        } else {
+          if (resendBtn) resendBtn.textContent = `Resend in ${otpCooldownRemaining}s`;
+          if (timerLabel) timerLabel.textContent = `Resend available in ${otpCooldownRemaining}s`;
+        }
+      }, 1000);
+    }
+
+    async function handleSendOtp(isResend = false) {
+      const emailInput = document.getElementById("reg-email");
+      const email = emailInput ? emailInput.value.trim().toLowerCase() : "";
+
+      if (!isPsgItechEmail(email)) {
+        showToast("Access restricted: Only official PSG iTech email addresses (@psgitech.ac.in) are allowed. Personal emails (Gmail, Yahoo, Outlook) are rejected.", "error");
+        return;
+      }
+
+      const sendBtn = document.getElementById("btn-send-otp");
+      if (sendBtn) {
+        sendBtn.disabled = true;
+        sendBtn.innerHTML = `<span class="material-symbols-outlined text-[14px] animate-spin">progress_activity</span> Sending...`;
+      }
+
+      try {
+        const res = await CampusLendAPI.sendOtp(email);
+        const msg = res.message || `A 6-digit OTP has been sent to ${email}. Valid for 5 minutes.`;
+        showToast(msg, "success");
+
+        const otpSection = document.getElementById("regOtpSection");
+        if (otpSection) otpSection.classList.remove("hidden");
+        startOtpCooldown(60);
+
+        const otpInput = document.getElementById("reg-otp-code");
+        if (otpInput) {
+          otpInput.value = "";
+          otpInput.focus();
+        }
+      } catch (err) {
+        // Fallback for offline simulation only if backend network failed
+        const isNetworkErr = err.name === "TypeError" || (err.message && (err.message.includes("Failed to fetch") || err.message.includes("NetworkError") || err.message.includes("Load failed")));
+        if (isNetworkErr || !err.message) {
+          const mockCode = "123456";
+          window._localOtp = { email, code: mockCode, expires: Date.now() + 300000 };
+          showToast(`[Demo Mailer] 6-digit OTP sent to ${email}: ${mockCode} (Valid for 5 mins)`, "info");
+          const otpSection = document.getElementById("regOtpSection");
+          if (otpSection) otpSection.classList.remove("hidden");
+          startOtpCooldown(60);
+          const otpInput = document.getElementById("reg-otp-code");
+          if (otpInput) {
+            otpInput.value = mockCode;
+            otpInput.focus();
+          }
+        } else {
+          showToast(err.message || "Failed to send OTP. Please check email and try again.", "error");
+        }
+      } finally {
+        if (sendBtn) {
+          sendBtn.disabled = false;
+          sendBtn.innerHTML = `<span>Send OTP</span><span class="material-symbols-outlined text-[15px]">send</span>`;
+        }
+      }
+    }
+
+    async function handleVerifyOtp() {
+      const emailInput = document.getElementById("reg-email");
+      const otpInput = document.getElementById("reg-otp-code");
+      const email = emailInput ? emailInput.value.trim().toLowerCase() : "";
+      const otp = otpInput ? otpInput.value.trim() : "";
+
+      if (!isPsgItechEmail(email)) {
+        showToast("Please enter a valid @psgitech.ac.in college email", "error");
+        return;
+      }
+
+      if (!/^\d{6}$/.test(otp)) {
+        showToast("OTP must be a 6-digit number", "error");
+        return;
+      }
+
+      const verifyBtn = document.getElementById("btn-verify-otp");
+      if (verifyBtn) {
+        verifyBtn.disabled = true;
+        verifyBtn.innerHTML = `<span class="material-symbols-outlined text-[14px] animate-spin">progress_activity</span>`;
+      }
+
+      try {
+        let verified = false;
+        let vToken = "token-verified";
+
+        try {
+          const res = await CampusLendAPI.verifyOtp(email, otp);
+          const data = res.data || res;
+          if (data.verified || data.success) {
+            verified = true;
+            vToken = data.verificationToken || vToken;
+          }
+        } catch (apiErr) {
+          // Check local offline mock OTP fallback only if backend unreachable
+          const isNetworkErr = apiErr.name === "TypeError" || (apiErr.message && (apiErr.message.includes("Failed to fetch") || apiErr.message.includes("NetworkError") || apiErr.message.includes("Load failed")));
+          if (isNetworkErr && window._localOtp && window._localOtp.email === email && (window._localOtp.code === otp || otp === "123456")) {
+            verified = true;
+            vToken = "token-local-verified-" + Date.now();
+          } else {
+            throw apiErr;
+          }
+        }
+
+        if (verified) {
+          isEmailOtpVerified = true;
+          const tokenHolder = document.getElementById("reg-verification-token");
+          if (tokenHolder) tokenHolder.value = vToken;
+
+          // Lock email field and display verified status
+          if (emailInput) emailInput.readOnly = true;
+          const sendBtn = document.getElementById("btn-send-otp");
+          if (sendBtn) sendBtn.classList.add("hidden");
+
+          const otpSection = document.getElementById("regOtpSection");
+          if (otpSection) otpSection.classList.add("hidden");
+
+          const verifiedBanner = document.getElementById("regVerifiedBanner");
+          if (verifiedBanner) verifiedBanner.classList.remove("hidden");
+
+          clearInterval(otpCooldownInterval);
+          showToast("College email verified successfully! Please complete your registration details.", "success");
+        } else {
+          showToast("OTP verification failed. Please check the code.", "error");
+        }
+      } catch (err) {
+        showToast(err.message || "Incorrect or expired OTP", "error");
+      } finally {
+        if (verifyBtn) {
+          verifyBtn.disabled = false;
+          verifyBtn.innerHTML = `<span>Verify OTP</span><span class="material-symbols-outlined text-[16px]">check</span>`;
+        }
+      }
+    }
+
+    function initAuth() {
+      // Ensure local registered users seeded
+      const registered = getLocalRegisteredUsers();
+
+      // Check if session was authenticated and restore last saved student changes
+      const savedAuth = sessionStorage.getItem("lendloop_authenticated");
+      const savedUser = sessionStorage.getItem("campuslend_current_user");
+
+      if (savedUser) {
+        try {
+          currentUser = { ...currentUser, ...JSON.parse(savedUser) };
+        } catch (e) {}
+      } else if (registered && registered.length > 0) {
+        const demoUser = registered.find(u => u.email === "25z295@psgitech.ac.in");
+        if (demoUser) {
+          currentUser = { ...currentUser, ...demoUser };
+        }
+      }
+
+      if (savedAuth === "true") {
+        setAuthenticated(true, false);
+      } else {
+        setAuthenticated(false, false);
+      }
     }
 
     function setAuthenticated(status, showNotification = true) {
@@ -2724,6 +3366,8 @@
         updateUserDisplay();
         renderMarketplace();
         renderProfileListings();
+        renderLoansDashboard();
+        syncRemoteLoans();
         window.scrollTo({ top: 0, behavior: "smooth" });
         if (showNotification) {
           showToast(`${t("toast.welcome_user", "Welcome to LendLoop")}, ${currentUser.name.split(' ')[0]}!`, "success");
@@ -2742,8 +3386,6 @@
       const registerPanel = document.getElementById("authRegisterPanel");
       const loginVisual = document.getElementById("loginVisualCard");
       const registerVisual = document.getElementById("registerVisualCard");
-      const errBox = document.getElementById("loginErrorMessage");
-      if (errBox) errBox.classList.add("hidden");
 
       if (tab === "login") {
         tabLogin.className = "flex-1 py-2.5 text-center font-bold text-xs sm:text-sm rounded-xl bg-primary text-white shadow-sm transition-all flex items-center justify-center gap-1.5 cursor-pointer";
@@ -2770,109 +3412,106 @@
       if (e) e.preventDefault();
       const emailInput = document.getElementById("gatewayLoginEmail");
       const passInput = document.getElementById("gatewayLoginPassword");
-      const errBox = document.getElementById("loginErrorMessage");
-      const errText = document.getElementById("loginErrorText");
-      if (errBox) errBox.classList.add("hidden");
-
-      const inputVal = emailInput ? emailInput.value.trim().toLowerCase() : "";
+      const emailVal = emailInput ? emailInput.value.trim() : "";
       const password = passInput ? passInput.value : "";
 
-      if (!inputVal) {
-        showToast("Please enter your registered Student Email or ID", "error");
+      if (!emailVal) {
+        showToast("Please enter your PSG iTech email or Student ID", "error");
         return;
       }
+
+      // Check domain if an email address was entered
+      if (emailVal.includes("@") && !isPsgItechEmail(emailVal)) {
+        showToast("Access restricted: Only official PSG iTech email addresses (@psgitech.ac.in) are allowed. Personal emails (Gmail, Yahoo, Outlook) are rejected.", "error");
+        return;
+      }
+
       if (!password) {
-        showToast("Please enter your password", "error");
+        showToast("Please enter your account password", "error");
         return;
       }
 
-      // 1. Try Backend API first if server is running
-      if (window.CampusLendAPI && window.CampusLendAPI.login) {
+      const submitBtn = document.getElementById("gatewayLoginSubmitBtn");
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `<span class="material-symbols-outlined text-[16px] animate-spin">progress_activity</span> Authenticating...`;
+      }
+
+      try {
+        let authSuccess = false;
+        let studentData = null;
+
         try {
-          const res = await window.CampusLendAPI.login(inputVal, password);
-          if (res && res.student) {
-            if (res.token) localStorage.setItem("campuslend_token", res.token);
-            currentUser = {
-              name: res.student.name || "Sharvesh Mahi",
-              email: res.student.email || inputVal,
-              studentId: res.student.studentId || "25Z295",
-              department: res.student.department || "Computer Science & Engineering",
-              year: res.student.yearOfStudy || "1st Year",
-              dorm: res.student.dormLocation || "Campus Hostel Block A",
-              campus: res.student.campus || "PSG iTech Campus"
-            };
-            sessionStorage.setItem("lendloop_authenticated", "true");
-            sessionStorage.setItem("lendloop_user", JSON.stringify(currentUser));
-            setAuthenticated(true, true);
-            return;
+          // Attempt backend authentication
+          const res = await CampusLendAPI.login(emailVal.toLowerCase(), password);
+          const data = res.data || res;
+          if (data.student || data.token) {
+            authSuccess = true;
+            studentData = data.student || {};
+            if (data.token) localStorage.setItem("campuslend_token", data.token);
           }
-        } catch (err) {
-          // Explicit rejection from API:
-          if (err.status === 401) {
-            const msg = t("toast.incorrect_password", "Incorrect password. Please enter the valid password.");
-            showToast(msg, "error");
-            if (errBox && errText) {
-              errText.textContent = msg;
-              errBox.classList.remove("hidden");
+        } catch (apiErr) {
+          const errMsg = apiErr.message || "";
+          const isNetworkErr = apiErr.name === "TypeError" || (errMsg && (errMsg.includes("Failed to fetch") || errMsg.includes("NetworkError") || errMsg.includes("Load failed")));
+
+          // If server responded with an error, handle server's response
+          if (!isNetworkErr) {
+            if (errMsg.toLowerCase().includes("not registered") || errMsg.toLowerCase().includes("not found")) {
+              showToast("Member account not found. Only registered PSG iTech members can log in. Please register first.", "error");
+              setTimeout(() => switchGatewayTab("register"), 1200);
+              return;
             }
-            return;
-          }
-          if (err.status === 404) {
-            const msg = t("toast.account_not_found", "Account not registered! You must register first before logging in.");
-            showToast(msg, "error");
-            if (errBox && errText) {
-              errText.textContent = msg;
-              errBox.classList.remove("hidden");
+            if (errMsg.toLowerCase().includes("invalid") || errMsg.toLowerCase().includes("incorrect") || errMsg.toLowerCase().includes("password") || errMsg.toLowerCase().includes("credentials")) {
+              showToast(errMsg || "Invalid email/ID or password. Please verify your credentials.", "error");
+              return;
             }
-            setTimeout(() => switchGatewayTab("register"), 1500);
+            showToast(errMsg || "Login failed. Please verify credentials.", "error");
             return;
           }
-          // If offline / connection refused, fall through to client-side database
+
+          // In case backend is completely offline, check local registered members
+          const registeredUsers = getLocalRegisteredUsers();
+          const found = registeredUsers.find(u => 
+            (u.email && u.email.toLowerCase() === emailVal.toLowerCase()) ||
+            (u.studentId && u.studentId.toUpperCase() === emailVal.toUpperCase())
+          );
+
+          if (!found) {
+            showToast("Account not found. Only registered members can log in. Please register first.", "error");
+            setTimeout(() => switchGatewayTab("register"), 1200);
+            return;
+          }
+
+          if (found.password !== password) {
+            showToast("Incorrect password. Please verify your password.", "error");
+            return;
+          }
+
+          authSuccess = true;
+          studentData = found;
+        }
+
+        if (authSuccess && studentData) {
+          currentUser.email = studentData.email || emailVal.toLowerCase();
+          currentUser.name = studentData.name || currentUser.name;
+          currentUser.studentId = studentData.studentId || currentUser.studentId;
+          currentUser.department = studentData.department || currentUser.department;
+          currentUser.dorm = studentData.dormLocation || studentData.dorm || "PSG iTech Campus Hostel Block A";
+          currentUser.campus = studentData.campus || "PSG Institute of Technology and Applied Research";
+
+          saveLocalRegisteredUser(currentUser);
+          sessionStorage.setItem("campuslend_current_user", JSON.stringify(currentUser));
+          sessionStorage.setItem("lendloop_authenticated", "true");
+          setAuthenticated(true, true);
+        }
+      } catch (err) {
+        showToast(err.message || "Login failed. Please verify credentials.", "error");
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = `<span data-i18n="login.submit_btn">Log In to LendLoop</span><span class="material-symbols-outlined text-[19px]">arrow_forward</span>`;
         }
       }
-
-      // 2. Client-side database check (enforces that only registered members can log in)
-      const registeredUsers = getRegisteredUsers();
-      const matchedUser = registeredUsers.find(u => 
-        (u.email || "").toLowerCase() === inputVal || 
-        (u.studentId || "").toLowerCase() === inputVal
-      );
-
-      if (!matchedUser) {
-        const msg = t("toast.account_not_found", "Account not registered! You must register first before logging in.");
-        showToast(msg, "error");
-        if (errBox && errText) {
-          errText.textContent = msg;
-          errBox.classList.remove("hidden");
-        }
-        setTimeout(() => switchGatewayTab("register"), 1500);
-        return;
-      }
-
-      if (matchedUser.password && matchedUser.password !== password) {
-        const msg = t("toast.incorrect_password", "Incorrect password. Please enter the valid password.");
-        showToast(msg, "error");
-        if (errBox && errText) {
-          errText.textContent = msg;
-          errBox.classList.remove("hidden");
-        }
-        return;
-      }
-
-      // Success: verified registered member
-      currentUser = {
-        name: matchedUser.name || "Sharvesh Mahi",
-        email: matchedUser.email || inputVal,
-        studentId: matchedUser.studentId || "25Z295",
-        department: matchedUser.department || "Computer Science & Engineering",
-        year: matchedUser.year || "1st Year",
-        dorm: matchedUser.dorm || "Campus Hostel Block A",
-        campus: matchedUser.campus || "PSG iTech Campus"
-      };
-
-      sessionStorage.setItem("lendloop_authenticated", "true");
-      sessionStorage.setItem("lendloop_user", JSON.stringify(currentUser));
-      setAuthenticated(true, true);
     }
 
     async function handleGatewayRegister(e) {
@@ -2884,104 +3523,136 @@
       const yearInput = document.getElementById("selected-year");
       const passInput = document.getElementById("reg-pass");
       const confirmPassInput = document.getElementById("reg-confirm-pass");
+      const tokenInput = document.getElementById("reg-verification-token");
 
       const name = nameInput ? nameInput.value.trim() : "";
-      const studentId = studentIdInput ? studentIdInput.value.trim() : "";
+      const studentId = studentIdInput ? studentIdInput.value.trim().toUpperCase() : "";
       const email = emailInput ? emailInput.value.trim().toLowerCase() : "";
       const dept = deptInput ? deptInput.options[deptInput.selectedIndex].text : "Computer Science & Engineering";
-      const year = yearInput ? yearInput.value : "1st Year";
-      const pass = passInput ? passInput.value : "";
+      const year = yearInput ? yearInput.value : "Freshman";
+      const password = passInput ? passInput.value : "";
       const confirmPass = confirmPassInput ? confirmPassInput.value : "";
+      const verificationToken = tokenInput ? tokenInput.value.trim() : "";
 
-      if (!name || !studentId || !email || !pass) {
-        showToast("Please fill in all required registration fields (*)", "error");
+      if (!isPsgItechEmail(email)) {
+        showToast("Access restricted: Only official PSG iTech email addresses (@psgitech.ac.in) are permitted.", "error");
         return;
       }
 
-      if (!email.includes("@") || !email.includes(".")) {
-        showToast(t("toast.invalid_email", "Please enter a valid campus email address"), "error");
+      if (!isEmailOtpVerified || !verificationToken) {
+        showToast("OTP Verification Required: Please verify your official PSG iTech email with OTP before registering.", "error");
+        const otpSection = document.getElementById("regOtpSection");
+        if (otpSection) otpSection.classList.remove("hidden");
         return;
       }
 
-      if (pass !== confirmPass) {
-        showToast(t("toast.password_mismatch", "Passwords do not match"), "error");
+      if (!name) {
+        showToast("Please enter your legal student name", "error");
         return;
       }
 
-      const newMember = {
-        name,
-        studentId,
-        email,
-        password: pass,
-        department: dept,
-        year,
-        dorm: "Campus Hostel Block A",
-        campus: "PSG iTech Campus"
-      };
+      if (!studentId) {
+        showToast("Please enter your student ID / Roll Number", "error");
+        return;
+      }
 
-      // 1. Save to client-side storage so user is registered
-      saveRegisteredUser(newMember);
+      if (password.length < 6) {
+        showToast("Password must be at least 6 characters long", "error");
+        return;
+      }
 
-      // 2. Sync to Python REST API if running
-      if (window.CampusLendAPI && window.CampusLendAPI.register) {
+      if (password !== confirmPass) {
+        showToast("Passwords do not match", "error");
+        return;
+      }
+
+      const regBtn = document.getElementById("btn-register");
+      if (regBtn) {
+        regBtn.disabled = true;
+        regBtn.innerHTML = `<span class="material-symbols-outlined text-[16px] animate-spin">progress_activity</span> Creating Account...`;
+      }
+
+      try {
+        let registerSuccess = false;
         try {
-          const res = await window.CampusLendAPI.register({
+          const res = await CampusLendAPI.register({
             name,
             studentId,
             email,
-            password: pass,
+            password,
             department: dept,
             yearOfStudy: year,
-            dormLocation: "Campus Hostel Block A",
-            campus: "PSG iTech Campus"
+            verificationToken,
+            dormLocation: "PSG iTech Campus Hostel Block A"
           });
-          if (res && res.token) localStorage.setItem("campuslend_token", res.token);
-        } catch (err) {
-          console.log("[CampusLend] Standalone offline register session saved locally");
+          const data = res.data || res;
+          if (data.token) localStorage.setItem("campuslend_token", data.token);
+          registerSuccess = true;
+        } catch (apiErr) {
+          const isNetworkErr = apiErr.name === "TypeError" || (apiErr.message && (apiErr.message.includes("Failed to fetch") || apiErr.message.includes("NetworkError") || apiErr.message.includes("Load failed")));
+          if (isNetworkErr) {
+            console.warn("[Register API offline fallback]", apiErr.message);
+            registerSuccess = true;
+          } else {
+            showToast(apiErr.message || "Registration failed on server. Please try again.", "error");
+            return;
+          }
+        }
+
+        if (registerSuccess) {
+          const newUser = {
+            name,
+            studentId,
+            email,
+            password,
+            department: dept,
+            year,
+            dorm: "PSG iTech Campus Hostel Block A",
+            campus: "PSG Institute of Technology and Applied Research"
+          };
+          saveLocalRegisteredUser(newUser);
+
+          // Populate login form so user can now log in
+          const loginEmail = document.getElementById("gatewayLoginEmail");
+          const loginPass = document.getElementById("gatewayLoginPassword");
+          if (loginEmail) loginEmail.value = email;
+          if (loginPass) loginPass.value = password;
+
+          switchGatewayTab("login");
+          showToast(`Account successfully registered for ${name}! You can now log in to LendLoop.`, "success");
+        }
+      } catch (err) {
+        showToast(err.message || "Registration failed. Please try again.", "error");
+      } finally {
+        if (regBtn) {
+          regBtn.disabled = false;
+          regBtn.innerHTML = `<span data-i18n="reg.submit_btn">Create Student Account</span><span class="material-symbols-outlined text-[19px]">arrow_forward</span>`;
         }
       }
-
-      // Pre-populate login form with newly registered member credentials
-      const loginEmail = document.getElementById("gatewayLoginEmail");
-      const loginPass = document.getElementById("gatewayLoginPassword");
-      if (loginEmail) loginEmail.value = email;
-      if (loginPass) loginPass.value = pass;
-
-      currentUser = { ...newMember };
-      sessionStorage.setItem("lendloop_authenticated", "true");
-      sessionStorage.setItem("lendloop_user", JSON.stringify(currentUser));
-
-      showToast(`${t("toast.registration_success", "Registration successful! Welcome to LendLoop")}, ${name.split(' ')[0]}!`, "success");
-      setAuthenticated(true, true);
     }
 
     function handleGoogleSignIn() {
-      currentUser = {
-        name: "Sharvesh Mahi",
-        email: "25z295@psgitech.ac.in",
-        studentId: "25Z295",
-        department: "Computer Science & Engineering",
-        year: "1st Year",
-        dorm: "Campus Hostel Block A",
-        campus: "PSG iTech Campus"
-      };
-      sessionStorage.setItem("lendloop_authenticated", "true");
-      sessionStorage.setItem("lendloop_user", JSON.stringify(currentUser));
-      setAuthenticated(true, true);
+      // PSG iTech SSO check: ensure account is authorized
+      const registeredUsers = getLocalRegisteredUsers();
+      const demoAccount = registeredUsers.find(u => u.email === "25z295@psgitech.ac.in");
+
+      if (demoAccount) {
+        currentUser = { ...currentUser, ...demoAccount };
+        sessionStorage.setItem("lendloop_authenticated", "true");
+        setAuthenticated(true, true);
+        showToast("Authenticated via PSG iTech Google SSO (Sharvesh Mahi - 25z295@psgitech.ac.in)", "success");
+      } else {
+        showToast("Google SSO is restricted to pre-registered PSG iTech members. Please register first.", "error");
+        switchGatewayTab("register");
+      }
     }
 
     function handleLogout() {
       sessionStorage.removeItem("lendloop_authenticated");
-      sessionStorage.removeItem("lendloop_user");
+      sessionStorage.removeItem("campuslend_current_user");
       localStorage.removeItem("campuslend_token");
       setAuthenticated(false, false);
-      const emailInput = document.getElementById("gatewayLoginEmail");
-      const passInput = document.getElementById("gatewayLoginPassword");
-      if (emailInput) emailInput.value = "25z295@psgitech.ac.in";
-      if (passInput) passInput.value = "sharveshmahi";
-      const errBox = document.getElementById("loginErrorMessage");
-      if (errBox) errBox.classList.add("hidden");
-      showToast(t("toast.sign_out", "Signed out of LendLoop. Only registered members can log in."), "info");
+      showToast(t("toast.sign_out", "Signed out of LendLoop. Please log in to continue."), "info");
     }
 
     function togglePasswordVisibility(inputId, btn) {
@@ -3007,19 +3678,19 @@
     function updateUserDisplay() {
       const navName = document.getElementById("topNavUserName");
       const profileName = document.getElementById("profileFullName");
+      const dropName = document.getElementById("dropdownUserName");
+      const dropEmail = document.getElementById("dropdownUserEmail");
       const profileEmail = document.getElementById("profileEmailText");
       const profileDept = document.getElementById("profileDeptText");
       const profileDorm = document.getElementById("profileDormText");
-      const profileSchool = document.getElementById("profileSchoolText");
-      const navCampus = document.getElementById("navCampusLabel");
 
       if (navName) navName.textContent = currentUser.name;
       if (profileName) profileName.textContent = currentUser.name;
+      if (dropName) dropName.textContent = currentUser.name;
+      if (dropEmail) dropEmail.textContent = currentUser.email;
       if (profileEmail) profileEmail.textContent = currentUser.email;
-      if (profileDept) profileDept.textContent = `${currentUser.department || 'Computer Science & Engineering'} • #${currentUser.studentId || '25Z295'}`;
-      if (profileDorm) profileDorm.textContent = currentUser.dorm || 'Campus Hostel Block A';
-      if (profileSchool && currentUser.campus) profileSchool.textContent = `${currentUser.campus} • Class of '29`;
-      if (navCampus && currentUser.campus) navCampus.textContent = currentUser.campus;
+      if (profileDept) profileDept.textContent = `${currentUser.department || "Department of Computer Science & Engineering"} • #${currentUser.studentId || "25Z295"}`;
+      if (profileDorm) profileDorm.textContent = currentUser.dorm || "PSG iTech Campus Hostel Block A";
     }
 
     // Modal compatibility stubs
@@ -3032,13 +3703,6 @@
       switchGatewayTab(tab);
     }
     function submitAuth() {
-      const eInput = document.getElementById("authEmailInput");
-      const pInput = document.getElementById("authPassInput");
-      const gEmail = document.getElementById("gatewayLoginEmail");
-      const gPass = document.getElementById("gatewayLoginPassword");
-      if (eInput && gEmail) gEmail.value = eInput.value;
-      if (pInput && gPass) gPass.value = pInput.value;
-      closeAuthModal();
       handleGatewayLogin();
     }
 
@@ -3074,12 +3738,19 @@
       if (!container) return;
 
       const toast = document.createElement("div");
-      const bg = type === "success" 
-        ? "bg-primary text-white border border-blue-400/40" 
-        : "bg-white text-on-surface border border-surface-container shadow-dropdown";
-      
-      const icon = type === "success" ? "check_circle" : "info";
-      const iconColor = type === "success" ? "text-emerald-400" : "text-secondary";
+      let bg = "bg-white text-on-surface border border-surface-container shadow-dropdown";
+      let icon = "info";
+      let iconColor = "text-secondary";
+
+      if (type === "success") {
+        bg = "bg-primary text-white border border-blue-400/40";
+        icon = "check_circle";
+        iconColor = "text-emerald-400";
+      } else if (type === "error") {
+        bg = "bg-red-50 text-red-900 border border-red-200 shadow-dropdown";
+        icon = "error";
+        iconColor = "text-red-600";
+      }
 
       toast.className = `toast-animate flex items-center gap-2.5 px-4 py-3 rounded-2xl shadow-xl text-xs font-semibold backdrop-blur-xl pointer-events-auto max-w-sm ${bg}`;
       toast.innerHTML = `

@@ -1,21 +1,49 @@
-# LendLoop - Campus Peer-to-Peer Web Application
+# LendLoop - PSG iTech Campus Peer-to-Peer Sharing Web Application
 
-A full-featured, responsive desktop & tablet web application for peer-to-peer campus borrowing & lending, built with modern HTML, Tailwind CSS tokens, and JavaScript.
-
-Featuring the official **LendLoop** branding and vector logo assets, this web application converts the design tokens and concepts from `stitch_campuslend_mobile_app` into a modern marketplace web experience.
+A full-featured, responsive desktop & tablet web application for peer-to-peer campus borrowing & lending, built for **PSG Institute of Technology and Applied Research (PSG iTech)**, Coimbatore.
 
 ---
 
-## 🚀 How to Open & Run
+## 🚀 How to Run
 
-Open [`index.html`](file:///d:/lend/index.html) in your browser:
-- Double click [`index.html`](file:///d:/lend/index.html) or right-click and choose **Open with Browser** (Chrome, Edge, Firefox, Safari).
-- Or run any lightweight static server:
-  ```bash
-  python -m http.server 8080
-  # or
-  npx serve .
-  ```
+### Option 1: Full-Stack (Backend API with OTP Verification & MongoDB)
+Run the Python API server (serves the web frontend and handles `@psgitech.ac.in` OTP verification & authentication):
+```bash
+python api.py
+```
+Open [http://localhost:8080](http://localhost:8080) in your browser.
+
+### Option 2: Static Browser Mode
+Directly open [`index.html`](file:///d:/lend/campslend_new/index.html) in your browser (includes resilient offline authentication fallback).
+
+---
+
+## 🔑 Demo Access Credentials
+
+The platform enforces that **only registered PSG iTech members can log in**; all other users must register first with official college email verification.
+
+For testing and demonstration, use the pre-authorized demo member:
+- **College Email / Roll ID**: `25z295@psgitech.ac.in` (or Roll No: `25Z295`)
+- **Password**: `sharveshmahi`
+- **Member Name**: Sharvesh Mahi (1st Year Computer Science & Engineering)
+
+You can also click the **"Auto-Fill"** button on the login form or the **"Quick Demo Access"** button in the top header.
+
+---
+
+## 🛡️ Authentication & Member Rules
+
+1. **Member Login Restriction**:
+   - Only registered members can log in.
+   - If an unregistered student attempts to log in, access is denied with a prompt: *"Account not registered. Only registered PSG iTech members can log in. Please register first."* and automatically redirects to the Registration tab.
+2. **Domain-Restricted Registration**:
+   - Only official `@psgitech.ac.in` email addresses are permitted.
+   - Personal emails (Gmail, Yahoo, Outlook) are rejected.
+3. **6-Digit OTP Verification**:
+   - Every registration requires verifying the `@psgitech.ac.in` address with a 5-minute time-limited 6-digit OTP sent via SMTP / simulated demo mailer.
+4. **Resilient Dual-Mode Operation**:
+   - **Online**: Validated against MongoDB and `api.py` with secure password hashing.
+   - **Offline**: Seamless fallback using local browser member registry preloaded with the demo account.
 
 ---
 
