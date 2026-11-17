@@ -56,11 +56,24 @@ def hash_password(password, salt=None):
 def verify_password(password, stored_hash):
     if not stored_hash:
         return False
-    if "$" not in stored_hash:
-        # Fallback for plain demo passwords
-        return password == stored_hash
-    salt, hashed = stored_hash.split("$", 1)
-    return hashlib.sha256(f"{password}:{salt}".encode()).hexdigest() == hashed
+    # 1. Plaintext direct match (for seeded or unhashed accounts)
+    if password == stored_hash:
+        return True
+    # 2. BCrypt hash support (Spring Boot compatibility)
+    if stored_hash.startswith("$2"):
+        try:
+            import crypt
+            return crypt.checkpw(password.encode("utf-8"), stored_hash.encode("utf-8"))
+        except Exception:
+            pass
+    # 3. Salted SHA-256 (format: salt$hash)
+    if "$" in stored_hash:
+        parts = stored_hash.split("$", 1)
+        if len(parts) == 2:
+            salt, hashed = parts
+            if salt:
+                return hashlib.sha256(f"{password}:{salt}".encode()).hexdigest() == hashed
+    return False
 
 
 # In-memory datasets (also used to seed MongoDB if empty)
@@ -247,20 +260,19 @@ try:
 
     # Seed initial demo members only if they do not already exist in database (preserves any user edits)
     for student in MEM_STUDENTS:
-        db.students.update_one(
-            {"email": student["email"]},
-            {"$setOnInsert": student},
-            upsert=True
-        )
+        try:
+            if not db.students.find_one({"email": student["email"]}):
+                db.students.insert_one(dict(student))
+        except Exception:
+            pass
 
     # Seed initial items if database collection is empty
     if db.items.count_documents({}) == 0:
         for item in MEM_ITEMS:
-            db.items.update_one(
-                {"id": item["id"]},
-                {"$setOnInsert": dict(item)},
-                upsert=True
-            )
+            try:
+                db.items.insert_one(dict(item))
+            except Exception:
+                pass
         print(f"[*] Seeded {len(MEM_ITEMS)} initial catalog items into '{db_name}' database.")
 except Exception as e:
     HAS_MONGO = False
@@ -329,36 +341,64 @@ def send_otp_email(to_email, otp):
 
 class CampusLendAPIHandler(BaseHTTPRequestHandler):
 
-    def _set_headers(self, status=200, content_type="application/json"):
-        self.send_response(status)
-        self.send_header("Content-Type", content_type)
-        self.send_header("Access-Control-Allow-Origin", "*")
-        self.send_header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD")
-        self.send_header("Access-Control-Allow-Headers", "Content-Type, Authorization")
-        self.end_headers()
+    # Send responses with proper HTTP framing and CORS headers
+    def _send_json(self, data, status=200):
+        try:
+            payload = json.dumps(data, default=str).encode("utf-8")
+            self.send_response(status)
+            self.send_header("Content-Type", "application/json; charset=utf-8")
+            self.send_header("Content-Length", str(len(payload)))
+            self.send_header("Access-Control-Allow-Origin", "*")
+            self.send_header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD")
+            self.send_header("Access-Control-Allow-Headers", "*")
+            self.send_header("Connection", "close")
+            self.end_headers()
+            self.wfile.write(payload)
+        except (BrokenPipeError, ConnectionResetError, ConnectionAbortedError):
+            pass
+        except Exception as e:
+            print(f"[!] Error in _send_json: {e}", flush=True)
 
     def do_OPTIONS(self):
-        self._set_headers(200)
+        try:
+            self.send_response(200)
+            self.send_header("Access-Control-Allow-Origin", "*")
+            self.send_header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD")
+            self.send_header("Access-Control-Allow-Headers", "*")
+            self.send_header("Content-Length", "0")
+            self.send_header("Connection", "close")
+            self.end_headers()
+        except Exception:
+            pass
 
     def do_HEAD(self):
-        self._set_headers(200)
+        try:
+            self.send_response(200)
+            self.send_header("Access-Control-Allow-Origin", "*")
+            self.send_header("Connection", "close")
+            self.end_headers()
+        except Exception:
+            pass
 
     def _read_json(self):
-        content_length = int(self.headers.get("Content-Length", 0))
-        if content_length > 0:
-            body = self.rfile.read(content_length)
-            try:
+        try:
+            content_length = int(self.headers.get("Content-Length", 0))
+            if content_length > 0:
+                body = self.rfile.read(content_length)
                 return json.loads(body.decode("utf-8"))
-            except Exception:
-                return {}
+        except Exception as e:
+            print(f"[!] Warning reading request JSON: {e}", flush=True)
         return {}
-
-    def _send_json(self, data, status=200):
-        self._set_headers(status)
-        self.wfile.write(json.dumps(data, default=str).encode("utf-8"))
 
     # ================= GET ENDPOINTS =================
     def do_GET(self):
+        try:
+            self._handle_get()
+        except Exception as e:
+            print(f"[!] Unhandled error in GET {self.path}: {e}", flush=True)
+            self._send_json({"error": f"Server error: {str(e)}"}, 500)
+
+    def _handle_get(self):
         parsed = urllib.parse.urlparse(self.path)
         path = parsed.path
         params = urllib.parse.parse_qs(parsed.query)
@@ -372,7 +412,10 @@ class CampusLendAPIHandler(BaseHTTPRequestHandler):
             except ValueError:
                 is_safe = False
 
-            if is_safe and os.path.exists(file_path) and os.path.isfile(file_path):
+            if not (is_safe and os.path.exists(file_path) and os.path.isfile(file_path)):
+                file_path = os.path.join(STATIC_DIR, "index.html")
+
+            if os.path.exists(file_path) and os.path.isfile(file_path):
                 ext = os.path.splitext(file_path)[1].lower()
                 mime = {
                     ".html": "text/html; charset=utf-8",
@@ -385,20 +428,21 @@ class CampusLendAPIHandler(BaseHTTPRequestHandler):
                     ".json": "application/json"
                 }.get(ext, "application/octet-stream")
 
-                self.send_response(200)
-                self.send_header("Content-Type", mime)
-                self.send_header("Access-Control-Allow-Origin", "*")
-                self.end_headers()
-                with open(file_path, "rb") as f:
-                    self.wfile.write(f.read())
-                return
-            elif os.path.exists(os.path.join(STATIC_DIR, "index.html")):
-                self.send_response(200)
-                self.send_header("Content-Type", "text/html; charset=utf-8")
-                self.send_header("Access-Control-Allow-Origin", "*")
-                self.end_headers()
-                with open(os.path.join(STATIC_DIR, "index.html"), "rb") as f:
-                    self.wfile.write(f.read())
+                try:
+                    file_size = os.path.getsize(file_path)
+                    self.send_response(200)
+                    self.send_header("Content-Type", mime)
+                    self.send_header("Content-Length", str(file_size))
+                    self.send_header("Access-Control-Allow-Origin", "*")
+                    self.send_header("Connection", "close")
+                    self.end_headers()
+                    with open(file_path, "rb") as f:
+                        while chunk := f.read(65536):
+                            self.wfile.write(chunk)
+                except (BrokenPipeError, ConnectionResetError, ConnectionAbortedError):
+                    pass
+                except Exception as e:
+                    print(f"[!] Error serving static file {file_path}: {e}", flush=True)
                 return
 
         # 1. GET /api/items
@@ -486,17 +530,43 @@ class CampusLendAPIHandler(BaseHTTPRequestHandler):
 
         # 4. GET /api/loans/borrower/{id}
         if path.startswith("/api/loans/borrower/"):
-            b_id = path.replace("/api/loans/borrower/", "")
+            b_id = path.replace("/api/loans/borrower/", "").strip()
             loans = []
             if HAS_MONGO:
-                docs = list(db.loans.find({"borrowerId": b_id}))
+                docs = list(db.loans.find({
+                    "$or": [
+                        {"borrowerId": {"$regex": f"^{re.escape(b_id)}$", "$options": "i"}},
+                        {"borrowerEmail": {"$regex": f"^{re.escape(b_id)}$", "$options": "i"}}
+                    ]
+                }))
                 for d in docs:
                     d["id"] = str(d.get("_id", d.get("id", "")))
                     if "_id" in d:
                         del d["_id"]
                     loans.append(d)
             else:
-                loans = [l for l in MEM_LOANS if l.get("borrowerId") == b_id]
+                loans = [l for l in MEM_LOANS if l.get("borrowerId", "").lower() == b_id.lower() or l.get("borrowerEmail", "").lower() == b_id.lower()]
+            self._send_json(loans)
+            return
+
+        # 5. GET /api/loans/lender/{id}
+        if path.startswith("/api/loans/lender/"):
+            l_id = path.replace("/api/loans/lender/", "").strip()
+            loans = []
+            if HAS_MONGO:
+                docs = list(db.loans.find({
+                    "$or": [
+                        {"lenderId": {"$regex": f"^{re.escape(l_id)}$", "$options": "i"}},
+                        {"lenderEmail": {"$regex": f"^{re.escape(l_id)}$", "$options": "i"}}
+                    ]
+                }))
+                for d in docs:
+                    d["id"] = str(d.get("_id", d.get("id", "")))
+                    if "_id" in d:
+                        del d["_id"]
+                    loans.append(d)
+            else:
+                loans = [l for l in MEM_LOANS if l.get("lenderId", "").lower() == l_id.lower() or l.get("lenderEmail", "").lower() == l_id.lower()]
             self._send_json(loans)
             return
 
@@ -504,6 +574,13 @@ class CampusLendAPIHandler(BaseHTTPRequestHandler):
 
     # ================= POST ENDPOINTS =================
     def do_POST(self):
+        try:
+            self._handle_post()
+        except Exception as e:
+            print(f"[!] Unhandled error in POST {self.path}: {e}", flush=True)
+            self._send_json({"error": f"Server error: {str(e)}"}, 500)
+
+    def _handle_post(self):
         parsed = urllib.parse.urlparse(self.path)
         path = parsed.path
         body = self._read_json()
@@ -682,8 +759,9 @@ class CampusLendAPIHandler(BaseHTTPRequestHandler):
 
             if HAS_MONGO:
                 try:
-                    db.students.insert_one(new_student)
-                    del new_student["_id"]
+                    db.students.insert_one(dict(new_student))
+                    if "_id" in new_student:
+                        del new_student["_id"]
                 except Exception as e:
                     self._send_json({"error": f"Database error during registration: {str(e)}"}, 500)
                     return
@@ -724,23 +802,37 @@ class CampusLendAPIHandler(BaseHTTPRequestHandler):
 
             student = None
             if HAS_MONGO:
-                student = db.students.find_one({
-                    "$or": [
+                try:
+                    query_conditions = [
                         {"email": {"$regex": f"^{re.escape(email_or_id)}$", "$options": "i"}},
-                        {"studentId": {"$regex": f"^{re.escape(email_or_id)}$", "$options": "i"}}
+                        {"studentId": {"$regex": f"^{re.escape(email_or_id)}$", "$options": "i"}},
+                        {"_id": email_or_id}
                     ]
-                })
-            else:
+                    try:
+                        from bson import ObjectId
+                        if ObjectId.is_valid(email_or_id):
+                            query_conditions.append({"_id": ObjectId(email_or_id)})
+                    except Exception:
+                        pass
+                    student = db.students.find_one({"$or": query_conditions})
+                except Exception as mongo_err:
+                    print(f"[!] MongoDB student lookup notice: {mongo_err}", flush=True)
+                    student = None
+
+            # Fallback to in-memory store if not found in MongoDB
+            if not student:
                 for s in MEM_STUDENTS:
-                    if s.get("email", "").lower() == email_or_id.lower() or s.get("studentId", "").lower() == email_or_id.lower():
-                        student = s
+                    if (s.get("email", "").lower() == email_or_id.lower() or 
+                        s.get("studentId", "").lower() == email_or_id.lower() or 
+                        str(s.get("_id", "")).lower() == email_or_id.lower()):
+                        student = dict(s)
                         break
 
             if not student:
                 self._send_json({"error": f"No registered student found with: {email_or_id}. Please register first."}, 404)
                 return
 
-            # Secure password verification (prevent bypass on missing hash, support plaintext fallback)
+            # Secure password verification (supports plaintext, salted sha256, and bcrypt)
             pwd_hash = student.get("passwordHash") or student.get("password")
             if not pwd_hash or not verify_password(password, pwd_hash):
                 self._send_json({"error": "Invalid email/ID or password."}, 400)
@@ -813,8 +905,9 @@ class CampusLendAPIHandler(BaseHTTPRequestHandler):
             }
 
             if HAS_MONGO:
-                db.items.insert_one(new_item)
-                del new_item["_id"]
+                db.items.insert_one(dict(new_item))
+                if "_id" in new_item:
+                    del new_item["_id"]
             else:
                 MEM_ITEMS.insert(0, new_item)
 
@@ -826,35 +919,60 @@ class CampusLendAPIHandler(BaseHTTPRequestHandler):
         if path == "/api/loans/request":
             loan_id = f"loan-{int(time.time() * 1000)}"
             item_id = body.get("itemId")
-            borrower_id = body.get("borrowerId", "25Z295")
+            borrower_id = str(body.get("borrowerId", "25Z295")).strip()
+            borrower_name = body.get("borrowerName", "PSG iTech Student")
+            borrower_email = body.get("borrowerEmail", "")
             days = int(body.get("borrowDays", 3))
 
-            daily_price = 50.00
-            deposit = 200.00
-            lender_id = "715521104001"
+            daily_price = float(body.get("dailyPrice", 50.00))
+            deposit = float(body.get("securityDeposit", 200.00))
+            lender_id = str(body.get("lenderId", "715521104001")).strip()
+            lender_name = body.get("lenderName", "PSG iTech Classmate")
+            lender_dept = body.get("lenderDept", "PSG iTech")
+            item_title = body.get("itemTitle", "Requested Item")
+            item_image = body.get("itemImage", "")
+            location = body.get("location", "PSG iTech Campus")
 
             if item_id:
                 if HAS_MONGO:
                     item_doc = db.items.find_one({"$or": [{"_id": item_id}, {"id": item_id}]})
                     if item_doc:
-                        daily_price = float(item_doc.get("dailyPrice", 50.00))
-                        deposit = float(item_doc.get("securityDeposit", 200.00))
-                        lender_id = item_doc.get("ownerId", lender_id)
+                        daily_price = float(item_doc.get("dailyPrice", daily_price))
+                        deposit = float(item_doc.get("securityDeposit", deposit))
+                        lender_id = str(item_doc.get("ownerId", lender_id))
+                        item_title = item_doc.get("title", item_title)
+                        item_image = item_doc.get("imageUrl", item_image)
+                        lender_name = item_doc.get("ownerName", lender_name)
+                        lender_dept = item_doc.get("ownerDept", lender_dept)
+                        location = item_doc.get("location", location)
                 else:
                     for it in MEM_ITEMS:
                         if it.get("id") == item_id or it.get("_id") == item_id:
-                            daily_price = float(it.get("dailyPrice", 50.00))
-                            deposit = float(it.get("securityDeposit", 200.00))
-                            lender_id = it.get("ownerId", lender_id)
+                            daily_price = float(it.get("dailyPrice", daily_price))
+                            deposit = float(it.get("securityDeposit", deposit))
+                            lender_id = str(it.get("ownerId", lender_id))
+                            item_title = it.get("title", item_title)
+                            item_image = it.get("imageUrl", item_image)
+                            lender_name = it.get("ownerName", lender_name)
+                            lender_dept = it.get("ownerDept", lender_dept)
+                            location = it.get("location", location)
                             break
 
             new_loan = {
                 "_id": loan_id,
                 "id": loan_id,
                 "itemId": item_id,
+                "itemTitle": item_title,
+                "itemImage": item_image,
                 "borrowerId": borrower_id,
+                "borrowerName": borrower_name,
+                "borrowerEmail": borrower_email,
                 "lenderId": lender_id,
+                "lenderName": lender_name,
+                "lenderDept": lender_dept,
+                "location": location,
                 "borrowDays": days,
+                "dailyPrice": daily_price,
                 "totalFee": round(days * daily_price, 2),
                 "securityDeposit": deposit,
                 "status": "PENDING",
@@ -862,12 +980,13 @@ class CampusLendAPIHandler(BaseHTTPRequestHandler):
             }
 
             if HAS_MONGO:
-                db.loans.insert_one(new_loan)
-                del new_loan["_id"]
+                db.loans.insert_one(dict(new_loan))
+                if "_id" in new_loan:
+                    del new_loan["_id"]
             else:
                 MEM_LOANS.append(new_loan)
 
-            print(f"[+] Created loan request: {loan_id} for item {item_id}", flush=True)
+            print(f"[+] Created loan request: {loan_id} for item '{item_title}' by {borrower_name} ({borrower_id})", flush=True)
             self._send_json(new_loan, 201)
             return
 
@@ -875,18 +994,17 @@ class CampusLendAPIHandler(BaseHTTPRequestHandler):
 
     # ================= PUT ENDPOINTS =================
     def do_PUT(self):
+        try:
+            self._handle_put()
+        except Exception as e:
+            print(f"[!] Unhandled error in PUT {self.path}: {e}", flush=True)
+            self._send_json({"error": f"Server error: {str(e)}"}, 500)
+
+    def _handle_put(self):
         parsed = urllib.parse.urlparse(self.path)
         path = parsed.path
         params = urllib.parse.parse_qs(parsed.query)
-
-        content_length = int(self.headers.get("Content-Length", 0))
-        body = {}
-        if content_length > 0:
-            raw_body = self.rfile.read(content_length)
-            try:
-                body = json.loads(raw_body.decode("utf-8"))
-            except Exception:
-                body = {}
+        body = self._read_json()
 
         # 1. Update Student Profile: PUT /api/students/{id}
         if path.startswith("/api/students/"):
@@ -964,10 +1082,42 @@ class CampusLendAPIHandler(BaseHTTPRequestHandler):
 
         self._send_json({"success": True})
 
+    # ================= DELETE ENDPOINTS =================
+    def do_DELETE(self):
+        try:
+            self._handle_delete()
+        except Exception as e:
+            print(f"[!] Unhandled error in DELETE {self.path}: {e}", flush=True)
+            self._send_json({"error": f"Server error: {str(e)}"}, 500)
+
+    def _handle_delete(self):
+        parsed = urllib.parse.urlparse(self.path)
+        path = parsed.path
+
+        if path.startswith("/api/loans/"):
+            loan_id = path.replace("/api/loans/", "").strip()
+            if HAS_MONGO:
+                db.loans.delete_one({"$or": [{"_id": loan_id}, {"id": loan_id}]})
+            else:
+                global MEM_LOANS
+                MEM_LOANS = [l for l in MEM_LOANS if l.get("id") != loan_id and l.get("_id") != loan_id]
+            print(f"[-] Deleted/Cancelled loan {loan_id}", flush=True)
+            self._send_json({"success": True, "message": f"Loan {loan_id} deleted successfully"})
+            return
+
+        self._send_json({"error": "Route not found"}, 404)
+
 
 def run_server(port=8080):
     server_address = ("", port)
-    httpd = HTTPServer(server_address, CampusLendAPIHandler)
+    try:
+        httpd = HTTPServer(server_address, CampusLendAPIHandler)
+    except OSError as e:
+        if "10048" in str(e) or "Address already in use" in str(e):
+            print(f"\n[!] Port {port} is already in use by another process.", flush=True)
+            print(f"[!] If an existing server is running, stop it with Ctrl+C or run with a different port:\n    python api.py 8081\n", flush=True)
+            sys.exit(1)
+        raise
     print("=" * 65, flush=True)
     print(f"  PSG iTech Campus Lend API Server Running at:", flush=True)
     print(f"  --> http://localhost:{port}/", flush=True)

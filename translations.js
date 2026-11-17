@@ -9,8 +9,8 @@ window.TRANSLATIONS = {
     "brand.network": "Campus P2P Sharing Network",
     "brand.sub": "Campus P2P Sharing",
     "brand.verified_colleges": "PSG iTech • Anna University • PSG Tech",
-    "brand.demo_access": "Quick Demo Access",
-    "brand.demo_access_title": "Instant access with preloaded demo student account (25z295@psgitech.ac.in)",
+    "brand.demo_access": "Live Campus Network",
+    "brand.demo_access_title": "Verified peer-to-peer sharing across PSG iTech campus",
 
     // Gateway Left Column
     "gateway.official_badge": "Official PSG iTech P2P Network",
@@ -353,8 +353,8 @@ window.TRANSLATIONS = {
     "brand.network": "வளாக சக மாணவர் பகிர்வு நெட்வொர்க்",
     "brand.sub": "வளாக சக மாணவர் பகிர்வு",
     "brand.verified_colleges": "பிஎஸ்ஜி ஐடெக் • அண்ணா பல்கலைக்கழகம் • பிஎஸ்ஜி டெக்",
-    "brand.demo_access": "விரைவு டெமோ அணுகல்",
-    "brand.demo_access_title": "டெமோ மாணவர் கணக்குடன் உடனடி அணுகல் (25z295@psgitech.ac.in)",
+    "brand.demo_access": "நேரலை வளாக நெட்வொர்க்",
+    "brand.demo_access_title": "பிஎஸ்ஜி ஐடெக் வளாகத்தில் சரிபார்க்கப்பட்ட மாணவர் பகிர்வு",
 
     // Gateway Left Column
     "gateway.official_badge": "அதிகாரப்பூர்வ பிஎஸ்ஜி ஐடெக் மாணவர் பகிர்வு",

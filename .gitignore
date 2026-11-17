@@ -28,3 +28,8 @@ yarn-debug.log*
 *.sqlite3
 mongo-data/
 
+
+# Antigravity tooling
+powershell.bat
+test_inspect.py
+apply_changes.py

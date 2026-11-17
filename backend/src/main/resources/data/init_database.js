@@ -104,6 +104,82 @@ db.students.insertMany([
     "activeLoansCount": 0,
     "createdAt": new Date()
   }
+,
+  {
+    "_id": "800000000001",
+    "studentId": "800000000001",
+    "name": "Riya Patel",
+    "email": "riya.patel@psgitech.ac.in",
+    "password": "Riya@2026",
+    "department": "Mechanical Engineering",
+    "yearOfStudy": "Sophomore",
+    "dormLocation": "Hostel B",
+    "campus": "PSG Institute of Technology and Applied Research",
+    "role": "STUDENT",
+    "trustScore": 95,
+    "activeLoansCount": 0,
+    "createdAt": new Date()
+  },
+  {
+    "_id": "800000000002",
+    "studentId": "800000000002",
+    "name": "Aarav Singh",
+    "email": "aarav.singh@psgitech.ac.in",
+    "password": "Aarav@2026",
+    "department": "Electrical Engineering",
+    "yearOfStudy": "Junior",
+    "dormLocation": "Hostel C",
+    "campus": "PSG Institute of Technology and Applied Research",
+    "role": "STUDENT",
+    "trustScore": 97,
+    "activeLoansCount": 0,
+    "createdAt": new Date()
+  },
+  {
+    "_id": "800000000003",
+    "studentId": "800000000003",
+    "name": "Sneha Kaur",
+    "email": "sneha.kaur@psgitech.ac.in",
+    "password": "Sneha@2026",
+    "department": "Civil Engineering",
+    "yearOfStudy": "Senior",
+    "dormLocation": "Hostel D",
+    "campus": "PSG Institute of Technology and Applied Research",
+    "role": "STUDENT",
+    "trustScore": 96,
+    "activeLoansCount": 0,
+    "createdAt": new Date()
+  },
+  {
+    "_id": "800000000004",
+    "studentId": "800000000004",
+    "name": "Vikram Mehta",
+    "email": "vikram.mehta@psgitech.ac.in",
+    "password": "Vikram@2026",
+    "department": "Computer Science & Engineering",
+    "yearOfStudy": "1st Year",
+    "dormLocation": "Hostel A",
+    "campus": "PSG Institute of Technology and Applied Research",
+    "role": "STUDENT",
+    "trustScore": 98,
+    "activeLoansCount": 0,
+    "createdAt": new Date()
+  },
+  {
+    "_id": "800000000005",
+    "studentId": "800000000005",
+    "name": "Ananya Sharma",
+    "email": "ananya.sharma@psgitech.ac.in",
+    "password": "Ananya@2026",
+    "department": "Electronics & Communication Engineering",
+    "yearOfStudy": "Junior",
+    "dormLocation": "Hostel E",
+    "campus": "PSG Institute of Technology and Applied Research",
+    "role": "STUDENT",
+    "trustScore": 94,
+    "activeLoansCount": 0,
+    "createdAt": new Date()
+  }
 ]);
 
 // 5. Seed Catalog Items
@@ -229,6 +305,82 @@ db.items.insertMany([
     "available": true,
     "createdAt": new Date()
   }
+,
+  {
+    "_id": "800000000001",
+    "studentId": "800000000001",
+    "name": "Riya Patel",
+    "email": "riya.patel@psgitech.ac.in",
+    "password": "Riya@2026",
+    "department": "Mechanical Engineering",
+    "yearOfStudy": "Sophomore",
+    "dormLocation": "Hostel B",
+    "campus": "PSG Institute of Technology and Applied Research",
+    "role": "STUDENT",
+    "trustScore": 95,
+    "activeLoansCount": 0,
+    "createdAt": new Date()
+  },
+  {
+    "_id": "800000000002",
+    "studentId": "800000000002",
+    "name": "Aarav Singh",
+    "email": "aarav.singh@psgitech.ac.in",
+    "password": "Aarav@2026",
+    "department": "Electrical Engineering",
+    "yearOfStudy": "Junior",
+    "dormLocation": "Hostel C",
+    "campus": "PSG Institute of Technology and Applied Research",
+    "role": "STUDENT",
+    "trustScore": 97,
+    "activeLoansCount": 0,
+    "createdAt": new Date()
+  },
+  {
+    "_id": "800000000003",
+    "studentId": "800000000003",
+    "name": "Sneha Kaur",
+    "email": "sneha.kaur@psgitech.ac.in",
+    "password": "Sneha@2026",
+    "department": "Civil Engineering",
+    "yearOfStudy": "Senior",
+    "dormLocation": "Hostel D",
+    "campus": "PSG Institute of Technology and Applied Research",
+    "role": "STUDENT",
+    "trustScore": 96,
+    "activeLoansCount": 0,
+    "createdAt": new Date()
+  },
+  {
+    "_id": "800000000004",
+    "studentId": "800000000004",
+    "name": "Vikram Mehta",
+    "email": "vikram.mehta@psgitech.ac.in",
+    "password": "Vikram@2026",
+    "department": "Computer Science & Engineering",
+    "yearOfStudy": "1st Year",
+    "dormLocation": "Hostel A",
+    "campus": "PSG Institute of Technology and Applied Research",
+    "role": "STUDENT",
+    "trustScore": 98,
+    "activeLoansCount": 0,
+    "createdAt": new Date()
+  },
+  {
+    "_id": "800000000005",
+    "studentId": "800000000005",
+    "name": "Ananya Sharma",
+    "email": "ananya.sharma@psgitech.ac.in",
+    "password": "Ananya@2026",
+    "department": "Electronics & Communication Engineering",
+    "yearOfStudy": "Junior",
+    "dormLocation": "Hostel E",
+    "campus": "PSG Institute of Technology and Applied Research",
+    "role": "STUDENT",
+    "trustScore": 94,
+    "activeLoansCount": 0,
+    "createdAt": new Date()
+  }
 ]);
 
 // 6. Seed Sample Loans
@@ -260,6 +412,82 @@ db.loans.insertMany([
     "dueDate": new Date(Date.now() + 2 * 86400000),
     "createdAt": new Date()
   }
+,
+  {
+    "_id": "800000000001",
+    "studentId": "800000000001",
+    "name": "Riya Patel",
+    "email": "riya.patel@psgitech.ac.in",
+    "password": "Riya@2026",
+    "department": "Mechanical Engineering",
+    "yearOfStudy": "Sophomore",
+    "dormLocation": "Hostel B",
+    "campus": "PSG Institute of Technology and Applied Research",
+    "role": "STUDENT",
+    "trustScore": 95,
+    "activeLoansCount": 0,
+    "createdAt": new Date()
+  },
+  {
+    "_id": "800000000002",
+    "studentId": "800000000002",
+    "name": "Aarav Singh",
+    "email": "aarav.singh@psgitech.ac.in",
+    "password": "Aarav@2026",
+    "department": "Electrical Engineering",
+    "yearOfStudy": "Junior",
+    "dormLocation": "Hostel C",
+    "campus": "PSG Institute of Technology and Applied Research",
+    "role": "STUDENT",
+    "trustScore": 97,
+    "activeLoansCount": 0,
+    "createdAt": new Date()
+  },
+  {
+    "_id": "800000000003",
+    "studentId": "800000000003",
+    "name": "Sneha Kaur",
+    "email": "sneha.kaur@psgitech.ac.in",
+    "password": "Sneha@2026",
+    "department": "Civil Engineering",
+    "yearOfStudy": "Senior",
+    "dormLocation": "Hostel D",
+    "campus": "PSG Institute of Technology and Applied Research",
+    "role": "STUDENT",
+    "trustScore": 96,
+    "activeLoansCount": 0,
+    "createdAt": new Date()
+  },
+  {
+    "_id": "800000000004",
+    "studentId": "800000000004",
+    "name": "Vikram Mehta",
+    "email": "vikram.mehta@psgitech.ac.in",
+    "password": "Vikram@2026",
+    "department": "Computer Science & Engineering",
+    "yearOfStudy": "1st Year",
+    "dormLocation": "Hostel A",
+    "campus": "PSG Institute of Technology and Applied Research",
+    "role": "STUDENT",
+    "trustScore": 98,
+    "activeLoansCount": 0,
+    "createdAt": new Date()
+  },
+  {
+    "_id": "800000000005",
+    "studentId": "800000000005",
+    "name": "Ananya Sharma",
+    "email": "ananya.sharma@psgitech.ac.in",
+    "password": "Ananya@2026",
+    "department": "Electronics & Communication Engineering",
+    "yearOfStudy": "Junior",
+    "dormLocation": "Hostel E",
+    "campus": "PSG Institute of Technology and Applied Research",
+    "role": "STUDENT",
+    "trustScore": 94,
+    "activeLoansCount": 0,
+    "createdAt": new Date()
+  }
 ]);
 
 // 7. Seed Sample Notifications
@@ -281,6 +509,82 @@ db.notifications.insertMany([
     "message": "TI-84 Plus CE is due in 48 hours at Mech Block.",
     "type": "INFO",
     "read": false,
+    "createdAt": new Date()
+  }
+,
+  {
+    "_id": "800000000001",
+    "studentId": "800000000001",
+    "name": "Riya Patel",
+    "email": "riya.patel@psgitech.ac.in",
+    "password": "Riya@2026",
+    "department": "Mechanical Engineering",
+    "yearOfStudy": "Sophomore",
+    "dormLocation": "Hostel B",
+    "campus": "PSG Institute of Technology and Applied Research",
+    "role": "STUDENT",
+    "trustScore": 95,
+    "activeLoansCount": 0,
+    "createdAt": new Date()
+  },
+  {
+    "_id": "800000000002",
+    "studentId": "800000000002",
+    "name": "Aarav Singh",
+    "email": "aarav.singh@psgitech.ac.in",
+    "password": "Aarav@2026",
+    "department": "Electrical Engineering",
+    "yearOfStudy": "Junior",
+    "dormLocation": "Hostel C",
+    "campus": "PSG Institute of Technology and Applied Research",
+    "role": "STUDENT",
+    "trustScore": 97,
+    "activeLoansCount": 0,
+    "createdAt": new Date()
+  },
+  {
+    "_id": "800000000003",
+    "studentId": "800000000003",
+    "name": "Sneha Kaur",
+    "email": "sneha.kaur@psgitech.ac.in",
+    "password": "Sneha@2026",
+    "department": "Civil Engineering",
+    "yearOfStudy": "Senior",
+    "dormLocation": "Hostel D",
+    "campus": "PSG Institute of Technology and Applied Research",
+    "role": "STUDENT",
+    "trustScore": 96,
+    "activeLoansCount": 0,
+    "createdAt": new Date()
+  },
+  {
+    "_id": "800000000004",
+    "studentId": "800000000004",
+    "name": "Vikram Mehta",
+    "email": "vikram.mehta@psgitech.ac.in",
+    "password": "Vikram@2026",
+    "department": "Computer Science & Engineering",
+    "yearOfStudy": "1st Year",
+    "dormLocation": "Hostel A",
+    "campus": "PSG Institute of Technology and Applied Research",
+    "role": "STUDENT",
+    "trustScore": 98,
+    "activeLoansCount": 0,
+    "createdAt": new Date()
+  },
+  {
+    "_id": "800000000005",
+    "studentId": "800000000005",
+    "name": "Ananya Sharma",
+    "email": "ananya.sharma@psgitech.ac.in",
+    "password": "Ananya@2026",
+    "department": "Electronics & Communication Engineering",
+    "yearOfStudy": "Junior",
+    "dormLocation": "Hostel E",
+    "campus": "PSG Institute of Technology and Applied Research",
+    "role": "STUDENT",
+    "trustScore": 94,
+    "activeLoansCount": 0,
     "createdAt": new Date()
   }
 ]);
