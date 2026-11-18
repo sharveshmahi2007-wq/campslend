@@ -7,7 +7,7 @@
   <meta name="description" content="LendLoop is the verified student peer-to-peer sharing marketplace. Borrow and lend textbooks, tech, lab gear, calculators, and campus essentials safely.">
   <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
 
-  <!-- Typography: Plus Jakarta Sans & Inter -->
+  <!-- Typography: Apple SF Font Stack & Inter fallback -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
@@ -23,42 +23,43 @@
       theme: {
         extend: {
           colors: {
-            "surface": "#f8faff",
-            "surface-dim": "#e8edff",
-            "surface-bright": "#ffffff",
-            "surface-container-lowest": "#ffffff",
-            "surface-container-low": "#f1f4fd",
-            "surface-container": "#e8edff",
-            "surface-container-high": "#dfe6fd",
-            "surface-container-highest": "#d5e0fc",
-            "on-surface": "#071c3d",
-            "on-surface-variant": "#495057",
-            "outline": "#6c757d",
-            "outline-variant": "#ced4da",
-            "primary": "#002753",
-            "primary-hover": "#001a38",
-            "on-primary": "#ffffff",
-            "primary-container": "#173d70",
-            "on-primary-container": "#88a9e3",
-            "secondary": "#0051d5",
-            "secondary-hover": "#003ea8",
-            "secondary-container": "#316bf3",
-            "on-secondary": "#ffffff",
-            "emerald-brand": "#16a34a",
-            "emerald-dark": "#14532d",
-            "emerald-light": "#dcfce7",
-            "error": "#ba1a1a",
-            "error-container": "#ffdad6"
+            "surface": "#F2F2F7",
+            "surface-dim": "#E5E5EA",
+            "surface-bright": "#FFFFFF",
+            "surface-container-lowest": "#FFFFFF",
+            "surface-container-low": "#F2F2F7",
+            "surface-container": "#E5E5EA",
+            "surface-container-high": "#D1D1D6",
+            "surface-container-highest": "#C7C7CC",
+            "on-surface": "#1D1D1F",
+            "on-surface-variant": "#6E6E73",
+            "outline": "#86868B",
+            "outline-variant": "#D1D1D6",
+            "primary": "#0071E3",
+            "primary-hover": "#0058B0",
+            "on-primary": "#FFFFFF",
+            "primary-container": "#EBF5FF",
+            "on-primary-container": "#0071E3",
+            "secondary": "#0071E3",
+            "secondary-hover": "#0058B0",
+            "secondary-container": "#EBF5FF",
+            "on-secondary": "#FFFFFF",
+            "emerald-brand": "#34C759",
+            "emerald-dark": "#248A3D",
+            "emerald-light": "#E8F8EE",
+            "error": "#FF3B30",
+            "error-container": "#FEECEB"
           },
           fontFamily: {
-            sans: ["Inter", "sans-serif"],
-            display: ["Plus Jakarta Sans", "sans-serif"]
+            sans: ["-apple-system", "BlinkMacSystemFont", "SF Pro Text", "SF Pro", "Inter", "system-ui", "sans-serif"],
+            display: ["-apple-system", "BlinkMacSystemFont", "SF Pro Display", "SF Pro", "Plus Jakarta Sans", "sans-serif"]
           },
           boxShadow: {
-            "subtle": "0 2px 10px rgba(0, 39, 83, 0.04), 0 1px 3px rgba(0, 39, 83, 0.02)",
-            "card": "0 4px 20px -2px rgba(0, 39, 83, 0.06), 0 2px 6px rgba(0, 39, 83, 0.04)",
-            "card-hover": "0 12px 30px -4px rgba(0, 39, 83, 0.12), 0 4px 10px rgba(0, 39, 83, 0.06)",
-            "dropdown": "0 10px 40px -10px rgba(0, 39, 83, 0.18)"
+            "subtle": "0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02)",
+            "card": "0 4px 16px -2px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.03)",
+            "card-hover": "0 12px 28px -4px rgba(0, 0, 0, 0.1), 0 4px 10px rgba(0, 0, 0, 0.04)",
+            "dropdown": "0 16px 40px -8px rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.05)",
+            "dock": "0 12px 36px -4px rgba(0, 0, 0, 0.14), 0 2px 8px rgba(0, 0, 0, 0.04), inset 0 1px 0 0 rgba(255, 255, 255, 0.9)"
           }
         }
       }
@@ -66,38 +67,77 @@
   </script>
 
   <style>
-    /* Custom Scrollbar */
+    /* Apple Typography & Font Smoothing */
+    body {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+      letter-spacing: -0.011em;
+    }
+
+    /* macOS / iOS Style Scrollbar */
     ::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
+      width: 7px;
+      height: 7px;
     }
     ::-webkit-scrollbar-track {
-      background: #f1f4fd;
+      background: transparent;
     }
     ::-webkit-scrollbar-thumb {
-      background: #c3cee8;
+      background: rgba(0, 0, 0, 0.16);
       border-radius: 9999px;
     }
     ::-webkit-scrollbar-thumb:hover {
-      background: #9bb0dc;
+      background: rgba(0, 0, 0, 0.28);
+    }
+
+    /* Apple Liquid Glass Materials (conforms to materials.md & liquid-glass.md) */
+    .liquid-glass {
+      background: rgba(255, 255, 255, 0.82);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+      box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.85) inset;
+    }
+    .liquid-glass-dock {
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      box-shadow: 0 14px 40px -4px rgba(0, 0, 0, 0.15), 0 2px 10px rgba(0, 0, 0, 0.05), inset 0 1px 0 0 rgba(255, 255, 255, 0.95);
+    }
+    .apple-card {
+      background: #ffffff;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      box-shadow: 0 2px 8px -1px rgba(0, 0, 0, 0.04), 0 8px 20px -3px rgba(0, 0, 0, 0.03);
+      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .apple-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px -2px rgba(0, 0, 0, 0.08), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+      border-color: rgba(0, 113, 227, 0.2);
+    }
+    .apple-pill {
+      border-radius: 9999px;
+      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     /* Page View Transitions */
     .view-fade {
-      animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      animation: fadeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(6px); }
+      from { opacity: 0; transform: translateY(4px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
     /* Toast animation */
     @keyframes toastIn {
-      from { transform: translateY(-100%) scale(0.95); opacity: 0; }
+      from { transform: translateY(12px) scale(0.96); opacity: 0; }
       to { transform: translateY(0) scale(1); opacity: 1; }
     }
     .toast-animate {
-      animation: toastIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      animation: toastIn 0.28s cubic-bezier(0.16, 1, 0.3, 1);
     }
   </style>
 </head>
@@ -171,13 +211,13 @@
           </div>
         </div>
 
-        <!-- Segmented Tab Switcher (Log in / Register) -->
-        <div class="w-full bg-surface-container-low p-1.5 rounded-2xl flex items-center shadow-inner">
-          <button onclick="switchGatewayTab('login')" id="gatewayTabLogin" type="button" class="flex-1 py-2 text-center font-bold text-xs sm:text-sm rounded-xl bg-primary text-white shadow-sm transition-all flex items-center justify-center gap-1.5 cursor-pointer">
+        <!-- Apple HIG Segmented Control (Log in / Register) -->
+        <div class="w-full bg-black/[0.05] p-1 rounded-xl flex items-center">
+          <button onclick="switchGatewayTab('login')" id="gatewayTabLogin" type="button" class="flex-1 py-1.5 text-center font-semibold text-xs sm:text-sm rounded-lg bg-white text-on-surface shadow-sm transition-all flex items-center justify-center gap-1.5 cursor-pointer">
             <span class="material-symbols-outlined text-[17px]">login</span>
             <span data-i18n="gateway.tab_login">Log In</span>
           </button>
-          <button onclick="switchGatewayTab('register')" id="gatewayTabRegister" type="button" class="flex-1 py-2 text-center font-semibold text-xs sm:text-sm rounded-xl text-on-surface-variant hover:text-primary transition-all flex items-center justify-center gap-1.5 cursor-pointer">
+          <button onclick="switchGatewayTab('register')" id="gatewayTabRegister" type="button" class="flex-1 py-1.5 text-center font-medium text-xs sm:text-sm rounded-lg text-on-surface-variant hover:text-on-surface transition-all flex items-center justify-center gap-1.5 cursor-pointer">
             <span class="material-symbols-outlined text-[17px]">person_add</span>
             <span data-i18n="gateway.tab_register">Register</span>
           </button>
@@ -452,32 +492,32 @@
   <div id="mainAppShell" class="hidden flex-1 flex flex-col min-h-screen">
 
   <!-- ========================================================================= -->
-  <!-- GLOBAL DESKTOP APPLICATION NAVBAR                                         -->
+  <!-- GLOBAL APPLICATION NAVBAR (LIQUID GLASS MATERIAL)                         -->
   <!-- ========================================================================= -->
-  <header class="sticky top-0 z-40 w-full bg-white/95 backdrop-blur-md border-b border-surface-container shadow-subtle transition-all">
+  <header class="sticky top-0 z-40 w-full liquid-glass transition-all">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between h-18 py-2">
+      <div class="flex items-center justify-between h-16 py-2">
         
         <!-- Left: Brand Logo & Campus Selector -->
-        <div class="flex items-center gap-6">
+        <div class="flex items-center gap-5">
           <a href="#" onclick="navigateView('marketplace'); return false;" class="flex items-center gap-2 group flex-shrink-0">
-            <div class="h-10 w-10 rounded-xl bg-white p-1 shadow-sm border border-slate-100 flex items-center justify-center group-hover:scale-105 transition-transform">
+            <div class="h-9 w-9 rounded-xl bg-white p-1 shadow-xs border border-black/[0.06] flex items-center justify-center group-hover:scale-105 transition-transform">
               <img src="assets/logo.svg" alt="LendLoop" class="w-full h-full object-contain">
             </div>
             <div class="flex flex-col">
-              <span class="font-display text-2xl font-extrabold tracking-tight text-primary leading-none">
+              <span class="font-display text-xl font-bold tracking-tight text-on-surface leading-none">
                 Lend<span class="text-emerald-brand">Loop</span>
               </span>
-              <span class="text-[10px] font-semibold text-secondary tracking-wider uppercase mt-0.5" data-i18n="brand.sub">Campus P2P Sharing</span>
+              <span class="text-[10px] font-semibold text-on-surface-variant tracking-wider uppercase mt-0.5" data-i18n="brand.sub">Campus P2P Sharing</span>
             </div>
           </a>
 
           <!-- Campus Hub Selector Dropdown -->
           <div class="relative hidden md:block">
-            <button onclick="toggleCampusModal()" class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container-low hover:bg-surface-container text-primary text-xs font-semibold border border-blue-100/80 transition-colors">
-              <span class="material-symbols-outlined text-[16px] text-secondary">school</span>
+            <button onclick="toggleCampusModal()" class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/[0.04] hover:bg-black/[0.07] text-on-surface text-xs font-semibold border border-black/[0.06] transition-colors">
+              <span class="material-symbols-outlined text-[15px] text-primary">school</span>
               <span id="navCampusLabel" class="truncate max-w-[140px]" data-i18n="nav.campus_hub">PSG iTech Campus</span>
-              <span class="material-symbols-outlined text-[14px] text-outline">expand_more</span>
+              <span class="material-symbols-outlined text-[13px] text-on-surface-variant">expand_more</span>
             </button>
           </div>
         </div>
@@ -485,40 +525,40 @@
         <!-- Center: Search Bar on Desktop -->
         <div class="hidden lg:flex items-center flex-1 max-w-md mx-6">
           <div class="relative w-full">
-            <span class="material-symbols-outlined absolute left-3.5 top-2.5 text-outline text-[20px] pointer-events-none">search</span>
-            <input type="text" id="globalDesktopSearch" oninput="handleSearch(this.value)" placeholder="Search textbooks, graphing calculators, lab gear..." data-i18n-placeholder="nav.search_placeholder" class="w-full h-10 pl-10 pr-10 bg-surface-container-low hover:bg-surface-container/60 focus:bg-white rounded-xl text-sm border border-transparent focus:border-secondary focus:ring-2 focus:ring-blue-100 transition-all outline-none">
-            <button onclick="clearSearch()" id="globalSearchClearBtn" class="hidden absolute right-3 top-2.5 text-outline hover:text-on-surface">
+            <span class="material-symbols-outlined absolute left-3.5 top-2.5 text-on-surface-variant text-[18px] pointer-events-none">search</span>
+            <input type="text" id="globalDesktopSearch" oninput="handleSearch(this.value)" placeholder="Search textbooks, graphing calculators, lab gear..." data-i18n-placeholder="nav.search_placeholder" class="w-full h-9 pl-10 pr-9 bg-black/[0.04] hover:bg-black/[0.06] focus:bg-white rounded-full text-xs sm:text-sm border border-transparent focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none font-medium placeholder:text-on-surface-variant">
+            <button onclick="clearSearch()" id="globalSearchClearBtn" class="hidden absolute right-2.5 top-2 p-0.5 rounded-full text-on-surface-variant hover:text-on-surface" aria-label="Clear Search">
               <span class="material-symbols-outlined text-[16px]">close</span>
             </button>
           </div>
         </div>
 
         <!-- Right: Main Nav Links & Actions -->
-        <div class="flex items-center gap-3">
-          <nav class="hidden md:flex items-center gap-1 mr-2">
-            <button onclick="navigateView('marketplace')" class="nav-link px-3 py-2 rounded-xl text-sm font-semibold text-secondary bg-blue-50/80 transition-colors" data-view="marketplace">
+        <div class="flex items-center gap-2.5">
+          <nav class="hidden md:flex items-center gap-1 mr-1">
+            <button onclick="navigateView('marketplace')" class="nav-link px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold text-primary bg-primary/10 transition-colors" data-view="marketplace">
               <span data-i18n="nav.marketplace">Marketplace</span>
             </button>
-            <button onclick="navigateView('my-loans')" class="nav-link relative px-3 py-2 rounded-xl text-sm font-semibold text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors" data-view="my-loans">
+            <button onclick="navigateView('my-loans')" class="nav-link relative px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold text-on-surface-variant hover:text-on-surface hover:bg-black/[0.04] transition-colors" data-view="my-loans">
               <span data-i18n="nav.my_loans">My Loans</span>
-              <span id="navLoansCountBadge" class="ml-1.5 px-1.5 py-0.5 rounded-full bg-secondary text-white text-[10px] font-bold hidden">0</span>
+              <span id="navLoansCountBadge" class="ml-1.5 px-1.5 py-0.5 rounded-full bg-primary text-white text-[10px] font-bold hidden">0</span>
             </button>
-            <button onclick="navigateView('how-it-works')" class="nav-link px-3 py-2 rounded-xl text-sm font-semibold text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors" data-view="how-it-works">
+            <button onclick="navigateView('how-it-works')" class="nav-link px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold text-on-surface-variant hover:text-on-surface hover:bg-black/[0.04] transition-colors" data-view="how-it-works">
               <span data-i18n="nav.how_it_works">How It Works</span>
             </button>
           </nav>
 
-          <!-- Post an Item CTA Button -->
-          <button onclick="openAddItemModal()" class="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-secondary hover:bg-secondary-hover text-white text-sm font-semibold shadow-sm hover:shadow transition-all active:scale-[0.98]">
-            <span class="material-symbols-outlined text-[18px]">add_circle</span>
+          <!-- Post an Item CTA Button (Apple Prominent Button) -->
+          <button onclick="openAddItemModal()" class="flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-primary hover:bg-primary-hover text-white text-xs sm:text-sm font-semibold shadow-xs hover:shadow transition-all active:scale-[0.98]">
+            <span class="material-symbols-outlined text-[17px]">add_circle</span>
             <span class="hidden sm:inline" data-i18n="nav.post_item">Post an Item</span>
           </button>
 
           <!-- Language Selector Control in App Navbar -->
           <div class="relative flex items-center">
-            <div class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-surface-container-low hover:bg-surface-container text-primary text-xs font-semibold border border-blue-100/80 transition-colors">
-              <span class="material-symbols-outlined text-[16px] text-secondary">language</span>
-              <select id="appLangSelect" onchange="switchLanguage(this.value)" class="bg-transparent text-primary text-xs font-bold outline-none cursor-pointer pr-1" aria-label="Language Selector">
+            <div class="flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-black/[0.04] hover:bg-black/[0.07] text-on-surface text-xs font-semibold border border-black/[0.06] transition-colors">
+              <span class="material-symbols-outlined text-[15px] text-primary">language</span>
+              <select id="appLangSelect" onchange="switchLanguage(this.value)" class="bg-transparent text-on-surface text-xs font-semibold outline-none cursor-pointer pr-1" aria-label="Language Selector">
                 <option value="en">English</option>
                 <option value="ta">தமிழ் (Tamil)</option>
               </select>
@@ -527,7 +567,7 @@
 
           <!-- Notifications Bell -->
           <div class="relative">
-            <button onclick="toggleNotificationsDropdown(event)" aria-label="Notifications" class="w-10 h-10 rounded-xl bg-surface-container-low hover:bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors relative cursor-pointer">
+            <button onclick="toggleNotificationsDropdown(event)" aria-label="Notifications" class="w-9 h-9 rounded-full bg-black/[0.04] hover:bg-black/[0.07] flex items-center justify-center text-on-surface-variant hover:text-on-surface transition-colors relative cursor-pointer active:scale-95">
               <span class="material-symbols-outlined text-[20px]">notifications</span>
               <span id="notificationsDot" class="absolute top-2 right-2 w-2 h-2 rounded-full bg-emerald-brand ring-2 ring-white hidden"></span>
             </button>
@@ -603,28 +643,28 @@
 
 
 
-      <!-- Category Filter Tabs -->
+      <!-- Category Filter Tabs (Apple Pill Segmented Navigation) -->
       <section class="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar" id="categoryChips">
-        <button onclick="filterCategory('all')" class="cat-pill active px-4 py-2 rounded-xl text-xs font-bold transition-all bg-primary text-white shadow-sm flex items-center gap-1.5" data-cat="all">
+        <button onclick="filterCategory('all')" class="cat-pill active px-4 py-1.5 rounded-full text-xs font-semibold transition-all bg-primary text-white shadow-xs flex items-center gap-1.5 active:scale-95 cursor-pointer" data-cat="all">
           <span data-i18n="cat.all">All Items</span>
         </button>
-        <button onclick="filterCategory('books')" class="cat-pill px-4 py-2 rounded-xl text-xs font-semibold transition-all bg-white text-on-surface hover:bg-surface-container-low border border-surface-container flex items-center gap-1.5" data-cat="books">
+        <button onclick="filterCategory('books')" class="cat-pill px-4 py-1.5 rounded-full text-xs font-medium transition-all bg-white text-on-surface hover:bg-black/[0.04] border border-black/[0.08] shadow-xs flex items-center gap-1.5 active:scale-95 cursor-pointer" data-cat="books">
           <span>📚</span>
           <span data-i18n="cat.books">Textbooks</span>
         </button>
-        <button onclick="filterCategory('tech')" class="cat-pill px-4 py-2 rounded-xl text-xs font-semibold transition-all bg-white text-on-surface hover:bg-surface-container-low border border-surface-container flex items-center gap-1.5" data-cat="tech">
+        <button onclick="filterCategory('tech')" class="cat-pill px-4 py-1.5 rounded-full text-xs font-medium transition-all bg-white text-on-surface hover:bg-black/[0.04] border border-black/[0.08] shadow-xs flex items-center gap-1.5 active:scale-95 cursor-pointer" data-cat="tech">
           <span>💻</span>
           <span data-i18n="cat.tech">Tech & Electronics</span>
         </button>
-        <button onclick="filterCategory('stationery')" class="cat-pill px-4 py-2 rounded-xl text-xs font-semibold transition-all bg-white text-on-surface hover:bg-surface-container-low border border-surface-container flex items-center gap-1.5" data-cat="stationery">
+        <button onclick="filterCategory('stationery')" class="cat-pill px-4 py-1.5 rounded-full text-xs font-medium transition-all bg-white text-on-surface hover:bg-black/[0.04] border border-black/[0.08] shadow-xs flex items-center gap-1.5 active:scale-95 cursor-pointer" data-cat="stationery">
           <span>📐</span>
           <span data-i18n="cat.stationery">Calculators & Lab</span>
         </button>
-        <button onclick="filterCategory('sports')" class="cat-pill px-4 py-2 rounded-xl text-xs font-semibold transition-all bg-white text-on-surface hover:bg-surface-container-low border border-surface-container flex items-center gap-1.5" data-cat="sports">
+        <button onclick="filterCategory('sports')" class="cat-pill px-4 py-1.5 rounded-full text-xs font-medium transition-all bg-white text-on-surface hover:bg-black/[0.04] border border-black/[0.08] shadow-xs flex items-center gap-1.5 active:scale-95 cursor-pointer" data-cat="sports">
           <span>🚲</span>
           <span data-i18n="cat.sports">Sports & Outdoor</span>
         </button>
-        <button onclick="filterCategory('others')" class="cat-pill px-4 py-2 rounded-xl text-xs font-semibold transition-all bg-white text-on-surface hover:bg-surface-container-low border border-surface-container flex items-center gap-1.5" data-cat="others">
+        <button onclick="filterCategory('others')" class="cat-pill px-4 py-1.5 rounded-full text-xs font-medium transition-all bg-white text-on-surface hover:bg-black/[0.04] border border-black/[0.08] shadow-xs flex items-center gap-1.5 active:scale-95 cursor-pointer" data-cat="others">
           <span>🎒</span>
           <span data-i18n="cat.others">Dorm Living</span>
         </button>
@@ -634,33 +674,33 @@
       <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
         
         <!-- Left Filter Sidebar -->
-        <aside class="bg-white rounded-2xl p-5 border border-surface-container shadow-subtle space-y-6">
-          <div class="flex items-center justify-between pb-3 border-b border-surface-container">
-            <span class="font-display font-bold text-sm text-primary flex items-center gap-1.5">
-              <span class="material-symbols-outlined text-[18px]">tune</span> <span data-i18n="filter.title">Filter Catalog</span>
+        <aside class="bg-white rounded-2xl p-5 border border-black/[0.06] shadow-card space-y-6">
+          <div class="flex items-center justify-between pb-3 border-b border-black/[0.06]">
+            <span class="font-display font-semibold text-sm text-on-surface flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-[18px] text-primary">tune</span> <span data-i18n="filter.title">Filter Catalog</span>
             </span>
-            <button onclick="resetFilters()" class="text-xs text-secondary hover:underline font-semibold" data-i18n="filter.reset">Reset All</button>
+            <button onclick="resetFilters()" class="text-xs text-primary hover:underline font-semibold" data-i18n="filter.reset">Reset All</button>
           </div>
 
           <!-- Availability Toggle -->
           <div class="space-y-2">
-            <label class="text-xs font-bold uppercase tracking-wider text-outline block" data-i18n="filter.availability">Availability</label>
-            <label class="flex items-center justify-between cursor-pointer p-2 rounded-xl hover:bg-surface-container-low transition-colors">
+            <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant block" data-i18n="filter.availability">Availability</label>
+            <label class="flex items-center justify-between cursor-pointer p-2 rounded-xl hover:bg-black/[0.03] transition-colors">
               <span class="text-xs font-semibold text-on-surface flex items-center gap-1.5">
-                <span class="w-2 h-2 rounded-full bg-emerald-500"></span> <span data-i18n="filter.available_immediately">Available Immediately</span>
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> <span data-i18n="filter.available_immediately">Available Immediately</span>
               </span>
-              <input type="checkbox" id="filterAvailCheckbox" onchange="toggleAvailableFilter(this.checked)" class="accent-secondary w-4 h-4 rounded cursor-pointer">
+              <input type="checkbox" id="filterAvailCheckbox" onchange="toggleAvailableFilter(this.checked)" class="accent-primary w-4 h-4 rounded cursor-pointer">
             </label>
           </div>
 
           <!-- Max Daily Rate Filter -->
           <div class="space-y-2">
             <div class="flex items-center justify-between">
-              <label class="text-xs font-bold uppercase tracking-wider text-outline" data-i18n="filter.max_daily_rate">Max Daily Rate</label>
-              <span class="text-xs font-bold text-secondary" id="priceFilterDisplay">₹150/day</span>
+              <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant" data-i18n="filter.max_daily_rate">Max Daily Rate</label>
+              <span class="text-xs font-bold text-primary" id="priceFilterDisplay">₹150/day</span>
             </div>
-            <input type="range" min="10" max="150" step="5" value="150" id="priceRangeSlider" oninput="handlePriceRange(this.value)" class="w-full accent-secondary cursor-pointer">
-            <div class="flex justify-between text-[10px] text-outline">
+            <input type="range" min="10" max="150" step="5" value="150" id="priceRangeSlider" oninput="handlePriceRange(this.value)" class="w-full accent-primary cursor-pointer">
+            <div class="flex justify-between text-[11px] text-on-surface-variant">
               <span>₹10/d</span>
               <span>₹75/d</span>
               <span>₹150/d</span>
@@ -669,8 +709,8 @@
 
           <!-- Location Radius / Dorm Hubs -->
           <div class="space-y-2">
-            <label class="text-xs font-bold uppercase tracking-wider text-outline block" data-i18n="filter.hub_label">Dorm & Hall Hub</label>
-            <select id="hubSelector" onchange="handleHubFilter(this.value)" class="w-full p-2.5 rounded-xl bg-surface-container-low text-xs font-semibold text-on-surface border border-transparent focus:border-secondary outline-none cursor-pointer">
+            <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant block" data-i18n="filter.hub_label">Dorm & Hall Hub</label>
+            <select id="hubSelector" onchange="handleHubFilter(this.value)" class="w-full p-2.5 rounded-xl bg-black/[0.03] text-xs font-semibold text-on-surface border border-transparent focus:border-primary outline-none cursor-pointer">
               <option value="all" data-i18n="filter.hub_all">All Campus Locations</option>
               <option value="Hostel Block A">Hostel Block A</option>
               <option value="Boys Hostel">Boys Hostel</option>
@@ -683,8 +723,8 @@
           </div>
 
           <!-- Campus Escrow Trust Guarantee Card -->
-          <div class="p-3.5 rounded-xl bg-blue-50/70 border border-blue-100 space-y-1.5">
-            <div class="flex items-center gap-1.5 text-secondary text-xs font-bold">
+          <div class="p-3.5 rounded-xl bg-primary/5 border border-primary/10 space-y-1.5">
+            <div class="flex items-center gap-1.5 text-primary text-xs font-bold">
               <span class="material-symbols-outlined text-[16px]">verified_user</span>
               <span data-i18n="filter.escrow_badge">Escrow Security Protection</span>
             </div>
@@ -697,16 +737,16 @@
         <!-- Right Main Catalog Content -->
         <div class="lg:col-span-3 space-y-4">
           
-          <!-- Search Results Header & Sort Controls -->
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-3.5 rounded-2xl border border-surface-container shadow-subtle">
+          <!-- Search Results Header & Sort Controls (Apple Card Header) -->
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-3.5 rounded-2xl border border-black/[0.06] shadow-card">
             <div class="flex items-center gap-2">
-              <span class="font-display font-bold text-base text-primary" id="catalogResultTitle" data-i18n="catalog.all_items">All Campus Items</span>
-              <span class="px-2 py-0.5 rounded-full bg-surface-container text-xs font-semibold text-secondary" id="catalogResultCount">6 items</span>
+              <span class="font-display font-semibold text-base text-on-surface" id="catalogResultTitle" data-i18n="catalog.all_items">All Campus Items</span>
+              <span class="px-2.5 py-0.5 rounded-full bg-black/[0.04] text-xs font-semibold text-primary" id="catalogResultCount">6 items</span>
             </div>
 
-            <div class="flex items-center gap-3">
-              <span class="text-xs text-outline hidden sm:inline" data-i18n="catalog.sort_label">Sort by:</span>
-              <select onchange="handleSort(this.value)" class="px-3 py-1.5 rounded-xl bg-surface-container-low text-xs font-bold text-primary border border-transparent focus:border-secondary outline-none cursor-pointer">
+            <div class="flex items-center gap-2.5">
+              <span class="text-xs text-on-surface-variant hidden sm:inline" data-i18n="catalog.sort_label">Sort by:</span>
+              <select onchange="handleSort(this.value)" class="px-3 py-1.5 rounded-full bg-black/[0.04] text-xs font-semibold text-on-surface border border-transparent focus:border-primary outline-none cursor-pointer">
                 <option value="featured" data-i18n="catalog.sort_featured">Featured & Closest</option>
                 <option value="price-asc" data-i18n="catalog.sort_price_asc">Price: Low to High</option>
                 <option value="price-desc" data-i18n="catalog.sort_price_desc">Price: High to Low</option>
@@ -1195,7 +1235,7 @@
   <!-- ========================================================================= -->
   <!-- MODAL: ADD / LIST AN ITEM MODAL (DESKTOP)                                 -->
   <!-- ========================================================================= -->
-  <div id="addItemModal" class="fixed inset-0 z-50 bg-primary/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-200 flex items-center justify-center p-4">
+  <div id="addItemModal" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-200 flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl max-w-xl w-full p-6 shadow-2xl border border-surface-container transform scale-95 transition-transform duration-200" id="addItemModalBox">
       <div class="flex items-center justify-between pb-3 border-b border-surface-container mb-4">
         <div class="flex items-center gap-2">
@@ -1311,7 +1351,7 @@
   <!-- ========================================================================= -->
   <!-- MODAL: QR CODE IN-PERSON HANDOVER MODAL                                   -->
   <!-- ========================================================================= -->
-  <div id="handoverModal" class="fixed inset-0 z-50 bg-primary/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-200 flex items-center justify-center p-4">
+  <div id="handoverModal" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-200 flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-surface-container text-center space-y-4">
       <div class="flex items-center justify-between">
         <span class="text-[11px] font-bold text-secondary bg-blue-50 px-2.5 py-1 rounded-full uppercase tracking-wider" data-i18n="modal.handover.badge">Escrow Handshake</span>
@@ -1337,8 +1377,8 @@
           <rect x="36" y="8" width="6" height="6" fill="currentColor"/>
           <rect x="46" y="14" width="6" height="6" fill="currentColor"/>
           <rect x="56" y="8" width="6" height="6" fill="currentColor"/>
-          <rect x="36" y="40" width="8" height="8" rx="2" fill="#0051d5"/>
-          <rect x="48" y="48" width="8" height="8" rx="2" fill="#16a34a"/>
+          <rect x="36" y="40" width="8" height="8" rx="2" fill="#0071E3"/>
+          <rect x="48" y="48" width="8" height="8" rx="2" fill="#34C759"/>
           <rect x="62" y="64" width="6" height="6" fill="currentColor"/>
           <rect x="74" y="72" width="6" height="6" fill="currentColor"/>
         </svg>
@@ -1364,7 +1404,7 @@
   <!-- ========================================================================= -->
   <!-- MODAL: CAMPUS NETWORK SELECTOR                                            -->
   <!-- ========================================================================= -->
-  <div id="campusModal" class="fixed inset-0 z-50 bg-primary/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-200 flex items-center justify-center p-4">
+  <div id="campusModal" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-200 flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-surface-container space-y-4">
       <div class="flex items-center justify-between">
         <h3 class="font-display font-bold text-lg text-primary" data-i18n="modal.campus.title">Select Campus Hub</h3>
@@ -1396,7 +1436,7 @@
   <!-- ========================================================================= -->
   <!-- MODAL: EDIT PROFILE MODAL                                                 -->
   <!-- ========================================================================= -->
-  <div id="editProfileModal" class="fixed inset-0 z-50 bg-primary/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-200 flex items-center justify-center p-4">
+  <div id="editProfileModal" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-200 flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-surface-container space-y-4">
       <div class="flex items-center justify-between">
         <h3 class="font-display font-bold text-lg text-primary" data-i18n="modal.profile.title">Edit Profile</h3>
@@ -1428,8 +1468,37 @@
   <!-- ========================================================================= -->
   <div id="toastContainer" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
-
-
+  <!-- ========================================================================= -->
+  <!-- APPLE iOS LIQUID GLASS MOBILE BOTTOM TAB BAR                              -->
+  <!-- Conforms to Apple HIG tab-bars.md: visible top-level navigation on compact -->
+  <!-- ========================================================================= -->
+  <nav id="mobileBottomTabBar" aria-label="Mobile Navigation" class="md:hidden fixed bottom-3 left-4 right-4 z-40 liquid-glass-dock rounded-2xl py-1.5 px-3 flex items-center justify-around shadow-dock transition-transform duration-300">
+    <!-- Marketplace Tab -->
+    <button onclick="navigateView('marketplace')" class="mobile-nav-btn flex flex-col items-center justify-center py-1 px-3 rounded-xl text-primary font-bold transition-all active:scale-90 cursor-pointer" data-view="marketplace" aria-label="Marketplace">
+      <span class="material-symbols-outlined text-[22px]">storefront</span>
+      <span class="text-[11px] font-semibold mt-0.5" data-i18n="nav.marketplace">Market</span>
+    </button>
+    <!-- My Loans Tab -->
+    <button onclick="navigateView('my-loans')" class="mobile-nav-btn relative flex flex-col items-center justify-center py-1 px-3 rounded-xl text-on-surface-variant hover:text-primary transition-all active:scale-90 cursor-pointer" data-view="my-loans" aria-label="My Loans">
+      <span class="material-symbols-outlined text-[22px]">sync_alt</span>
+      <span class="text-[11px] font-semibold mt-0.5" data-i18n="nav.my_loans">Loans</span>
+      <span id="mobileNavLoansBadge" class="absolute top-1 right-2.5 w-2 h-2 rounded-full bg-primary hidden"></span>
+    </button>
+    <!-- Post Item Action (Center Highlighted Pill) -->
+    <button onclick="openAddItemModal()" class="flex flex-col items-center justify-center -mt-4 bg-primary hover:bg-primary-hover text-white w-12 h-12 rounded-full shadow-md active:scale-95 transition-all cursor-pointer" aria-label="Post an Item">
+      <span class="material-symbols-outlined text-[24px]">add</span>
+    </button>
+    <!-- How it Works Tab -->
+    <button onclick="navigateView('how-it-works')" class="mobile-nav-btn flex flex-col items-center justify-center py-1 px-3 rounded-xl text-on-surface-variant hover:text-primary transition-all active:scale-90 cursor-pointer" data-view="how-it-works" aria-label="How it works">
+      <span class="material-symbols-outlined text-[22px]">help_outline</span>
+      <span class="text-[11px] font-semibold mt-0.5" data-i18n="nav.how_it_works">Help</span>
+    </button>
+    <!-- Profile Tab -->
+    <button onclick="navigateView('profile')" class="mobile-nav-btn flex flex-col items-center justify-center py-1 px-3 rounded-xl text-on-surface-variant hover:text-primary transition-all active:scale-90 cursor-pointer" data-view="profile" aria-label="Profile">
+      <span class="material-symbols-outlined text-[22px]">account_circle</span>
+      <span class="text-[11px] font-semibold mt-0.5" data-i18n="nav.profile_tab">Profile</span>
+    </button>
+  </nav>
 
   </div> <!-- /#mainAppShell -->
 
@@ -1598,9 +1667,9 @@
         location: "College Quadrangle • 0.2 km",
         campus: "PSG iTech Campus",
         ownerId: "715521104001",
-        ownerName: "David K.",
-        lenderName: "David K.",
-        lenderDept: "Economics • Junior",
+        ownerName: "Karthik Raja",
+        lenderName: "Karthik Raja",
+        lenderDept: "Junior • CSE Dept",
         lenderAvatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuCHidFGGvejNyhkUBYrLtdf6YBBJH4cdUC8PrAvMSsLsYw29f3rxNOr1LXFSuNGwGsWjv-ou9bedavLx1oiQXsiW3MD674jEP9umUigltN6OXY-sEur0CQveiqITJGNH2LX-cl2jcU0Vef-R_KhMIEo1PwG_hbf0mrS88phMWaoVA6h74QfX_S0Km9Ne14pch4EEQ08E86vS_bWV-4UiNF6-5rhOjPAEsh2hEdwtOo1",
         image: "https://lh3.googleusercontent.com/aida-public/AB6AXuD8LJ5er6DzREDNtgIhPowV_RLu0QJ7E6WBjDYlDPkdDFUGYbzCXQAQv_5mxifD6texvT-FrKICtTvmQPgroK95DNV0jUrDaWNxDd1l-3csq3mAfU02tGPToGD5bh2P1lSXX_gF5WvYXB2pghXiBoURCAhoQSxeyhMiSl8mPumqbg16PpeRys7ZfhVcdEAALS07xemOog2RtG5rnYGZ1_D_opGEsZdWgn7fzbV_BbD3",
         rating: "4.9 ★ (14 loans)",
@@ -1619,9 +1688,9 @@
         location: "IT Block • 0.2 km",
         campus: "PSG iTech Campus",
         ownerId: "715521104001",
-        ownerName: "Kevin M.",
-        lenderName: "Kevin M.",
-        lenderDept: "CS • Junior",
+        ownerName: "Karthik Raja",
+        lenderName: "Karthik Raja",
+        lenderDept: "Junior • CSE Dept",
         lenderAvatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuDPK1wGgvcZzVIu09lEX1h_MzqjkCm43D_4Gld-fUyrR9IOfggN9H8l2cyKaQMsay2y4vJ_DLobml1FlJd0Ala2y1FLIQdTzFyYBHhYNvgc9JS5svtcYjYuHmxH000cZoAk7B2YX9tpxlpUfQjdI0l-7qkb2jzCotbZSLOEbmhCufoSzHFGW-2d8lPok-lStjxEb0oy5NWMdVzckaT0O6ERhshe9ub0pDFa3hvavx5J",
         image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDM-3UvkaYlTm0DmafG2spCGujBwntxSSe3OWHJz2R8uZKO50r7sHrasD3L-RWNH5rIg8TcLJD2yYvO4w8Abv0xkONRIw6-ue9a5vRe7wg2Zt8vo1anc-i4vu_mL-m7Tfd8tYeYSzOnTUdi2JqAxO67ILac5J9NFvaF0b6rMr6D2wQUv_sCTRorNe4KdsJtEdMqwUsvQHfiCUTDcJlkq0kCviYFnDezQVCzX1cNNSRq",
         rating: "4.7 ★ (9 loans)",
@@ -1652,7 +1721,25 @@
       }
     ];
 
-    let items = [...CATALOG];
+    // Canonical item loader: merges seeded catalog + custom listings with deduplication
+    function getInitialItems() {
+      const itemMap = new Map();
+      CATALOG.forEach(it => itemMap.set(it.id, { ...it }));
+      try {
+        const stored = localStorage.getItem("campuslend_custom_items");
+        if (stored) {
+          const list = JSON.parse(stored);
+          if (Array.isArray(list)) {
+            list.forEach(it => {
+              if (it && it.id) itemMap.set(it.id, it);
+            });
+          }
+        }
+      } catch (_) {}
+      return Array.from(itemMap.values());
+    }
+
+    let items = getInitialItems();
     let activeItem = items[0];
     let selectedCategory = "all";
     let searchQuery = "";
@@ -1769,26 +1856,35 @@
       if (window.CampusLendAPI && window.CampusLendAPI.syncRemoteCatalog) {
         window.CampusLendAPI.syncRemoteCatalog((remoteItems) => {
           if (Array.isArray(remoteItems) && remoteItems.length > 0) {
-            items = remoteItems.map(ri => ({
-              id: ri.id,
+            const remoteMapped = remoteItems.map(ri => ({
+              id: ri.id || ri._id,
               title: ri.title,
               category: (ri.category || "others").toLowerCase(),
-              categoryName: ri.category || "General",
+              categoryName: ri.categoryName || ri.category || "General",
               dailyPrice: ri.dailyPrice || 0,
-              depositHold: ri.securityDeposit || 0,
+              depositHold: ri.securityDeposit || ri.depositHold || 0,
               condition: ri.condition || "Good",
               location: ri.location || "PSG iTech Campus Hub",
               campus: "PSG iTech Campus",
+              ownerId: ri.ownerId || "",
+              ownerName: ri.ownerName || "Student Peer",
               lenderName: ri.ownerName || "Student Peer",
-              lenderDept: "Campus Peer",
+              lenderDept: ri.ownerDept || "Campus Peer",
               lenderAvatar: ri.ownerAvatar || "https://lh3.googleusercontent.com/aida-public/AB6AXuCHidFGGvejNyhkUBYrLtdf6YBBJH4cdUC8PrAvMSsLsYw29f3rxNOr1LXFSuNGwGsWjv-ou9bedavLx1oiQXsiW3MD674jEP9umUigltN6OXY-sEur0CQveiqITJGNH2LX-cl2jcU0Vef-R_KhMIEo1PwG_hbf0mrS88phMWaoVA6h74QfX_S0Km9Ne14pch4EEQ08E86vS_bWV-4UiNF6-5rhOjPAEsh2hEdwtOo1",
-              image: ri.imageUrl || CATALOG[0].image,
-              rating: "5.0 ★ (Verified)",
+              image: ri.imageUrl || ri.image || CATALOG[0].image,
+              rating: ri.rating || "5.0 ★ (Verified)",
               description: ri.description || "",
               isFavorite: false,
               isAvailable: ri.available !== false
             }));
+
+            // Deduplicate items against existing active catalog by ID
+            const itemMap = new Map();
+            items.forEach(it => itemMap.set(it.id, it));
+            remoteMapped.forEach(it => itemMap.set(it.id, it));
+            items = Array.from(itemMap.values());
             renderMarketplace();
+            renderProfileListings();
           }
         });
       }
@@ -1808,12 +1904,21 @@
         }
       });
 
-      // Update Nav Link highlighters
+      // Update Desktop Nav Link highlighters (Apple Pill style)
       document.querySelectorAll(".nav-link").forEach(link => {
         if (link.getAttribute("data-view") === viewName) {
-          link.className = "nav-link px-3 py-2 rounded-xl text-sm font-semibold text-secondary bg-blue-50/80 transition-colors";
+          link.className = "nav-link px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold text-primary bg-primary/10 transition-colors";
         } else {
-          link.className = "nav-link px-3 py-2 rounded-xl text-sm font-semibold text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors";
+          link.className = "nav-link px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold text-on-surface-variant hover:text-on-surface hover:bg-black/[0.04] transition-colors";
+        }
+      });
+
+      // Update Mobile Bottom Tab Bar highlighters (Apple iOS Tab Bar style)
+      document.querySelectorAll(".mobile-nav-btn").forEach(btn => {
+        if (btn.getAttribute("data-view") === viewName) {
+          btn.className = "mobile-nav-btn flex flex-col items-center justify-center py-1 px-3 rounded-xl text-primary font-bold transition-all active:scale-90 cursor-pointer";
+        } else {
+          btn.className = "mobile-nav-btn flex flex-col items-center justify-center py-1 px-3 rounded-xl text-on-surface-variant hover:text-primary transition-all active:scale-90 cursor-pointer";
         }
       });
 
@@ -1863,50 +1968,50 @@
       emptyBox.classList.remove("flex");
 
       grid.innerHTML = filtered.map(item => `
-        <article class="bg-white rounded-3xl overflow-hidden border border-surface-container shadow-subtle hover:shadow-card-hover transition-all duration-300 flex flex-col group cursor-pointer" onclick="openItemDetailPage('${item.id}')">
+        <article class="apple-card rounded-2xl overflow-hidden transition-all duration-200 flex flex-col group cursor-pointer" onclick="openItemDetailPage('${item.id}')">
           <!-- Thumbnail Image -->
-          <div class="relative w-full aspect-[4/3] bg-surface-container-low overflow-hidden">
-            <img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+          <div class="relative w-full aspect-[4/3] bg-black/[0.03] overflow-hidden">
+            <img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300">
             
-            <!-- Price Tag Pill -->
-            <span class="absolute top-3 right-3 px-3 py-1 rounded-full bg-primary/95 backdrop-blur-md text-white font-display font-extrabold text-xs shadow-md">
-              ₹${Math.round(item.dailyPrice)}<span class="font-normal text-blue-200 text-[10px]">${t('card.day_unit', '/d')}</span>
+            <!-- Price Tag Pill (Apple Translucent Pill) -->
+            <span class="absolute top-3 right-3 px-3 py-1 rounded-full bg-black/75 backdrop-blur-md text-white font-display font-semibold text-xs shadow-xs">
+              ₹${Math.round(item.dailyPrice)}<span class="font-normal text-white/80 text-[11px]">${t('card.day_unit', '/d')}</span>
             </span>
 
             <!-- Wishlist Heart -->
-            <button onclick="toggleCardFavorite(event, '${item.id}')" aria-label="Favorite" class="absolute bottom-3 right-3 w-8 h-8 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center ${item.isFavorite ? 'text-error' : 'text-outline'} hover:text-error transition-colors shadow-sm active:scale-90">
+            <button onclick="toggleCardFavorite(event, '${item.id}')" aria-label="Favorite" class="absolute bottom-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center ${item.isFavorite ? 'text-error' : 'text-on-surface-variant'} hover:text-error transition-colors shadow-xs active:scale-90 cursor-pointer">
               <span class="material-symbols-outlined text-[18px]" style="${item.isFavorite ? 'font-variation-settings: \'FILL\' 1;' : ''}">favorite</span>
             </button>
 
             <!-- Condition Chip -->
-            <span class="absolute bottom-3 left-3 px-2.5 py-0.5 rounded-lg bg-white/90 backdrop-blur-md text-primary font-bold text-[10px]">
+            <span class="absolute bottom-3 left-3 px-2.5 py-0.5 rounded-full bg-white/95 backdrop-blur-md text-on-surface font-semibold text-[11px] shadow-xs">
               ${getConditionLabel(item.condition)}
             </span>
           </div>
 
           <!-- Card Content -->
-          <div class="p-5 flex flex-col flex-1 justify-between gap-3">
+          <div class="p-4.5 flex flex-col flex-1 justify-between gap-3">
             <div>
-              <div class="flex items-center justify-between gap-1 mb-1">
-                <span class="text-[11px] font-bold text-secondary uppercase tracking-wider">${getCategoryName(item.category)}</span>
-                <span class="text-[11px] text-emerald-600 font-semibold flex items-center gap-1">
-                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> ${t('card.available', 'Available')}
+              <div class="flex items-center justify-between gap-1 mb-1.5">
+                <span class="text-[11px] font-semibold text-primary uppercase tracking-wider">${getCategoryName(item.category)}</span>
+                <span class="text-[12px] text-emerald-brand font-semibold flex items-center gap-1.5">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> ${t('card.available', 'Available')}
                 </span>
               </div>
-              <h3 class="font-display font-bold text-base text-primary line-clamp-1 group-hover:text-secondary transition-colors">${item.title}</h3>
-              <p class="text-xs text-on-surface-variant line-clamp-2 mt-1">${item.description}</p>
+              <h3 class="font-display font-semibold text-base text-on-surface line-clamp-1 group-hover:text-primary transition-colors">${item.title}</h3>
+              <p class="text-xs text-on-surface-variant line-clamp-2 mt-1 leading-relaxed">${item.description}</p>
             </div>
 
             <!-- Footer: Lender info & pickup spot -->
-            <div class="pt-3 border-t border-surface-container flex items-center justify-between text-xs">
+            <div class="pt-3 border-t border-black/[0.06] flex items-center justify-between text-xs">
               <div class="flex items-center gap-2">
-                <div class="w-6 h-6 rounded-full overflow-hidden ring-1 ring-blue-100 shrink-0">
+                <div class="w-6 h-6 rounded-full overflow-hidden ring-1 ring-black/[0.08] shrink-0">
                   <img src="${item.lenderAvatar}" alt="${item.lenderName}" class="w-full h-full object-cover">
                 </div>
-                <span class="font-semibold text-primary truncate max-w-[100px]">${item.lenderName}</span>
+                <span class="font-medium text-on-surface truncate max-w-[110px]">${item.lenderName}</span>
               </div>
-              <span class="text-outline text-[11px] flex items-center gap-0.5 truncate max-w-[120px]">
-                <span class="material-symbols-outlined text-[13px]">pin_drop</span>
+              <span class="text-on-surface-variant text-[11px] flex items-center gap-1 truncate max-w-[120px]">
+                <span class="material-symbols-outlined text-[13px] text-outline">location_on</span>
                 ${item.location.split('•')[0]}
               </span>
             </div>
@@ -1919,9 +2024,9 @@
       selectedCategory = catKey;
       document.querySelectorAll(".cat-pill").forEach(pill => {
         if (pill.getAttribute("data-cat") === catKey) {
-          pill.className = "cat-pill active px-4 py-2 rounded-xl text-xs font-bold transition-all bg-primary text-white shadow-sm flex items-center gap-1.5";
+          pill.className = "cat-pill active px-4 py-1.5 rounded-full text-xs font-semibold transition-all bg-primary text-white shadow-xs flex items-center gap-1.5 active:scale-95 cursor-pointer";
         } else {
-          pill.className = "cat-pill px-4 py-2 rounded-xl text-xs font-semibold transition-all bg-white text-on-surface hover:bg-surface-container-low border border-surface-container flex items-center gap-1.5";
+          pill.className = "cat-pill px-4 py-1.5 rounded-full text-xs font-medium transition-all bg-white text-on-surface hover:bg-black/[0.04] border border-black/[0.08] shadow-xs flex items-center gap-1.5 active:scale-95 cursor-pointer";
         }
       });
       renderMarketplace();
@@ -1966,7 +2071,7 @@
       if (sortType === "price-asc") items.sort((a, b) => a.dailyPrice - b.dailyPrice);
       else if (sortType === "price-desc") items.sort((a, b) => b.dailyPrice - a.dailyPrice);
       else if (sortType === "rating") items.sort((a, b) => parseFloat(b.rating) - parseFloat(a.rating));
-      else items = [...CATALOG];
+      else items = getInitialItems();
       renderMarketplace();
     }
 
@@ -2140,86 +2245,33 @@
       localStorage.setItem(`campuslend_user_requests_${uKey}`, JSON.stringify(requests));
     }
 
-    // Per-account user listings controller
+    // Single source of truth: per-account user listings derived directly from the canonical items catalog
     function getUserListings() {
       const uKey = getCurrentUserKey();
       if (uKey === "GUEST") return [];
-      const storageKey = `campuslend_user_listings_${uKey}`;
-      try {
-        const stored = localStorage.getItem(storageKey);
-        if (stored) {
-          const parsed = JSON.parse(stored);
-          if (Array.isArray(parsed)) return parsed;
-        }
-      } catch (e) {}
+      const uName = (currentUser && currentUser.name) ? currentUser.name.trim().toLowerCase() : "";
 
-      // Initial listings seeded ONLY for default demo user (Sharvesh Mahi 25Z295)
-      if (uKey === "25Z295" || uKey === "25Z295@PSGITECH.AC.IN") {
-        const demoListings = [
-          {
-            id: "item-3",
-            title: "Sony WH-1000XM4 Noise Cancelling",
-            status: "Available",
-            price: "₹60/day",
-            deposit: "₹400 deposit",
-            image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBkiquaYFgXakbP2mClmnfb7Va95cC2ekw5VVdqNTX6jzILz4X_lJKi8F7grlVAE-D9QiYeYNyjJfBNCInzQNdNbTdhKGLlWQxRmNdrhjptxFxbyvnmSlNKt4noiBYmHuVR9dyRrTDmvqLd6x9ViR5S6d4p7abPPi0nVk1HllDhaVaucdQJVULxFyeoPQ-MIcFK2c62h2EK7TIpoWfeB3YsuX_Kqfn_xkqORUID6qZG"
-          },
-          {
-            id: "item-6",
-            title: "Logitech MX Master 3S Wireless Mouse",
-            status: "Available",
-            price: "₹40/day",
-            deposit: "₹300 deposit",
-            image: "https://lh3.googleusercontent.com/aida-public/AB6AXuD7gwQjV590U9vx14Fk3gWAVGNeM94g7uvPbrLTk2sSK8gny8hVVMT7_0_gm89wFpynlso1Q9OX3izu6Wd4PNJLwwEJNRNjDD2aJQl_5o0aKz5Q1ma_k-mNZwBS7eSiO6fd43lyYEJQMNYJTyVboZBYo00lgRiaz0tR2Zw_aomqYqDQpCp93tw6nEGJjG_rCBVbXdJ1kTE1eCchh_pJHvktAPkVxwhBPFeAVLkhixo7"
-          }
-        ];
-        saveUserListings(demoListings);
-        return demoListings;
-      }
-      if (uKey === "715521104001" || uKey === "715521104001@PSGITECH.AC.IN") {
-        const demoListings = [
-          {
-            id: "item-2",
-            title: "Campbell Biology 12th Edition Hardcover",
-            status: "Available",
-            price: "₹30/day",
-            deposit: "₹200 deposit",
-            image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCHzF2ArCYVDUbZmI5k-3Auz7nNqDBA4WqGQ1_r8IIU8jjqDVNVlooZAqi6nibGOpGadYKu5ScBbKKgWnsr9ydHbAltNtedVgEgaBaLKfU3mkvw3s76vF3PLWIMxVCHi2JEtw-gzEwPkPdyYeDOy4DPmUnWHKUK0VL90C9XVINWLVarO1OgZfW830QxaJX5WPLTzllZIizBk3oRRULosxsviytiqWvpYwa3i9q7yI-j"
-          },
-          {
-            id: "item-4",
-            title: "Heavy Duty Kryptonite U-Lock with Cable",
-            status: "Available",
-            price: "₹20/day",
-            deposit: "₹150 deposit",
-            image: "https://lh3.googleusercontent.com/aida-public/AB6AXuD8LJ5er6DzREDNtgIhPowV_RLu0QJ7E6WBjDYlDPkdDFUGYbzCXQAQv_5mxifD6texvT-FrKICtTvmQPgroK95DNV0jUrDaWNxDd1l-3csq3mAfU02tGPToGD5bh2P1lSXX_gF5WvYXB2pghXiBoURCAhoQSxeyhMiSl8mPumqbg16PpeRys7ZfhVcdEAALS07xemOog2RtG5rnYGZ1_D_opGEsZdWgn7fzbV_BbD3"
-          }
-        ];
-        saveUserListings(demoListings);
-        return demoListings;
-      }
-      if (uKey === "715521104002" || uKey === "715521104002@PSGITECH.AC.IN") {
-        const demoListings = [
-          {
-            id: "item-1",
-            title: "TI-84 Plus CE Python Graphing Calculator",
-            status: "Available",
-            price: "₹50/day",
-            deposit: "₹300 deposit",
-            image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCwzEoEAOySUGjNOHtVUJfX4kzk2JoXBWr8O_2W6OlPBOBEyzFpdkwPF9maQ9UpdNsMNhfCUS2r3co300xpXSH1WgDkybFb8GNzCGFQuiKrPsYr-hmZl5O8hYxVk-y9cXuGdkTrUC89_-faqEUSw6bHHB1b3BkIkLNRObwI4vphIge7osJfNg6G1RmPKoEmOoxAuMrEH7yfzjBIMWa_DCjAE0B1vTF0hLqb6MycvIIR"
-          }
-        ];
-        saveUserListings(demoListings);
-        return demoListings;
-      }
-
-      return [];
+      return items.filter(it => {
+        const matchId = it.ownerId && it.ownerId.toUpperCase() === uKey.toUpperCase();
+        const matchName = uName && (
+          (it.ownerName && it.ownerName.trim().toLowerCase() === uName) ||
+          (it.lenderName && it.lenderName.trim().toLowerCase() === uName)
+        );
+        return matchId || matchName;
+      }).map(it => ({
+        id: it.id,
+        title: it.title,
+        status: it.isAvailable !== false ? "Available" : "On Loan",
+        price: it.price || `₹${Math.round(it.dailyPrice)}/day`,
+        deposit: it.deposit || `₹${Math.round(it.depositHold || 0)} deposit`,
+        image: it.image,
+        dailyPrice: it.dailyPrice,
+        depositHold: it.depositHold
+      }));
     }
 
     function saveUserListings(listings) {
-      const uKey = getCurrentUserKey();
-      if (uKey === "GUEST") return;
-      localStorage.setItem(`campuslend_user_listings_${uKey}`, JSON.stringify(listings));
+      // Kept for backward compatibility; items are canonical in memory and campuslend_custom_items
     }
 
     function renderLoansDashboard() {
@@ -2246,13 +2298,22 @@
       if (tabBadgeReq) tabBadgeReq.textContent = totalRequests;
 
       const navLoansCountBadge = document.getElementById("navLoansCountBadge");
+      const mobileNavLoansBadge = document.getElementById("mobileNavLoansBadge");
+      const totalNav = borrows.length + lends.length;
+
       if (navLoansCountBadge) {
-        const totalNav = borrows.length + lends.length;
         navLoansCountBadge.textContent = totalNav;
         if (totalNav > 0) {
           navLoansCountBadge.classList.remove("hidden");
         } else {
           navLoansCountBadge.classList.add("hidden");
+        }
+      }
+      if (mobileNavLoansBadge) {
+        if (totalNav > 0) {
+          mobileNavLoansBadge.classList.remove("hidden");
+        } else {
+          mobileNavLoansBadge.classList.add("hidden");
         }
       }
 
@@ -2898,14 +2959,14 @@
               <div class="min-w-0">
                 <span class="text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider ${statusColor}">${statusText}</span>
                 <h4 class="font-display font-bold text-sm text-primary truncate mt-1">${item.title}</h4>
-                <p class="text-xs text-on-surface-variant">${item.price} • ${item.deposit}</p>
+                <p class="text-xs text-on-surface-variant">${item.price || ('₹' + Math.round(item.dailyPrice || 50) + '/day')} • ${item.deposit || ('₹' + Math.round(item.depositHold || 200) + ' deposit')}</p>
               </div>
             </div>
             <div class="flex items-center gap-1.5 shrink-0">
               <button onclick="showToast('Editing ${safeTitle}', 'info')" class="p-2 rounded-xl bg-white hover:bg-surface-container text-primary shadow-sm text-xs font-semibold cursor-pointer" title="Edit listing">
                 <span class="material-symbols-outlined text-[16px]">edit</span>
               </button>
-              <button onclick="removeUserListing(${idx})" class="p-2 rounded-xl bg-white hover:bg-red-50 text-error shadow-sm text-xs font-semibold cursor-pointer" title="Delete listing">
+              <button onclick="removeUserListing('${item.id}')" class="p-2 rounded-xl bg-white hover:bg-red-50 text-error shadow-sm text-xs font-semibold cursor-pointer" title="Delete listing">
                 <span class="material-symbols-outlined text-[16px]">delete</span>
               </button>
             </div>
@@ -2914,13 +2975,31 @@
       }).join("");
     }
 
-    function removeUserListing(idx) {
-      let listings = getUserListings();
-      if (idx >= 0 && idx < listings.length) {
-        listings.splice(idx, 1);
-        saveUserListings(listings);
+    function removeUserListing(target) {
+      let targetId = target;
+      if (typeof target === "number") {
+        const userListings = getUserListings();
+        if (target >= 0 && target < userListings.length) {
+          targetId = userListings[target].id;
+        }
+      }
+
+      const idx = items.findIndex(it => it.id === targetId);
+      if (idx !== -1) {
+        const removedTitle = items[idx].title;
+        items.splice(idx, 1);
+        try {
+          const stored = localStorage.getItem("campuslend_custom_items");
+          if (stored) {
+            const list = JSON.parse(stored);
+            const filtered = list.filter(it => it.id !== targetId);
+            localStorage.setItem("campuslend_custom_items", JSON.stringify(filtered));
+          }
+        } catch (_) {}
+
         renderProfileListings();
-        showToast(t("toast.listing_removed", "Listing removed from your catalog"), "info");
+        renderMarketplace();
+        showToast(`${t("toast.listing_removed", "Listing removed from your catalog")} ("${removedTitle}")`, "info");
       }
     }
 
@@ -3062,9 +3141,11 @@
         condition: cond,
         location: loc,
         campus: "PSG iTech Campus",
+        ownerId: currentUser.studentId || "25Z295",
+        ownerName: currentUser.name || "Sharvesh Mahi",
         lenderName: currentUser.name || "Sharvesh Mahi",
         lenderDept: currentUser.department || "Freshman • Computer Science",
-        lenderAvatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuCHidFGGvejNyhkUBYrLtdf6YBBJH4cdUC8PrAvMSsLsYw29f3rxNOr1LXFSuNGwGsWjv-ou9bedavLx1oiQXsiW3MD674jEP9umUigltN6OXY-sEur0CQveiqITJGNH2LX-cl2jcU0Vef-R_KhMIEo1PwG_hbf0mrS88phMWaoVA6h74QfX_S0Km9Ne14pch4EEQ08E86vS_bWV-4UiNF6-5rhOjPAEsh2hEdwtOo1",
+        lenderAvatar: currentUser.avatar || "https://lh3.googleusercontent.com/aida-public/AB6AXuCHidFGGvejNyhkUBYrLtdf6YBBJH4cdUC8PrAvMSsLsYw29f3rxNOr1LXFSuNGwGsWjv-ou9bedavLx1oiQXsiW3MD674jEP9umUigltN6OXY-sEur0CQveiqITJGNH2LX-cl2jcU0Vef-R_KhMIEo1PwG_hbf0mrS88phMWaoVA6h74QfX_S0Km9Ne14pch4EEQ08E86vS_bWV-4UiNF6-5rhOjPAEsh2hEdwtOo1",
         image: finalItemPhoto,
         rating: "5.0 ★ (New)",
         description: desc,
@@ -3074,17 +3155,13 @@
 
       items.unshift(newItem);
 
-      // Add to current user's scoped listings
-      let userListings = getUserListings();
-      userListings.unshift({
-        id: newItem.id,
-        title,
-        status: "Available",
-        price: `₹${Math.round(price)}/day`,
-        deposit: `₹${Math.round(deposit)} deposit`,
-        image: finalItemPhoto
-      });
-      saveUserListings(userListings);
+      // Persist to custom listings without duplicate entries
+      try {
+        const stored = localStorage.getItem("campuslend_custom_items");
+        const list = stored ? JSON.parse(stored) : [];
+        list.unshift(newItem);
+        localStorage.setItem("campuslend_custom_items", JSON.stringify(list));
+      } catch (_) {}
 
       if (window.CampusLendAPI && window.CampusLendAPI.createItem) {
         window.CampusLendAPI.createItem({
@@ -3396,14 +3473,17 @@
       const loginPanel = document.getElementById("authLoginPanel");
       const registerPanel = document.getElementById("authRegisterPanel");
 
+      const activeClass = "flex-1 py-1.5 text-center font-semibold text-xs sm:text-sm rounded-lg bg-white text-on-surface shadow-sm transition-all flex items-center justify-center gap-1.5 cursor-pointer";
+      const inactiveClass = "flex-1 py-1.5 text-center font-medium text-xs sm:text-sm rounded-lg text-on-surface-variant hover:text-on-surface transition-all flex items-center justify-center gap-1.5 cursor-pointer";
+
       if (tab === "login") {
-        if (tabLogin) tabLogin.className = "flex-1 py-2 text-center font-bold text-xs sm:text-sm rounded-xl bg-primary text-white shadow-sm transition-all flex items-center justify-center gap-1.5 cursor-pointer";
-        if (tabRegister) tabRegister.className = "flex-1 py-2 text-center font-semibold text-xs sm:text-sm rounded-xl text-on-surface-variant hover:text-primary transition-all flex items-center justify-center gap-1.5 cursor-pointer";
+        if (tabLogin) tabLogin.className = activeClass;
+        if (tabRegister) tabRegister.className = inactiveClass;
         if (loginPanel) loginPanel.classList.remove("hidden");
         if (registerPanel) registerPanel.classList.add("hidden");
       } else {
-        if (tabRegister) tabRegister.className = "flex-1 py-2 text-center font-bold text-xs sm:text-sm rounded-xl bg-primary text-white shadow-sm transition-all flex items-center justify-center gap-1.5 cursor-pointer";
-        if (tabLogin) tabLogin.className = "flex-1 py-2 text-center font-semibold text-xs sm:text-sm rounded-xl text-on-surface-variant hover:text-primary transition-all flex items-center justify-center gap-1.5 cursor-pointer";
+        if (tabRegister) tabRegister.className = activeClass;
+        if (tabLogin) tabLogin.className = inactiveClass;
         if (registerPanel) registerPanel.classList.remove("hidden");
         if (loginPanel) loginPanel.classList.add("hidden");
       }
