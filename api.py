@@ -11,14 +11,17 @@ import os
 import json
 import time
 import re
+import base64
+import hmac
 import secrets
 import hashlib
 import smtplib
 import ssl
+import threading
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import urllib.parse
-from http.server import HTTPServer, BaseHTTPRequestHandler
+from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
 
 STATIC_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -40,40 +43,239 @@ COLLEGE_DOMAIN = "psgitech.ac.in"
 OTP_EXPIRY_SECONDS = 300       # 5 minutes
 OTP_MAX_ATTEMPTS = 5           # Max 5 failed attempts
 OTP_COOLDOWN_SECONDS = 60      # 60s resend cooldown
+VERIFICATION_TOKEN_TTL = 900   # Verification token valid for 15 minutes
+
+# Demo seed accounts are disabled unless explicitly enabled AND a password is set.
+SEED_DEMO_DATA = os.environ.get("SEED_DEMO_DATA", "false").lower() == "true"
+DEMO_STUDENT_PASSWORD = os.environ.get("DEMO_STUDENT_PASSWORD", "").strip()
+
+# ---- Security / hardening configuration ----
+MAX_BODY_BYTES = int(os.environ.get("MAX_BODY_BYTES", 1_000_000))  # 1 MB request cap
+AUTH_TOKEN_TTL_SECONDS = int(os.environ.get("AUTH_TOKEN_TTL_SECONDS", 86400))  # 24h
+PBKDF2_ITERATIONS = 260_000
+
+# Only these files may be served as static content. Everything else falls back
+# to index.html; dotfiles such as .env and .git are never served.
+STATIC_ALLOWLIST = {"index.html", "translations.js"}
+STATIC_DIRS = {"assets"}
+SECURITY_CSP = (
+    "default-src 'self'; "
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com; "
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; "
+    "font-src 'self' https://fonts.gstatic.com data:; "
+    "img-src 'self' https: data:; "
+    "connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
+)
+
+# HMAC signing secret for bearer tokens. Set AUTH_SECRET in production; if it is
+# missing a random per-process secret is used (tokens are invalidated on restart).
+AUTH_SECRET = os.environ.get("AUTH_SECRET", "").strip()
+if not AUTH_SECRET:
+    AUTH_SECRET = secrets.token_hex(32)
+    print("[!] AUTH_SECRET is not set. Using an ephemeral secret; tokens will not "
+          "survive a restart. Set AUTH_SECRET in .env for production.", flush=True)
+
+# CORS: same-origin is always allowed. Extra origins must be explicitly listed.
+ALLOWED_ORIGINS = {
+    o.strip().rstrip("/")
+    for o in os.environ.get("ALLOWED_ORIGINS", "").split(",")
+    if o.strip()
+}
+ALLOW_FILE_ORIGIN = os.environ.get("ALLOW_FILE_ORIGIN", "false").lower() == "true"
 
 # In-memory OTP storage
-# email -> { "hash": str, "salt": str, "expires_at": float, "attempts": int, "last_sent": float, "verified": bool, "verification_token": str }
+# email -> { "hash": str, "salt": str, "expires_at": float, "attempts": int, "last_sent": float, "verified": bool, "verification_token": str, "verified_at": float }
 OTP_STORE = {}
+OTP_LOCK = threading.RLock()
+
+# Brute-force protection: key -> {"count": int, "first": float, "last": float}
+LOGIN_ATTEMPTS = {}
+OTP_REQUEST_ATTEMPTS = {}
+RATE_LOCK = threading.Lock()
+LOGIN_WINDOW_SECONDS = 900
+LOGIN_MAX_ATTEMPTS = 10
+OTP_IP_WINDOW_SECONDS = 3600
+OTP_IP_MAX_REQUESTS = 20
 
 
 def hash_password(password, salt=None):
+    """PBKDF2-HMAC-SHA256 password hashing (salted, slow, constant-time verify)."""
     if not salt:
         salt = secrets.token_hex(16)
-    hashed = hashlib.sha256(f"{password}:{salt}".encode()).hexdigest()
-    return f"{salt}${hashed}"
+    digest = hashlib.pbkdf2_hmac(
+        "sha256", str(password).encode("utf-8"), salt.encode("utf-8"), PBKDF2_ITERATIONS
+    )
+    return f"pbkdf2_sha256${PBKDF2_ITERATIONS}${salt}${digest.hex()}"
 
 
 def verify_password(password, stored_hash):
+    """Verify a password against PBKDF2, BCrypt (Java backend), or legacy salted SHA-256.
+
+    Plaintext comparison is intentionally NOT supported.
+    """
     if not stored_hash:
         return False
-    # 1. Plaintext direct match (for seeded or unhashed accounts)
-    if password == stored_hash:
-        return True
-    # 2. BCrypt hash support (Spring Boot compatibility)
-    if stored_hash.startswith("$2"):
+    stored = str(stored_hash)
+
+    # 1. PBKDF2-HMAC-SHA256 (current format)
+    if stored.startswith("pbkdf2_sha256$"):
         try:
-            import crypt
-            return crypt.checkpw(password.encode("utf-8"), stored_hash.encode("utf-8"))
+            _, iterations, salt, expected = stored.split("$", 3)
+            digest = hashlib.pbkdf2_hmac(
+                "sha256", str(password).encode("utf-8"), salt.encode("utf-8"), int(iterations)
+            )
+            return hmac.compare_digest(digest.hex(), expected)
         except Exception:
-            pass
-    # 3. Salted SHA-256 (format: salt$hash)
-    if "$" in stored_hash:
-        parts = stored_hash.split("$", 1)
-        if len(parts) == 2:
-            salt, hashed = parts
-            if salt:
-                return hashlib.sha256(f"{password}:{salt}".encode()).hexdigest() == hashed
+            return False
+
+    # 2. BCrypt hashes created by the Spring Boot backend
+    if stored.startswith(("$2a$", "$2b$", "$2y$")):
+        try:
+            import bcrypt  # optional dependency
+            return bcrypt.checkpw(str(password).encode("utf-8"), stored.encode("utf-8"))
+        except Exception:
+            return False
+
+    # 3. Legacy salted SHA-256 (format: salt$hash) - upgraded on next login
+    if "$" in stored:
+        try:
+            salt, expected = stored.split("$", 1)
+            if not salt or not expected:
+                return False
+            digest = hashlib.sha256(f"{password}:{salt}".encode("utf-8")).hexdigest()
+            return hmac.compare_digest(digest, expected)
+        except Exception:
+            return False
+
     return False
+
+
+def password_needs_rehash(stored_hash):
+    return not str(stored_hash or "").startswith("pbkdf2_sha256$")
+
+
+# ---------------- Bearer token (HMAC-SHA256 signed) ----------------
+def _b64url_encode(raw):
+    return base64.urlsafe_b64encode(raw).rstrip(b"=").decode("ascii")
+
+
+def _b64url_decode(text):
+    return base64.urlsafe_b64decode(text + "=" * (-len(text) % 4))
+
+
+def create_auth_token(student):
+    now = int(time.time())
+    payload = {
+        "sub": str(student.get("studentId") or student.get("_id") or ""),
+        "email": str(student.get("email") or "").lower(),
+        "iat": now,
+        "exp": now + AUTH_TOKEN_TTL_SECONDS,
+        "nonce": secrets.token_hex(8),
+    }
+    body = _b64url_encode(json.dumps(payload, separators=(",", ":")).encode("utf-8"))
+    signature = hmac.new(AUTH_SECRET.encode("utf-8"), body.encode("ascii"), hashlib.sha256).digest()
+    return f"{body}.{_b64url_encode(signature)}"
+
+
+def verify_auth_token(token):
+    """Return the token payload when the signature and expiry are valid, else None."""
+    try:
+        body, signature = str(token).split(".", 1)
+        expected = hmac.new(AUTH_SECRET.encode("utf-8"), body.encode("ascii"), hashlib.sha256).digest()
+        if not hmac.compare_digest(signature, _b64url_encode(expected)):
+            return None
+        payload = json.loads(_b64url_decode(body).decode("utf-8"))
+        if not isinstance(payload, dict):
+            return None
+        if int(payload.get("exp", 0)) < int(time.time()):
+            return None
+        if not payload.get("sub"):
+            return None
+        return payload
+    except Exception:
+        return None
+
+
+# ---------------- Rate limiting helpers ----------------
+def _prune_rate_map(store, window, now):
+    for key in [k for k, v in store.items() if now - v.get("first", 0) > window]:
+        store.pop(key, None)
+
+
+def rate_limit_allow(store, key, window, max_attempts):
+    now = time.time()
+    with RATE_LOCK:
+        _prune_rate_map(store, window, now)
+        rec = store.get(key)
+        if rec and now - rec.get("first", 0) <= window:
+            if rec.get("count", 0) >= max_attempts:
+                return False
+        else:
+            store[key] = {"count": 0, "first": now}
+    return True
+
+
+def rate_limit_hit(store, key, window):
+    now = time.time()
+    with RATE_LOCK:
+        rec = store.get(key)
+        if not rec or now - rec.get("first", 0) > window:
+            store[key] = {"count": 1, "first": now}
+        else:
+            rec["count"] = rec.get("count", 0) + 1
+
+
+def rate_limit_clear(store, key):
+    with RATE_LOCK:
+        store.pop(key, None)
+
+
+def purge_expired_otp_entries():
+    now = time.time()
+    with OTP_LOCK:
+        for email in list(OTP_STORE.keys()):
+            rec = OTP_STORE[email]
+            if rec.get("verified"):
+                if now > rec.get("verified_at", 0) + VERIFICATION_TOKEN_TTL:
+                    OTP_STORE.pop(email, None)
+            elif now > rec.get("expires_at", 0) + 3600:
+                OTP_STORE.pop(email, None)
+
+
+# ---------------- Input validation helpers ----------------
+def clean_text(value, max_length=500, default=""):
+    """Normalize untrusted text: strip control chars, trim, and cap length."""
+    if value is None:
+        return default
+    text = str(value)
+    text = "".join(ch for ch in text if ch == "\n" or ch == "\t" or ord(ch) >= 32)
+    text = text.strip()
+    if not text:
+        return default
+    return text[:max_length]
+
+
+def safe_http_url(value, default=""):
+    """Only allow absolute http(s) image URLs (blocks javascript:/data: markup injection)."""
+    text = clean_text(value, max_length=2000)
+    if not text:
+        return default
+    try:
+        parsed = urllib.parse.urlparse(text)
+        if parsed.scheme.lower() in ("http", "https") and parsed.netloc:
+            return text
+    except Exception:
+        pass
+    return default
+
+
+def is_valid_phone(phone):
+    """Validate phone string (6-30 allowed chars and at least 7 digits)."""
+    text = clean_text(phone, max_length=30)
+    if not text or not re.match(r"^[0-9+()\-\s]{6,30}$", text):
+        return False
+    digits = re.sub(r"\D", "", text)
+    return 7 <= len(digits) <= 15
 
 
 # In-memory datasets (also used to seed MongoDB if empty)
@@ -83,7 +285,8 @@ MEM_STUDENTS = [
         "studentId": "25Z295",
         "name": "Sharvesh Mahi",
         "email": "25z295@psgitech.ac.in",
-        "passwordHash": hash_password("sharveshmahi"),
+        "phone": "+91 98400 11295",
+        "passwordHash": hash_password(DEMO_STUDENT_PASSWORD or secrets.token_urlsafe(32)),
         "department": "Computer Science & Engineering",
         "yearOfStudy": "1st Year",
         "dormLocation": "PSG iTech Campus Hostel Block A",
@@ -97,7 +300,8 @@ MEM_STUDENTS = [
         "studentId": "715521104001",
         "name": "Karthik Raja",
         "email": "karthik.21cs@psgitech.ac.in",
-        "passwordHash": hash_password("PSGTech@2026"),
+        "phone": "+91 98400 22001",
+        "passwordHash": hash_password(DEMO_STUDENT_PASSWORD or secrets.token_urlsafe(32)),
         "department": "Computer Science & Engineering",
         "yearOfStudy": "Junior",
         "dormLocation": "PSG iTech Boys Hostel",
@@ -111,7 +315,8 @@ MEM_STUDENTS = [
         "studentId": "715521104002",
         "name": "Divya M.",
         "email": "divya.21ec@psgitech.ac.in",
-        "passwordHash": hash_password("PSGTech@2026"),
+        "phone": "+91 98400 33002",
+        "passwordHash": hash_password(DEMO_STUDENT_PASSWORD or secrets.token_urlsafe(32)),
         "department": "Electronics & Communication Engineering",
         "yearOfStudy": "Sophomore",
         "dormLocation": "PSG iTech Girls Hostel",
@@ -246,6 +451,9 @@ MEM_ITEMS = [
 ]
 
 MEM_LOANS = []
+MEM_MESSAGES = {}
+DATA_LOCK = threading.RLock()
+AGREED_LOAN_STATUSES = {"ACCEPTED", "ACTIVE", "LENT OUT"}
 
 # Try importing pymongo; fallback to in-memory store if not installed
 try:
@@ -258,13 +466,40 @@ try:
     HAS_MONGO = True
     print(f"[*] Successfully connected to MongoDB at {mongo_uri} ({db_name})")
 
-    # Seed initial demo members only if they do not already exist in database (preserves any user edits)
-    for student in MEM_STUDENTS:
-        try:
-            if not db.students.find_one({"email": student["email"]}):
-                db.students.insert_one(dict(student))
-        except Exception:
-            pass
+    # Seed initial demo members only when explicitly enabled with a password.
+    if SEED_DEMO_DATA and DEMO_STUDENT_PASSWORD:
+        for student in MEM_STUDENTS:
+            try:
+                if not db.students.find_one({"email": student["email"]}):
+                    db.students.insert_one(dict(student))
+            except Exception:
+                pass
+        print("[*] Demo student accounts seeded (SEED_DEMO_DATA=true).", flush=True)
+    else:
+        # Never expose in-memory demo accounts with known/random credentials.
+        MEM_STUDENTS.clear()
+
+    # Migrate legacy plaintext password values to PBKDF2 on first run.
+    try:
+        for doc in db.students.find({}, {"passwordHash": 1, "password": 1}):
+            stored = doc.get("passwordHash") or doc.get("password")
+            if not stored:
+                continue
+            stored = str(stored)
+            looks_hashed = (
+                stored.startswith("pbkdf2_sha256$")
+                or stored.startswith("$2")
+                or "$" in stored
+            )
+            if not looks_hashed:
+                db.students.update_one(
+                    {"_id": doc["_id"]},
+                    {"$set": {"passwordHash": hash_password(stored)},
+                     "$unset": {"password": ""}},
+                )
+                print(f"[*] Migrated legacy plaintext password for {doc.get('_id')}", flush=True)
+    except Exception as migration_error:
+        print(f"[!] Password migration notice: {migration_error}", flush=True)
 
     # Seed initial items if database collection is empty
     if db.items.count_documents({}) == 0:
@@ -277,6 +512,117 @@ try:
 except Exception as e:
     HAS_MONGO = False
     print(f"[!] MongoDB not reachable via pymongo ({e}). Running with in-memory fallback store.")
+    if not (SEED_DEMO_DATA and DEMO_STUDENT_PASSWORD):
+        MEM_STUDENTS.clear()
+
+
+def find_student_record(identifier):
+    """Find a student record by studentId, email, or _id; never return password fields."""
+    ident = str(identifier or "").strip()
+    if not ident:
+        return None
+    doc = None
+    if HAS_MONGO:
+        doc = db.students.find_one({
+            "$or": [
+                {"studentId": {"$regex": f"^{re.escape(ident)}$", "$options": "i"}},
+                {"email": {"$regex": f"^{re.escape(ident)}$", "$options": "i"}},
+                {"_id": ident}
+            ]
+        })
+    else:
+        ident_lower = ident.lower()
+        with DATA_LOCK:
+            for s in MEM_STUDENTS:
+                if (str(s.get("studentId", "")).lower() == ident_lower
+                        or str(s.get("email", "")).lower() == ident_lower
+                        or str(s.get("_id", "")).lower() == ident_lower):
+                    doc = dict(s)
+                    break
+    if not doc:
+        return None
+    clean = dict(doc)
+    clean["id"] = str(clean.get("_id", clean.get("studentId", "")))
+    clean.pop("passwordHash", None)
+    clean.pop("password", None)
+    clean.pop("_id", None)
+    return clean
+
+
+def find_loan_record(loan_id):
+    """Look up a loan document by _id or id."""
+    lid = str(loan_id or "").strip()
+    if not lid:
+        return None
+    if HAS_MONGO:
+        doc = db.loans.find_one({"$or": [{"_id": lid}, {"id": lid}]})
+        return dict(doc) if doc else None
+    with DATA_LOCK:
+        for l in MEM_LOANS:
+            if l.get("id") == lid or l.get("_id") == lid:
+                return dict(l)
+    return None
+
+
+def enrich_loan_for_viewer(loan_doc, viewer_role=None):
+    """Normalize loan output and attach peer phone only after both parties agree."""
+    d = dict(loan_doc)
+    d["id"] = str(d.get("_id", d.get("id", "")))
+    d.pop("_id", None)
+    status = str(d.get("status", "PENDING")).upper()
+    agreed = status in AGREED_LOAN_STATUSES
+    d["status"] = status
+    d["chatUnlocked"] = agreed
+
+    if agreed:
+        lender_doc = find_student_record(d.get("lenderId") or d.get("lenderEmail"))
+        borrower_doc = find_student_record(d.get("borrowerId") or d.get("borrowerEmail"))
+        lender_phone = (lender_doc.get("phone") if lender_doc else "") or d.get("lenderPhone", "")
+        borrower_phone = (borrower_doc.get("phone") if borrower_doc else "") or d.get("borrowerPhone", "")
+        d["lenderPhone"] = lender_phone
+        d["borrowerPhone"] = borrower_phone
+        if viewer_role == "borrower":
+            d["peerPhone"] = lender_phone
+            d["peerName"] = d.get("lenderName", "")
+            d["peerDept"] = d.get("lenderDept", "")
+        elif viewer_role == "lender":
+            d["peerPhone"] = borrower_phone
+            d["peerName"] = d.get("borrowerName", "")
+            d["peerDept"] = d.get("borrowerDept", "")
+    else:
+        d["lenderPhone"] = ""
+        d["borrowerPhone"] = ""
+        d["peerPhone"] = ""
+    return d
+
+
+def get_loan_messages(loan_id):
+    """Fetch ordered chat messages for an agreed loan."""
+    lid = str(loan_id or "").strip()
+    if HAS_MONGO:
+        docs = list(db.messages.find({"loanId": lid}).sort("createdAt", 1))
+        msgs = []
+        for m in docs:
+            item = dict(m)
+            item["id"] = str(item.get("_id", item.get("id", "")))
+            item.pop("_id", None)
+            msgs.append(item)
+        return msgs
+    with DATA_LOCK:
+        return [dict(m) for m in MEM_MESSAGES.get(lid, [])]
+
+
+def append_loan_message(loan_id, msg_doc):
+    """Persist a chat message for an agreed loan."""
+    lid = str(loan_id or "").strip()
+    stored = dict(msg_doc)
+    if HAS_MONGO:
+        db.messages.insert_one(dict(stored))
+        stored.pop("_id", None)
+    else:
+        with DATA_LOCK:
+            MEM_MESSAGES.setdefault(lid, []).append(stored)
+    return stored
 
 
 def validate_psgitech_email(raw_email):
@@ -294,15 +640,11 @@ def send_otp_email(to_email, otp):
     smtp_user = os.environ.get("SPRING_MAIL_USERNAME", os.environ.get("SMTP_USER", ""))
     smtp_pass = os.environ.get("SPRING_MAIL_PASSWORD", os.environ.get("SMTP_PASS", ""))
 
-    print("\n" + "=" * 65)
-    print(f" [PSG iTech College OTP Authentication]")
-    print(f" Recipient: {to_email}")
-    print(f" OTP Code:  {otp}  (Valid for 5 minutes • Single Use)")
-    print("=" * 65 + "\n", flush=True)
-
     if smtp_user and smtp_pass:
         try:
-            sender_email = os.environ.get("SMTP_FROM", os.environ.get("SENDER_EMAIL", "prasathsri2008@gmail.com"))
+            sender_email = os.environ.get(
+                "SMTP_FROM", os.environ.get("SENDER_EMAIL", smtp_user or f"no-reply@{COLLEGE_DOMAIN}")
+            )
             msg = MIMEMultipart("alternative")
             msg["Subject"] = f"Your PSG iTech Campus Lend Verification Code: {otp}"
             msg["From"] = f"PSG iTech Campus Lend <{sender_email}>"
@@ -331,15 +673,61 @@ def send_otp_email(to_email, otp):
                 server.login(smtp_user, smtp_pass)
                 server.sendmail(sender_email, to_email, msg.as_string())
             print(f"[*] OTP email dispatched via SMTP to {to_email}", flush=True)
+            return True
         except Exception as e:
-            print(f"[!] SMTP dispatch notice: {e}. Console OTP available for development.", flush=True)
+            print(f"[!] SMTP dispatch failed: {e}", flush=True)
+            return False
+
+    # Development fallback only: never log OTP codes when email delivery is configured.
+    print("\n" + "=" * 65, flush=True)
+    print(" [PSG iTech College OTP - DEVELOPMENT FALLBACK]", flush=True)
+    print(f" Recipient: {to_email}", flush=True)
+    print(f" OTP Code:  {otp}  (Valid for 5 minutes, single use)", flush=True)
+    print(" SMTP is not configured; this code is printed to the server console only.", flush=True)
+    print("=" * 65 + "\n", flush=True)
     return True
 
 
 
 
 
+class RequestTooLarge(Exception):
+    pass
+
+
 class CampusLendAPIHandler(BaseHTTPRequestHandler):
+    timeout = 30
+    server_version = "CampusLend"
+    sys_version = ""
+
+    # ---- Security headers & CORS ----
+    def _cors_origin(self):
+        origin = (self.headers.get("Origin") or "").strip()
+        if not origin:
+            return None
+        origin = origin.rstrip("/")
+        host = (self.headers.get("Host") or "").strip().lower()
+        if host and origin.lower() in (f"http://{host}", f"https://{host}"):
+            return origin
+        if origin in ALLOWED_ORIGINS:
+            return origin
+        if origin == "null" and ALLOW_FILE_ORIGIN:
+            return "null"
+        return None
+
+    def _send_security_headers(self):
+        self.send_header("X-Content-Type-Options", "nosniff")
+        self.send_header("X-Frame-Options", "DENY")
+        self.send_header("Referrer-Policy", "no-referrer")
+        self.send_header("Permissions-Policy", "geolocation=(), microphone=(), camera=()")
+        self.send_header("Content-Security-Policy", SECURITY_CSP)
+        origin = self._cors_origin()
+        if origin:
+            self.send_header("Access-Control-Allow-Origin", origin)
+            self.send_header("Vary", "Origin")
+            self.send_header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD")
+            self.send_header("Access-Control-Allow-Headers", "Authorization, Content-Type, Accept")
+            self.send_header("Access-Control-Max-Age", "600")
 
     # Send responses with proper HTTP framing and CORS headers
     def _send_json(self, data, status=200):
@@ -348,9 +736,7 @@ class CampusLendAPIHandler(BaseHTTPRequestHandler):
             self.send_response(status)
             self.send_header("Content-Type", "application/json; charset=utf-8")
             self.send_header("Content-Length", str(len(payload)))
-            self.send_header("Access-Control-Allow-Origin", "*")
-            self.send_header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD")
-            self.send_header("Access-Control-Allow-Headers", "*")
+            self._send_security_headers()
             self.send_header("Connection", "close")
             self.end_headers()
             self.wfile.write(payload)
@@ -361,10 +747,8 @@ class CampusLendAPIHandler(BaseHTTPRequestHandler):
 
     def do_OPTIONS(self):
         try:
-            self.send_response(200)
-            self.send_header("Access-Control-Allow-Origin", "*")
-            self.send_header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD")
-            self.send_header("Access-Control-Allow-Headers", "*")
+            self.send_response(204)
+            self._send_security_headers()
             self.send_header("Content-Length", "0")
             self.send_header("Connection", "close")
             self.end_headers()
@@ -374,7 +758,8 @@ class CampusLendAPIHandler(BaseHTTPRequestHandler):
     def do_HEAD(self):
         try:
             self.send_response(200)
-            self.send_header("Access-Control-Allow-Origin", "*")
+            self._send_security_headers()
+            self.send_header("Content-Length", "0")
             self.send_header("Connection", "close")
             self.end_headers()
         except Exception:
@@ -382,13 +767,95 @@ class CampusLendAPIHandler(BaseHTTPRequestHandler):
 
     def _read_json(self):
         try:
-            content_length = int(self.headers.get("Content-Length", 0))
-            if content_length > 0:
-                body = self.rfile.read(content_length)
-                return json.loads(body.decode("utf-8"))
+            content_length = int(self.headers.get("Content-Length", 0) or 0)
+        except (TypeError, ValueError):
+            raise RequestTooLarge("Invalid Content-Length")
+        if content_length <= 0:
+            return {}
+        if content_length > MAX_BODY_BYTES:
+            raise RequestTooLarge("Request body too large")
+        try:
+            body = self.rfile.read(content_length)
+            data = json.loads(body.decode("utf-8"))
         except Exception as e:
             print(f"[!] Warning reading request JSON: {e}", flush=True)
-        return {}
+            return {}
+        return data if isinstance(data, dict) else {}
+
+    # ---- Authentication helpers ----
+    def _auth_payload(self):
+        header = self.headers.get("Authorization", "")
+        if not header.lower().startswith("bearer "):
+            return None
+        return verify_auth_token(header[7:].strip())
+
+    def _require_auth(self):
+        payload = self._auth_payload()
+        if not payload:
+            self._send_json({"error": "Authentication required. Please log in."}, 401)
+        return payload
+
+    @staticmethod
+    def _identity_matches(payload, identifier):
+        ident = str(identifier or "").strip().lower()
+        if not ident or not payload:
+            return False
+        candidates = {
+            str(payload.get("sub", "")).strip().lower(),
+            str(payload.get("email", "")).strip().lower(),
+        }
+        candidates.discard("")
+        return ident in candidates
+
+    def _loan_viewer_role(self, auth, loan_doc):
+        """Return 'borrower', 'lender', or None depending on authenticated party."""
+        if not auth or not loan_doc:
+            return None
+        if self._identity_matches(auth, loan_doc.get("borrowerId")) or self._identity_matches(auth, loan_doc.get("borrowerEmail")):
+            return "borrower"
+        if self._identity_matches(auth, loan_doc.get("lenderId")) or self._identity_matches(auth, loan_doc.get("lenderEmail")):
+            return "lender"
+        return None
+
+    def _authorize_agreed_loan_chat(self, auth, loan_id):
+        """Load loan, verify caller is a party, and ensure both parties agreed."""
+        loan_doc = find_loan_record(loan_id)
+        if not loan_doc:
+            self._send_json({"error": "Loan not found."}, 404)
+            return None, None
+        role = self._loan_viewer_role(auth, loan_doc)
+        if not role:
+            self._send_json({"error": "You are not allowed to access this conversation."}, 403)
+            return None, None
+        if str(loan_doc.get("status", "")).upper() not in AGREED_LOAN_STATUSES:
+            self._send_json({"error": "Chat and calling unlock only after both parties agree on the request."}, 403)
+            return None, None
+        return loan_doc, role
+
+    def _client_ip(self):
+        return self.client_address[0] if self.client_address else "unknown"
+
+    # ---- Static file allowlist (never serves dotfiles / source / configs) ----
+    def _resolve_static(self, path):
+        clean_path = urllib.parse.unquote(path).lstrip("/") or "index.html"
+        parts = [p for p in clean_path.replace("\\", "/").split("/") if p not in ("", ".")]
+        if any(p == ".." or p.startswith(".") for p in parts):
+            return None
+        if len(parts) == 1 and parts[0] in STATIC_ALLOWLIST:
+            candidate = parts[0]
+        elif parts and parts[0] in STATIC_DIRS and len(parts) >= 2:
+            candidate = os.path.join(*parts)
+        else:
+            candidate = "index.html"  # SPA fallback (always a fixed, safe file)
+        file_path = os.path.abspath(os.path.join(STATIC_DIR, candidate))
+        try:
+            if os.path.commonpath([STATIC_DIR, file_path]) != STATIC_DIR:
+                return os.path.join(STATIC_DIR, "index.html")
+        except ValueError:
+            return os.path.join(STATIC_DIR, "index.html")
+        if not os.path.isfile(file_path):
+            return os.path.join(STATIC_DIR, "index.html")
+        return file_path
 
     # ================= GET ENDPOINTS =================
     def do_GET(self):
@@ -396,26 +863,21 @@ class CampusLendAPIHandler(BaseHTTPRequestHandler):
             self._handle_get()
         except Exception as e:
             print(f"[!] Unhandled error in GET {self.path}: {e}", flush=True)
-            self._send_json({"error": f"Server error: {str(e)}"}, 500)
+            self._send_json({"error": "Internal server error"}, 500)
 
     def _handle_get(self):
         parsed = urllib.parse.urlparse(self.path)
         path = parsed.path
         params = urllib.parse.parse_qs(parsed.query)
 
-        # Serve static web frontend files (index.html, translations.js, assets)
+        # Serve static web frontend files (strict allowlist: index.html, translations.js, assets/)
         if not path.startswith("/api"):
-            clean_path = urllib.parse.unquote(path).lstrip("/") or "index.html"
-            file_path = os.path.abspath(os.path.join(STATIC_DIR, clean_path))
-            try:
-                is_safe = os.path.commonpath([STATIC_DIR, file_path]) == STATIC_DIR
-            except ValueError:
-                is_safe = False
+            file_path = self._resolve_static(path)
+            if not file_path:
+                self._send_json({"error": "Not found"}, 404)
+                return
 
-            if not (is_safe and os.path.exists(file_path) and os.path.isfile(file_path)):
-                file_path = os.path.join(STATIC_DIR, "index.html")
-
-            if os.path.exists(file_path) and os.path.isfile(file_path):
+            if os.path.isfile(file_path):
                 ext = os.path.splitext(file_path)[1].lower()
                 mime = {
                     ".html": "text/html; charset=utf-8",
@@ -433,7 +895,7 @@ class CampusLendAPIHandler(BaseHTTPRequestHandler):
                     self.send_response(200)
                     self.send_header("Content-Type", mime)
                     self.send_header("Content-Length", str(file_size))
-                    self.send_header("Access-Control-Allow-Origin", "*")
+                    self._send_security_headers()
                     self.send_header("Connection", "close")
                     self.end_headers()
                     with open(file_path, "rb") as f:
@@ -494,9 +956,15 @@ class CampusLendAPIHandler(BaseHTTPRequestHandler):
             self._send_json({"error": "Item not found"}, 404)
             return
 
-        # 3. GET /api/students/{id}
+        # 3. GET /api/students/{id} - authenticated, self only
         if path.startswith("/api/students/"):
             s_id = path.replace("/api/students/", "").strip()
+            auth = self._require_auth()
+            if not auth:
+                return
+            if not self._identity_matches(auth, s_id):
+                self._send_json({"error": "You are not allowed to view this profile."}, 403)
+                return
             if HAS_MONGO:
                 student = db.students.find_one({
                     "$or": [
@@ -528,9 +996,37 @@ class CampusLendAPIHandler(BaseHTTPRequestHandler):
             self._send_json({"error": "Student not found"}, 404)
             return
 
-        # 4. GET /api/loans/borrower/{id}
+        # 4. GET /api/loans/{loan_id}/messages - authenticated party only, agreed loans only
+        if path.startswith("/api/loans/") and path.endswith("/messages"):
+            loan_id = path[len("/api/loans/"):-len("/messages")].strip("/")
+            auth = self._require_auth()
+            if not auth:
+                return
+            loan_doc, role = self._authorize_agreed_loan_chat(auth, loan_id)
+            if not loan_doc:
+                return
+            enriched = enrich_loan_for_viewer(loan_doc, viewer_role=role)
+            self._send_json({
+                "loanId": enriched["id"],
+                "itemTitle": enriched.get("itemTitle", "Campus Item"),
+                "status": enriched["status"],
+                "chatUnlocked": True,
+                "peerName": enriched.get("peerName", ""),
+                "peerDept": enriched.get("peerDept", ""),
+                "peerPhone": enriched.get("peerPhone", ""),
+                "messages": get_loan_messages(enriched["id"])
+            })
+            return
+
+        # 5. GET /api/loans/borrower/{id} - authenticated, self only
         if path.startswith("/api/loans/borrower/"):
             b_id = path.replace("/api/loans/borrower/", "").strip()
+            auth = self._require_auth()
+            if not auth:
+                return
+            if not self._identity_matches(auth, b_id):
+                self._send_json({"error": "You are not allowed to view these loans."}, 403)
+                return
             loans = []
             if HAS_MONGO:
                 docs = list(db.loans.find({
@@ -539,19 +1035,22 @@ class CampusLendAPIHandler(BaseHTTPRequestHandler):
                         {"borrowerEmail": {"$regex": f"^{re.escape(b_id)}$", "$options": "i"}}
                     ]
                 }))
-                for d in docs:
-                    d["id"] = str(d.get("_id", d.get("id", "")))
-                    if "_id" in d:
-                        del d["_id"]
-                    loans.append(d)
             else:
-                loans = [l for l in MEM_LOANS if l.get("borrowerId", "").lower() == b_id.lower() or l.get("borrowerEmail", "").lower() == b_id.lower()]
+                with DATA_LOCK:
+                    docs = [l for l in MEM_LOANS if l.get("borrowerId", "").lower() == b_id.lower() or l.get("borrowerEmail", "").lower() == b_id.lower()]
+            loans = [enrich_loan_for_viewer(d, viewer_role="borrower") for d in docs]
             self._send_json(loans)
             return
 
-        # 5. GET /api/loans/lender/{id}
+        # 6. GET /api/loans/lender/{id} - authenticated, self only
         if path.startswith("/api/loans/lender/"):
             l_id = path.replace("/api/loans/lender/", "").strip()
+            auth = self._require_auth()
+            if not auth:
+                return
+            if not self._identity_matches(auth, l_id):
+                self._send_json({"error": "You are not allowed to view these loans."}, 403)
+                return
             loans = []
             if HAS_MONGO:
                 docs = list(db.loans.find({
@@ -560,13 +1059,10 @@ class CampusLendAPIHandler(BaseHTTPRequestHandler):
                         {"lenderEmail": {"$regex": f"^{re.escape(l_id)}$", "$options": "i"}}
                     ]
                 }))
-                for d in docs:
-                    d["id"] = str(d.get("_id", d.get("id", "")))
-                    if "_id" in d:
-                        del d["_id"]
-                    loans.append(d)
             else:
-                loans = [l for l in MEM_LOANS if l.get("lenderId", "").lower() == l_id.lower() or l.get("lenderEmail", "").lower() == l_id.lower()]
+                with DATA_LOCK:
+                    docs = [l for l in MEM_LOANS if l.get("lenderId", "").lower() == l_id.lower() or l.get("lenderEmail", "").lower() == l_id.lower()]
+            loans = [enrich_loan_for_viewer(d, viewer_role="lender") for d in docs]
             self._send_json(loans)
             return
 
@@ -576,9 +1072,11 @@ class CampusLendAPIHandler(BaseHTTPRequestHandler):
     def do_POST(self):
         try:
             self._handle_post()
+        except RequestTooLarge:
+            self._send_json({"error": "Request body is too large."}, 413)
         except Exception as e:
             print(f"[!] Unhandled error in POST {self.path}: {e}", flush=True)
-            self._send_json({"error": f"Server error: {str(e)}"}, 500)
+            self._send_json({"error": "Internal server error"}, 500)
 
     def _handle_post(self):
         parsed = urllib.parse.urlparse(self.path)
@@ -594,6 +1092,12 @@ class CampusLendAPIHandler(BaseHTTPRequestHandler):
 
             email = res
 
+            # Per-IP abuse protection (password/OTP email bombing)
+            if not rate_limit_allow(OTP_REQUEST_ATTEMPTS, self._client_ip(),
+                                    OTP_IP_WINDOW_SECONDS, OTP_IP_MAX_REQUESTS):
+                self._send_json({"error": "Too many OTP requests from this address. Please try again later."}, 429)
+                return
+
             # Duplicate check (case-insensitive)
             if HAS_MONGO:
                 if db.students.find_one({"email": {"$regex": f"^{re.escape(email)}$", "$options": "i"}}):
@@ -604,30 +1108,35 @@ class CampusLendAPIHandler(BaseHTTPRequestHandler):
                     self._send_json({"error": f"An account with {email} is already registered. Please log in."}, 400)
                     return
 
-            # Rate limiting / 60s cooldown check
+            purge_expired_otp_entries()
             now = time.time()
-            if email in OTP_STORE:
-                last_sent = OTP_STORE[email].get("last_sent", 0)
-                elapsed = now - last_sent
-                if elapsed < OTP_COOLDOWN_SECONDS:
-                    wait_time = int(OTP_COOLDOWN_SECONDS - elapsed)
-                    self._send_json({"error": f"Please wait {wait_time} seconds before requesting a new OTP."}, 400)
-                    return
+            with OTP_LOCK:
+                # Rate limiting / 60s cooldown check
+                if email in OTP_STORE:
+                    last_sent = OTP_STORE[email].get("last_sent", 0)
+                    elapsed = now - last_sent
+                    if elapsed < OTP_COOLDOWN_SECONDS:
+                        wait_time = int(OTP_COOLDOWN_SECONDS - elapsed)
+                        self._send_json({"error": f"Please wait {wait_time} seconds before requesting a new OTP."}, 400)
+                        return
 
-            # Generate random 6-digit OTP
-            otp_code = str(secrets.randbelow(900000) + 100000)
-            salt = secrets.token_hex(16)
-            otp_hash = hashlib.sha256(f"{otp_code}:{salt}".encode()).hexdigest()
+                # Generate random 6-digit OTP
+                otp_code = str(secrets.randbelow(900000) + 100000)
+                salt = secrets.token_hex(16)
+                otp_hash = hashlib.sha256(f"{otp_code}:{salt}".encode()).hexdigest()
 
-            OTP_STORE[email] = {
-                "hash": otp_hash,
-                "salt": salt,
-                "expires_at": now + OTP_EXPIRY_SECONDS,
-                "attempts": 0,
-                "last_sent": now,
-                "verified": False,
-                "verification_token": None
-            }
+                OTP_STORE[email] = {
+                    "hash": otp_hash,
+                    "salt": salt,
+                    "expires_at": now + OTP_EXPIRY_SECONDS,
+                    "attempts": 0,
+                    "last_sent": now,
+                    "verified": False,
+                    "verification_token": None,
+                    "verified_at": 0,
+                }
+
+            rate_limit_hit(OTP_REQUEST_ATTEMPTS, self._client_ip(), OTP_IP_WINDOW_SECONDS)
 
             # Dispatch email (or log to terminal)
             send_otp_email(email, otp_code)
@@ -653,50 +1162,58 @@ class CampusLendAPIHandler(BaseHTTPRequestHandler):
                 self._send_json({"error": "OTP must be exactly 6 digits."}, 400)
                 return
 
-            if email not in OTP_STORE:
-                self._send_json({"error": f"No active OTP request found for {email}. Please request an OTP first."}, 400)
-                return
-
-            record = OTP_STORE[email]
-
-            # Already verified check
-            if record.get("verified") and record.get("verification_token"):
-                self._send_json({
-                    "success": True,
-                    "verified": True,
-                    "email": email,
-                    "verificationToken": record["verification_token"],
-                    "message": "College email already verified."
-                })
-                return
-
-            # Max attempts check
-            if record.get("attempts", 0) >= OTP_MAX_ATTEMPTS:
-                self._send_json({"error": f"Maximum OTP verification attempts ({OTP_MAX_ATTEMPTS}) exceeded. Please request a new OTP."}, 400)
-                return
-
-            # Expiration check
-            if time.time() > record.get("expires_at", 0):
-                self._send_json({"error": "OTP has expired (valid for 5 minutes). Please request a new OTP."}, 400)
-                return
-
-            # Compare SHA-256 hashes
-            cand_hash = hashlib.sha256(f"{otp_code}:{record['salt']}".encode()).hexdigest()
-            if cand_hash != record.get("hash"):
-                record["attempts"] = record.get("attempts", 0) + 1
-                remaining = max(0, OTP_MAX_ATTEMPTS - record["attempts"])
-                if remaining == 0:
-                    self._send_json({"error": "Incorrect OTP. Maximum attempts reached. Please request a new OTP."}, 400)
+            purge_expired_otp_entries()
+            with OTP_LOCK:
+                record = OTP_STORE.get(email)
+                if not record:
+                    self._send_json({"error": f"No active OTP request found for {email}. Please request an OTP first."}, 400)
                     return
-                self._send_json({"error": f"Incorrect OTP. {remaining} attempt(s) remaining."}, 400)
-                return
 
-            # Verification successful (Single-use invalidation of OTP)
-            v_token = secrets.token_hex(24)
-            record["verified"] = True
-            record["verification_token"] = v_token
-            record["hash"] = None  # Invalidate OTP hash for single-use guarantee
-            record["attempts"] = 0
+                now = time.time()
+
+                # Already verified check (verification token itself expires)
+                if record.get("verified") and record.get("verification_token"):
+                    if now <= record.get("verified_at", 0) + VERIFICATION_TOKEN_TTL:
+                        self._send_json({
+                            "success": True,
+                            "verified": True,
+                            "email": email,
+                            "verificationToken": record["verification_token"],
+                            "message": "College email already verified."
+                        })
+                        return
+                    OTP_STORE.pop(email, None)
+                    self._send_json({"error": "Verification expired. Please request a new OTP."}, 400)
+                    return
+
+                # Max attempts check
+                if record.get("attempts", 0) >= OTP_MAX_ATTEMPTS:
+                    self._send_json({"error": f"Maximum OTP verification attempts ({OTP_MAX_ATTEMPTS}) exceeded. Please request a new OTP."}, 400)
+                    return
+
+                # Expiration check
+                if now > record.get("expires_at", 0):
+                    self._send_json({"error": "OTP has expired (valid for 5 minutes). Please request a new OTP."}, 400)
+                    return
+
+                # Compare SHA-256 hashes in constant time
+                cand_hash = hashlib.sha256(f"{otp_code}:{record['salt']}".encode()).hexdigest()
+                if record.get("hash") is None or not hmac.compare_digest(cand_hash, record.get("hash", "")):
+                    record["attempts"] = record.get("attempts", 0) + 1
+                    remaining = max(0, OTP_MAX_ATTEMPTS - record["attempts"])
+                    if remaining == 0:
+                        self._send_json({"error": "Incorrect OTP. Maximum attempts reached. Please request a new OTP."}, 400)
+                        return
+                    self._send_json({"error": f"Incorrect OTP. {remaining} attempt(s) remaining."}, 400)
+                    return
+
+                # Verification successful (Single-use invalidation of OTP)
+                v_token = secrets.token_hex(24)
+                record["verified"] = True
+                record["verification_token"] = v_token
+                record["verified_at"] = now
+                record["hash"] = None  # Invalidate OTP hash for single-use guarantee
+                record["attempts"] = 0
 
             print(f"[+] Successfully verified OTP for PSG iTech student: {email}", flush=True)
             self._send_json({
@@ -717,12 +1234,46 @@ class CampusLendAPIHandler(BaseHTTPRequestHandler):
             email = res
 
             v_token = str(body.get("verificationToken", "")).strip()
-            record = OTP_STORE.get(email)
-            if not record or not record.get("verified") or record.get("verification_token") != v_token:
-                self._send_json({"error": "Email verification required. Please verify your PSG iTech email with OTP first."}, 400)
+            purge_expired_otp_entries()
+            with OTP_LOCK:
+                record = OTP_STORE.get(email)
+                token_ok = bool(
+                    record
+                    and record.get("verified")
+                    and record.get("verification_token")
+                    and v_token
+                    and hmac.compare_digest(str(record.get("verification_token")), v_token)
+                    and time.time() <= record.get("verified_at", 0) + VERIFICATION_TOKEN_TTL
+                )
+            if not token_ok:
+                self._send_json({"error": "Email verification required or expired. Please verify your PSG iTech email with OTP again."}, 400)
                 return
 
-            student_id = str(body.get("studentId", "")).strip() or f"7155-{int(time.time() % 1000000)}"
+            student_id = clean_text(body.get("studentId"), max_length=40).upper()
+            if not student_id:
+                self._send_json({"error": "Student ID / Roll Number is required."}, 400)
+                return
+            if not re.match(r"^[A-Z0-9._-]{3,40}$", student_id):
+                self._send_json({"error": "Student ID may only contain letters, digits, dots, dashes and underscores."}, 400)
+                return
+
+            name = clean_text(body.get("name"), max_length=120)
+            if len(name) < 2:
+                self._send_json({"error": "Please enter a valid student name."}, 400)
+                return
+
+            phone = clean_text(body.get("phone"), max_length=30)
+            if not is_valid_phone(phone):
+                self._send_json({"error": "Please provide a valid phone number."}, 400)
+                return
+
+            raw_password = str(body.get("password", ""))
+            if len(raw_password) < 8:
+                self._send_json({"error": "Password must be at least 8 characters long."}, 400)
+                return
+            if len(raw_password) > 200:
+                self._send_json({"error": "Password is too long."}, 400)
+                return
 
             # Duplicate email or studentId check (case-insensitive)
             if HAS_MONGO:
@@ -739,18 +1290,18 @@ class CampusLendAPIHandler(BaseHTTPRequestHandler):
                     self._send_json({"error": f"An account with {email} or ID {student_id} is already registered. Please log in."}, 400)
                     return
 
-            raw_password = body.get("password", "PSGTech@2026")
             hashed_pwd = hash_password(raw_password)
 
             new_student = {
                 "_id": student_id,
                 "studentId": student_id,
-                "name": body.get("name", "PSG iTech Student"),
+                "name": name,
                 "email": email,
+                "phone": phone,
                 "passwordHash": hashed_pwd,
-                "department": body.get("department", "Computer Science & Engineering"),
-                "yearOfStudy": body.get("yearOfStudy", "1st Year"),
-                "dormLocation": body.get("dormLocation", "Campus Hostel Block A"),
+                "department": clean_text(body.get("department"), max_length=120, default="Computer Science & Engineering"),
+                "yearOfStudy": clean_text(body.get("yearOfStudy"), max_length=40, default="1st Year"),
+                "dormLocation": clean_text(body.get("dormLocation"), max_length=160, default="Campus Hostel Block A"),
                 "campus": "PSG Institute of Technology and Applied Research",
                 "role": "STUDENT",
                 "trustScore": 100,
@@ -763,16 +1314,17 @@ class CampusLendAPIHandler(BaseHTTPRequestHandler):
                     if "_id" in new_student:
                         del new_student["_id"]
                 except Exception as e:
-                    self._send_json({"error": f"Database error during registration: {str(e)}"}, 500)
+                    print(f"[!] Registration database error: {e}", flush=True)
+                    self._send_json({"error": "Registration failed. Please try again later."}, 500)
                     return
             else:
                 MEM_STUDENTS.append(new_student)
 
             # Purge single-use verification token
-            if email in OTP_STORE:
-                del OTP_STORE[email]
+            with OTP_LOCK:
+                OTP_STORE.pop(email, None)
 
-            token = f"jwt-psgitech-{int(time.time())}_{student_id}"
+            token = create_auth_token({**new_student, "studentId": student_id, "email": email})
             clean_student = {k: v for k, v in new_student.items() if k != "passwordHash"}
 
             print(f"[+] Successfully registered new PSG iTech student: {new_student['name']} ({email})", flush=True)
@@ -786,11 +1338,17 @@ class CampusLendAPIHandler(BaseHTTPRequestHandler):
 
         # 4. POST /api/auth/login
         if path == "/api/auth/login":
-            email_or_id = str(body.get("email", "")).strip()
+            email_or_id = clean_text(body.get("email"), max_length=200)
             password = str(body.get("password", ""))
 
-            if not email_or_id:
-                self._send_json({"error": "College email or Student ID cannot be empty."}, 400)
+            if not email_or_id or not password:
+                self._send_json({"error": "College email/Student ID and password are required."}, 400)
+                return
+
+            # Brute-force protection per client address
+            client_ip = self._client_ip()
+            if not rate_limit_allow(LOGIN_ATTEMPTS, client_ip, LOGIN_WINDOW_SECONDS, LOGIN_MAX_ATTEMPTS):
+                self._send_json({"error": "Too many failed login attempts. Please try again in 15 minutes."}, 429)
                 return
 
             if "@" in email_or_id:
@@ -828,15 +1386,29 @@ class CampusLendAPIHandler(BaseHTTPRequestHandler):
                         student = dict(s)
                         break
 
-            if not student:
-                self._send_json({"error": f"No registered student found with: {email_or_id}. Please register first."}, 404)
+            # Always run a password check to reduce timing/user-enumeration signals
+            pwd_hash = student.get("passwordHash") or student.get("password") if student else None
+            password_ok = verify_password(password, pwd_hash) if pwd_hash else verify_password(
+                password, "pbkdf2_sha256$260000$0000000000000000$" + "0" * 64
+            )
+
+            if not student or not password_ok:
+                rate_limit_hit(LOGIN_ATTEMPTS, client_ip, LOGIN_WINDOW_SECONDS)
+                self._send_json({"error": "Invalid credentials. Please check your email/ID and password."}, 401)
                 return
 
-            # Secure password verification (supports plaintext, salted sha256, and bcrypt)
-            pwd_hash = student.get("passwordHash") or student.get("password")
-            if not pwd_hash or not verify_password(password, pwd_hash):
-                self._send_json({"error": "Invalid email/ID or password."}, 400)
-                return
+            # Upgrade legacy hashes to PBKDF2 on successful login
+            if password_needs_rehash(pwd_hash):
+                try:
+                    new_hash = hash_password(password)
+                    if HAS_MONGO and student.get("_id") is not None:
+                        db.students.update_one({"_id": student["_id"]}, {"$set": {"passwordHash": new_hash}})
+                    else:
+                        student["passwordHash"] = new_hash
+                except Exception as rehash_error:
+                    print(f"[!] Password rehash notice: {rehash_error}", flush=True)
+
+            rate_limit_clear(LOGIN_ATTEMPTS, client_ip)
 
             student_copy = dict(student)
             student_copy["id"] = str(student_copy.get("_id", student_copy.get("studentId", "")))
@@ -847,7 +1419,7 @@ class CampusLendAPIHandler(BaseHTTPRequestHandler):
             if "_id" in student_copy:
                 del student_copy["_id"]
 
-            token = f"jwt-psgitech-{int(time.time())}_{student_copy.get('studentId')}"
+            token = create_auth_token(student)
             print(f"[+] Successful login for PSG iTech student: {student_copy.get('name')} ({student_copy.get('email')})", flush=True)
             self._send_json({
                 "token": token,
@@ -857,49 +1429,74 @@ class CampusLendAPIHandler(BaseHTTPRequestHandler):
             })
             return
 
-        # 5. POST /api/items (Add listing with Photo)
+        # 5. POST /api/items (Add listing with Photo) - authenticated
         if path == "/api/items" or path == "/api/items/":
-            item_id = f"item-{int(time.time() * 1000)}"
-            owner_id = str(body.get("ownerId", "25Z295")).strip()
-            owner_name = body.get("ownerName")
-            owner_dept = body.get("ownerDept")
+            auth = self._require_auth()
+            if not auth:
+                return
 
-            # Look up owner in database if not passed
+            item_id = f"item-{int(time.time() * 1000)}"
+            owner_id = clean_text(auth.get("sub"), max_length=40)
+            owner_name = clean_text(auth.get("email"), max_length=200)
+            owner_dept = ""
+
+            # Resolve the authenticated owner's display name/department server-side
+            if HAS_MONGO:
+                student_doc = db.students.find_one({"$or": [{"studentId": owner_id}, {"email": owner_id}]})
+                if student_doc:
+                    owner_name = clean_text(student_doc.get("name"), max_length=120, default=owner_name)
+                    owner_dept = clean_text(student_doc.get("department"), max_length=120)
+            else:
+                for s in MEM_STUDENTS:
+                    if s.get("studentId") == owner_id or s.get("email") == owner_id:
+                        owner_name = clean_text(s.get("name"), max_length=120, default=owner_name)
+                        owner_dept = clean_text(s.get("department"), max_length=120)
+                        break
             if not owner_name:
-                if HAS_MONGO:
-                    student_doc = db.students.find_one({"$or": [{"studentId": owner_id}, {"email": owner_id}]})
-                    if student_doc:
-                        owner_name = student_doc.get("name", "Sharvesh Mahi")
-                        owner_dept = student_doc.get("department", "Computer Science & Engineering")
-                else:
-                    for s in MEM_STUDENTS:
-                        if s.get("studentId") == owner_id or s.get("email") == owner_id:
-                            owner_name = s.get("name", "Sharvesh Mahi")
-                            owner_dept = s.get("department", "Computer Science & Engineering")
-                            break
-            if not owner_name:
-                owner_name = "Sharvesh Mahi"
+                owner_name = "PSG iTech Student"
             if not owner_dept:
-                owner_dept = "1st Year • Computer Science"
+                owner_dept = "PSG iTech"
+
+            title = clean_text(body.get("title"), max_length=160)
+            if len(title) < 3:
+                self._send_json({"error": "Item title must be at least 3 characters."}, 400)
+                return
+            description = clean_text(body.get("description"), max_length=2000)
+            category = clean_text(body.get("category"), max_length=40, default="others").lower()
+            if not re.match(r"^[a-z0-9_-]{1,40}$", category):
+                category = "others"
+            location = clean_text(body.get("location"), max_length=160, default="PSG iTech Campus")
+            condition = clean_text(body.get("condition"), max_length=40, default="Like New")
+            try:
+                daily_price = float(body.get("dailyPrice", 50.0))
+                deposit = float(body.get("securityDeposit", 200.0))
+            except (TypeError, ValueError):
+                self._send_json({"error": "Price and deposit must be valid numbers."}, 400)
+                return
+            if not (0 <= daily_price <= 100000) or not (0 <= deposit <= 1000000):
+                self._send_json({"error": "Price or deposit is out of the allowed range."}, 400)
+                return
+            default_image = "https://lh3.googleusercontent.com/aida-public/AB6AXuB1HLeRSpdgX3LeoQ9mKLRt0X8SHRfjH-LLTBXn9iGVr2G2W-sbi6wLcDAmJHmAkp9a45-S86r-gBeooxf-ZHCzhnScTw_fb64wyFXHeYIB6Y2rhFj9Xwq8H3Jyo1MiRTL6sYNsNbbOLooGqLV8-tsClXqov9PCWGaswUaD8ATn6-PiMI7rw0UjAlEze1KZU8_A4u1qY4KyORJbuyQs7NNmzKB8rgmOz4INaa5dseI2"
+            image_url = safe_http_url(body.get("imageUrl"), default=default_image)
 
             new_item = {
                 "_id": item_id,
                 "id": item_id,
-                "title": body.get("title", "Untitled Item"),
-                "category": body.get("category", "others").lower(),
-                "categoryName": body.get("category", "General").capitalize(),
-                "dailyPrice": float(body.get("dailyPrice", 50.00)),
-                "securityDeposit": float(body.get("securityDeposit", 200.00)),
-                "condition": body.get("condition", "Like New"),
-                "location": body.get("location", "PSG iTech Campus"),
+                "title": title,
+                "category": category,
+                "categoryName": clean_text(body.get("categoryName"), max_length=60, default=category.capitalize()),
+                "dailyPrice": daily_price,
+                "securityDeposit": deposit,
+                "condition": condition,
+                "location": location,
                 "campus": "PSG Institute of Technology and Applied Research",
                 "ownerId": owner_id,
                 "ownerName": owner_name,
                 "ownerDept": owner_dept,
                 "ownerAvatar": "https://lh3.googleusercontent.com/aida-public/AB6AXuCHidFGGvejNyhkUBYrLtdf6YBBJH4cdUC8PrAvMSsLsYw29f3rxNOr1LXFSuNGwGsWjv-ou9bedavLx1oiQXsiW3MD674jEP9umUigltN6OXY-sEur0CQveiqITJGNH2LX-cl2jcU0Vef-R_KhMIEo1PwG_hbf0mrS88phMWaoVA6h74QfX_S0Km9Ne14pch4EEQ08E86vS_bWV-4UiNF6-5rhOjPAEsh2hEdwtOo1",
-                "imageUrl": body.get("imageUrl", "https://lh3.googleusercontent.com/aida-public/AB6AXuB1HLeRSpdgX3LeoQ9mKLRt0X8SHRfjH-LLTBXn9iGVr2G2W-sbi6wLcDAmJHmAkp9a45-S86r-gBeooxf-ZHCzhnScTw_fb64wyFXHeYIB6Y2rhFj9Xwq8H3Jyo1MiRTL6sYNsNbbOLooGqLV8-tsClXqov9PCWGaswUaD8ATn6-PiMI7rw0UjAlEze1KZU8_A4u1qY4KyORJbuyQs7NNmzKB8rgmOz4INaa5dseI2"),
+                "imageUrl": image_url,
                 "rating": "5.0 ★ (New)",
-                "description": body.get("description", ""),
+                "description": description,
                 "available": True,
                 "createdAt": time.time()
             }
@@ -915,48 +1512,106 @@ class CampusLendAPIHandler(BaseHTTPRequestHandler):
             self._send_json(new_item, 201)
             return
 
-        # 6. POST /api/loans/request
+        # 6. POST /api/loans/{loan_id}/messages - agreed loan parties only
+        if path.startswith("/api/loans/") and path.endswith("/messages"):
+            loan_id = path[len("/api/loans/"):-len("/messages")].strip("/")
+            auth = self._require_auth()
+            if not auth:
+                return
+            loan_doc, role = self._authorize_agreed_loan_chat(auth, loan_id)
+            if not loan_doc:
+                return
+
+            text = clean_text(body.get("text"), max_length=1000)
+            if not text:
+                self._send_json({"error": "Message text cannot be empty."}, 400)
+                return
+
+            sender_id = clean_text(auth.get("sub"), max_length=40)
+            sender_doc = find_student_record(sender_id or auth.get("email"))
+            sender_name = clean_text(
+                (sender_doc.get("name") if sender_doc else None) or auth.get("email"),
+                max_length=120,
+                default="PSG iTech Student"
+            )
+            msg_id = f"msg-{int(time.time() * 1000)}-{secrets.token_hex(3)}"
+            msg_doc = {
+                "_id": msg_id,
+                "id": msg_id,
+                "loanId": str(loan_doc.get("_id", loan_doc.get("id", loan_id))),
+                "senderId": sender_id,
+                "senderEmail": clean_text(auth.get("email"), max_length=200),
+                "senderName": sender_name,
+                "senderRole": role,
+                "text": text,
+                "createdAt": time.time()
+            }
+            saved = append_loan_message(msg_doc["loanId"], msg_doc)
+            self._send_json(saved, 201)
+            return
+
+        # 7. POST /api/loans/request - authenticated; pricing/owner come from the item record
         if path == "/api/loans/request":
+            auth = self._require_auth()
+            if not auth:
+                return
+
             loan_id = f"loan-{int(time.time() * 1000)}"
-            item_id = body.get("itemId")
-            borrower_id = str(body.get("borrowerId", "25Z295")).strip()
-            borrower_name = body.get("borrowerName", "PSG iTech Student")
-            borrower_email = body.get("borrowerEmail", "")
-            days = int(body.get("borrowDays", 3))
+            borrower_id = clean_text(auth.get("sub"), max_length=40)
+            borrower_email = clean_text(auth.get("email"), max_length=200)
+            borrower_doc = find_student_record(borrower_id or borrower_email)
+            borrower_name = clean_text(borrower_doc.get("name") if borrower_doc else "", max_length=120, default="PSG iTech Student")
+            borrower_dept = clean_text(borrower_doc.get("department") if borrower_doc else "", max_length=120, default="Student Peer")
 
-            daily_price = float(body.get("dailyPrice", 50.00))
-            deposit = float(body.get("securityDeposit", 200.00))
-            lender_id = str(body.get("lenderId", "715521104001")).strip()
-            lender_name = body.get("lenderName", "PSG iTech Classmate")
-            lender_dept = body.get("lenderDept", "PSG iTech")
-            item_title = body.get("itemTitle", "Requested Item")
-            item_image = body.get("itemImage", "")
-            location = body.get("location", "PSG iTech Campus")
+            item_id = clean_text(body.get("itemId"), max_length=80)
+            if not item_id:
+                self._send_json({"error": "itemId is required."}, 400)
+                return
 
-            if item_id:
-                if HAS_MONGO:
-                    item_doc = db.items.find_one({"$or": [{"_id": item_id}, {"id": item_id}]})
-                    if item_doc:
-                        daily_price = float(item_doc.get("dailyPrice", daily_price))
-                        deposit = float(item_doc.get("securityDeposit", deposit))
-                        lender_id = str(item_doc.get("ownerId", lender_id))
-                        item_title = item_doc.get("title", item_title)
-                        item_image = item_doc.get("imageUrl", item_image)
-                        lender_name = item_doc.get("ownerName", lender_name)
-                        lender_dept = item_doc.get("ownerDept", lender_dept)
-                        location = item_doc.get("location", location)
-                else:
-                    for it in MEM_ITEMS:
-                        if it.get("id") == item_id or it.get("_id") == item_id:
-                            daily_price = float(it.get("dailyPrice", daily_price))
-                            deposit = float(it.get("securityDeposit", deposit))
-                            lender_id = str(it.get("ownerId", lender_id))
-                            item_title = it.get("title", item_title)
-                            item_image = it.get("imageUrl", item_image)
-                            lender_name = it.get("ownerName", lender_name)
-                            lender_dept = it.get("ownerDept", lender_dept)
-                            location = it.get("location", location)
-                            break
+            try:
+                days = int(body.get("borrowDays", 3))
+            except (TypeError, ValueError):
+                self._send_json({"error": "borrowDays must be a number."}, 400)
+                return
+            if days < 1 or days > 365:
+                self._send_json({"error": "Borrow duration must be between 1 and 365 days."}, 400)
+                return
+
+            # Resolve the item from the database / in-memory catalog. Never trust
+            # client-supplied prices, owner identity, or titles.
+            item_doc = None
+            if HAS_MONGO:
+                item_doc = db.items.find_one({"$or": [{"_id": item_id}, {"id": item_id}]})
+            else:
+                for it in MEM_ITEMS:
+                    if it.get("id") == item_id or it.get("_id") == item_id:
+                        item_doc = it
+                        break
+
+            if not item_doc:
+                self._send_json({"error": "Item not found."}, 404)
+                return
+
+            lender_id = str(item_doc.get("ownerId", "")).strip()
+            if lender_id and lender_id.lower() == borrower_id.lower():
+                self._send_json({"error": "You cannot borrow your own listing."}, 400)
+                return
+
+            lender_doc = find_student_record(lender_id or item_doc.get("ownerEmail"))
+            lender_email = clean_text((lender_doc.get("email") if lender_doc else None) or item_doc.get("ownerEmail"), max_length=200)
+
+            try:
+                daily_price = float(item_doc.get("dailyPrice", 0))
+                deposit = float(item_doc.get("securityDeposit", 0))
+            except (TypeError, ValueError):
+                self._send_json({"error": "Item pricing is invalid."}, 500)
+                return
+
+            item_title = clean_text(item_doc.get("title"), max_length=160, default="Requested Item")
+            item_image = safe_http_url(item_doc.get("imageUrl"), default="")
+            lender_name = clean_text(item_doc.get("ownerName"), max_length=120, default="PSG iTech Classmate")
+            lender_dept = clean_text(item_doc.get("ownerDept"), max_length=120, default="PSG iTech")
+            location = clean_text(item_doc.get("location"), max_length=160, default="PSG iTech Campus")
 
             new_loan = {
                 "_id": loan_id,
@@ -967,7 +1622,9 @@ class CampusLendAPIHandler(BaseHTTPRequestHandler):
                 "borrowerId": borrower_id,
                 "borrowerName": borrower_name,
                 "borrowerEmail": borrower_email,
+                "borrowerDept": borrower_dept,
                 "lenderId": lender_id,
+                "lenderEmail": lender_email,
                 "lenderName": lender_name,
                 "lenderDept": lender_dept,
                 "location": location,
@@ -976,6 +1633,7 @@ class CampusLendAPIHandler(BaseHTTPRequestHandler):
                 "totalFee": round(days * daily_price, 2),
                 "securityDeposit": deposit,
                 "status": "PENDING",
+                "chatUnlocked": False,
                 "createdAt": time.time()
             }
 
@@ -984,10 +1642,11 @@ class CampusLendAPIHandler(BaseHTTPRequestHandler):
                 if "_id" in new_loan:
                     del new_loan["_id"]
             else:
-                MEM_LOANS.append(new_loan)
+                with DATA_LOCK:
+                    MEM_LOANS.append(new_loan)
 
             print(f"[+] Created loan request: {loan_id} for item '{item_title}' by {borrower_name} ({borrower_id})", flush=True)
-            self._send_json(new_loan, 201)
+            self._send_json(enrich_loan_for_viewer(new_loan, viewer_role="borrower"), 201)
             return
 
         self._send_json({"error": "Route not found"}, 404)
@@ -996,9 +1655,11 @@ class CampusLendAPIHandler(BaseHTTPRequestHandler):
     def do_PUT(self):
         try:
             self._handle_put()
+        except RequestTooLarge:
+            self._send_json({"error": "Request body is too large."}, 413)
         except Exception as e:
             print(f"[!] Unhandled error in PUT {self.path}: {e}", flush=True)
-            self._send_json({"error": f"Server error: {str(e)}"}, 500)
+            self._send_json({"error": "Internal server error"}, 500)
 
     def _handle_put(self):
         parsed = urllib.parse.urlparse(self.path)
@@ -1006,18 +1667,38 @@ class CampusLendAPIHandler(BaseHTTPRequestHandler):
         params = urllib.parse.parse_qs(parsed.query)
         body = self._read_json()
 
-        # 1. Update Student Profile: PUT /api/students/{id}
+        # 1. Update Student Profile: PUT /api/students/{id} - authenticated, self only
         if path.startswith("/api/students/"):
+            auth = self._require_auth()
+            if not auth:
+                return
+
             s_id = path.replace("/api/students/", "").strip()
-            allowed_fields = ["name", "dormLocation", "dorm", "department", "yearOfStudy", "phone", "campus"]
+            if not self._identity_matches(auth, s_id):
+                self._send_json({"error": "You are not allowed to modify this profile."}, 403)
+                return
+
+            field_limits = {
+                "name": 120,
+                "dormLocation": 160,
+                "dorm": 160,
+                "department": 120,
+                "yearOfStudy": 40,
+                "phone": 30,
+                "campus": 160,
+            }
             update_data = {}
-            for field in allowed_fields:
+            for field, limit in field_limits.items():
                 if field in body:
-                    val = str(body[field]).strip()
+                    val = clean_text(body[field], max_length=limit)
                     if field == "dorm":
                         update_data["dormLocation"] = val
                     else:
                         update_data[field] = val
+
+            if "phone" in update_data and not is_valid_phone(update_data["phone"]):
+                self._send_json({"error": "Please provide a valid phone number."}, 400)
+                return
 
             if not update_data:
                 self._send_json({"error": "No valid update fields provided"}, 400)
@@ -1035,36 +1716,17 @@ class CampusLendAPIHandler(BaseHTTPRequestHandler):
                     },
                     {"$set": update_data}
                 )
-                result = db.students.find_one({
-                    "$or": [
-                        {"studentId": {"$regex": f"^{re.escape(s_id)}$", "$options": "i"}},
-                        {"email": {"$regex": f"^{re.escape(s_id)}$", "$options": "i"}},
-                        {"_id": s_id}
-                    ]
-                })
-                if result:
-                    updated_student = dict(result)
-                    updated_student["id"] = str(updated_student.get("_id", updated_student.get("studentId", "")))
-                    if "passwordHash" in updated_student:
-                        del updated_student["passwordHash"]
-                    if "password" in updated_student:
-                        del updated_student["password"]
-                    if "_id" in updated_student:
-                        del updated_student["_id"]
+                updated_student = find_student_record(s_id)
             else:
-                for s in MEM_STUDENTS:
-                    if s.get("studentId", "").lower() == s_id.lower() or s.get("email", "").lower() == s_id.lower():
-                        s.update(update_data)
-                        clean = dict(s)
-                        if "passwordHash" in clean:
-                            del clean["passwordHash"]
-                        if "password" in clean:
-                            del clean["password"]
-                        updated_student = clean
-                        break
+                with DATA_LOCK:
+                    for s in MEM_STUDENTS:
+                        if s.get("studentId", "").lower() == s_id.lower() or s.get("email", "").lower() == s_id.lower():
+                            s.update(update_data)
+                            updated_student = find_student_record(s_id)
+                            break
 
             if updated_student:
-                print(f"[+] Successfully updated student profile for {s_id}: {update_data}", flush=True)
+                print(f"[+] Successfully updated student profile for {s_id}", flush=True)
                 self._send_json({
                     "success": True,
                     "student": updated_student,
@@ -1075,12 +1737,71 @@ class CampusLendAPIHandler(BaseHTTPRequestHandler):
                 self._send_json({"error": "Student account not found"}, 404)
                 return
 
-        if "/status" in path:
-            status_val = params.get("status", ["ACCEPTED"])[0]
-            self._send_json({"success": True, "status": status_val, "updatedAt": time.time()})
+        if path.startswith("/api/loans/") and (path.endswith("/status") or path.endswith("/decision")):
+            auth = self._require_auth()
+            if not auth:
+                return
+
+            suffix = "/status" if path.endswith("/status") else "/decision"
+            loan_id = path[len("/api/loans/"):-len(suffix)].strip("/")
+            loan_doc = find_loan_record(loan_id)
+            if not loan_doc:
+                self._send_json({"error": "Loan not found."}, 404)
+                return
+
+            raw_status = body.get("status") or body.get("decision") or params.get("status", ["ACCEPTED"])[0]
+            status_map = {
+                "ACCEPT": "ACCEPTED",
+                "ACCEPTED": "ACCEPTED",
+                "AGREE": "ACCEPTED",
+                "ACTIVE": "ACTIVE",
+                "DECLINE": "DECLINED",
+                "DECLINED": "DECLINED",
+                "REJECT": "DECLINED",
+                "RETURN": "RETURNED",
+                "RETURNED": "RETURNED",
+            }
+            status_val = status_map.get(clean_text(raw_status, max_length=20).upper(), "")
+            if not status_val:
+                self._send_json({"error": "Unsupported loan status transition."}, 400)
+                return
+
+            role = self._loan_viewer_role(auth, loan_doc)
+            if not role:
+                self._send_json({"error": "You are not allowed to modify this loan."}, 403)
+                return
+            if status_val in ("ACCEPTED", "DECLINED", "ACTIVE") and role != "lender":
+                self._send_json({"error": "Only the lender can accept or decline a borrow request."}, 403)
+                return
+
+            now_ts = time.time()
+            fields_to_set = {"status": status_val, "updatedAt": now_ts}
+            if status_val in AGREED_LOAN_STATUSES and not loan_doc.get("acceptedAt"):
+                fields_to_set["acceptedAt"] = now_ts
+
+            if HAS_MONGO:
+                db.loans.update_one(
+                    {"$or": [{"_id": loan_id}, {"id": loan_id}]},
+                    {"$set": fields_to_set}
+                )
+            else:
+                with DATA_LOCK:
+                    for l in MEM_LOANS:
+                        if l.get("id") == loan_id or l.get("_id") == loan_id:
+                            l.update(fields_to_set)
+                            break
+
+            updated_doc = find_loan_record(loan_id) or {**loan_doc, **fields_to_set}
+            enriched = enrich_loan_for_viewer(updated_doc, viewer_role=role)
+            self._send_json({
+                "success": True,
+                "status": status_val,
+                "loan": enriched,
+                "updatedAt": now_ts
+            })
             return
 
-        self._send_json({"success": True})
+        self._send_json({"error": "Route not found"}, 404)
 
     # ================= DELETE ENDPOINTS =================
     def do_DELETE(self):
@@ -1088,19 +1809,35 @@ class CampusLendAPIHandler(BaseHTTPRequestHandler):
             self._handle_delete()
         except Exception as e:
             print(f"[!] Unhandled error in DELETE {self.path}: {e}", flush=True)
-            self._send_json({"error": f"Server error: {str(e)}"}, 500)
+            self._send_json({"error": "Internal server error"}, 500)
 
     def _handle_delete(self):
         parsed = urllib.parse.urlparse(self.path)
         path = parsed.path
 
         if path.startswith("/api/loans/"):
+            auth = self._require_auth()
+            if not auth:
+                return
+
             loan_id = path.replace("/api/loans/", "").strip()
+            loan_doc = find_loan_record(loan_id)
+            if not loan_doc:
+                self._send_json({"error": "Loan not found"}, 404)
+                return
+
+            if not self._loan_viewer_role(auth, loan_doc):
+                self._send_json({"error": "You are not allowed to cancel this loan."}, 403)
+                return
+
             if HAS_MONGO:
                 db.loans.delete_one({"$or": [{"_id": loan_id}, {"id": loan_id}]})
+                db.messages.delete_many({"loanId": str(loan_doc.get("_id", loan_doc.get("id", loan_id)))})
             else:
                 global MEM_LOANS
-                MEM_LOANS = [l for l in MEM_LOANS if l.get("id") != loan_id and l.get("_id") != loan_id]
+                with DATA_LOCK:
+                    MEM_LOANS = [l for l in MEM_LOANS if l.get("id") != loan_id and l.get("_id") != loan_id]
+                    MEM_MESSAGES.pop(loan_id, None)
             print(f"[-] Deleted/Cancelled loan {loan_id}", flush=True)
             self._send_json({"success": True, "message": f"Loan {loan_id} deleted successfully"})
             return
@@ -1111,7 +1848,8 @@ class CampusLendAPIHandler(BaseHTTPRequestHandler):
 def run_server(port=8080):
     server_address = ("", port)
     try:
-        httpd = HTTPServer(server_address, CampusLendAPIHandler)
+        httpd = ThreadingHTTPServer(server_address, CampusLendAPIHandler)
+        httpd.daemon_threads = True
     except OSError as e:
         if "10048" in str(e) or "Address already in use" in str(e):
             print(f"\n[!] Port {port} is already in use by another process.", flush=True)

@@ -51,6 +51,8 @@ window.TRANSLATIONS = {
     // Gateway Registration Form
     "reg.name_label": "Full Legal / Campus Name",
     "reg.studentid_label": "Student ID / Roll Number",
+    "reg.phone_label": "Phone Number",
+    "reg.phone_hint": "Only shared after both parties agree",
     "reg.email_label": "PSG iTech College Email",
     "reg.email_hint": "Must end in @psgitech.ac.in",
     "reg.dept_label": "Department / Major",
@@ -184,7 +186,8 @@ window.TRANSLATIONS = {
     "detail.verified_student": "Verified Student",
     "detail.replies_quick": "⚡ Replies in ~10m",
     "detail.handshakes": "32 Handshakes",
-    "detail.message_peer": "Message Peer",
+    "detail.message_peer": "Chat & Call",
+    "detail.chat_locked_btn": "Chat & Call After Acceptance",
     "detail.day_per": "/ day",
     "detail.escrow_covered": "Campus Escrow Covered",
     "detail.rental_duration": "Rental Duration",
@@ -227,6 +230,8 @@ window.TRANSLATIONS = {
     "loans.deposit_held": "₹200 Deposit Held",
     "loans.escrow_deposit": "₹150 Escrow Deposit",
     "loans.chat_btn": "Chat",
+    "loans.chat_call_btn": "Chat & Call",
+    "loans.chat_locked": "Chat & Call unlock after acceptance",
     "loans.return_release_btn": "Return & Release Escrow",
     "loans.return_now_btn": "Return Now",
     "loans.message_btn": "Message",
@@ -237,6 +242,14 @@ window.TRANSLATIONS = {
     "loans.requested_by": "Requested by:",
     "loans.owner_label": "Owner:",
     "loans.borrower_label": "Borrower:",
+
+    // Agreed Chat & Call Panel
+    "chat.agreed_badge": "Both Parties Agreed",
+    "chat.call_btn": "Call",
+    "chat.no_phone": "Phone number not added yet",
+    "chat.placeholder": "Type a message to coordinate pickup...",
+    "chat.empty_title": "Coordinate Your Handover",
+    "chat.empty_desc": "Both parties agreed on this request. Chat right here or tap Call to phone directly.",
 
     // Profile View
     "profile.school": "PSG iTech • Class of '29",
@@ -396,6 +409,8 @@ window.TRANSLATIONS = {
     // Gateway Registration Form
     "reg.name_label": "முழு சட்டப்பூர்வ / வளாக பெயர்",
     "reg.studentid_label": "மாணவர் அடையாள அட்டை எண்",
+    "reg.phone_label": "தொலைபேசி எண்",
+    "reg.phone_hint": "இருவரும் ஒப்புக்கொண்ட பிறகே பகிரப்படும்",
     "reg.email_label": "பிஎஸ்ஜி ஐடெக் கல்லூரி மின்னஞ்சல்",
     "reg.email_hint": "@psgitech.ac.in-ல் முடிய வேண்டும்",
     "reg.dept_label": "துறை / முதன்மைப் பாடம்",
@@ -529,7 +544,8 @@ window.TRANSLATIONS = {
     "detail.verified_student": "சரிபார்க்கப்பட்ட மாணவர்",
     "detail.replies_quick": "⚡ ~10 நிமிடங்களில் பதிலளிப்பார்",
     "detail.handshakes": "32 வெற்றிகரமான பகிர்வுகள்",
-    "detail.message_peer": "மாணவருக்குச் செய்தி அனுப்புக",
+    "detail.message_peer": "அரட்டை & அழைப்பு",
+    "detail.chat_locked_btn": "ஏற்ற பிறகு அரட்டை & அழைப்பு",
     "detail.day_per": "/ நாள்",
     "detail.escrow_covered": "வளாக எஸ்க்ரோ பாதுகாக்கப்பட்டது",
     "detail.rental_duration": "இரவல் கால அளவு",
@@ -572,6 +588,8 @@ window.TRANSLATIONS = {
     "loans.deposit_held": "₹200 வைப்புத்தொகை வைக்கப்பட்டுள்ளது",
     "loans.escrow_deposit": "₹150 எஸ்க்ரோ வைப்புத்தொகை",
     "loans.chat_btn": "அரட்டை",
+    "loans.chat_call_btn": "அரட்டை & அழைப்பு",
+    "loans.chat_locked": "ஏற்ற பிறகு அரட்டை & அழைப்பு திறக்கும்",
     "loans.return_release_btn": "திருப்பி ஒப்படைத்து வைப்புத்தொகையைப் பெறுக",
     "loans.return_now_btn": "உடனே திருப்பியளிக்குக",
     "loans.message_btn": "செய்தி",
@@ -582,6 +600,14 @@ window.TRANSLATIONS = {
     "loans.requested_by": "கோரியவர்:",
     "loans.owner_label": "உரிமையாளர்:",
     "loans.borrower_label": "இரவல் பெற்றவர்:",
+
+    // Agreed Chat & Call Panel
+    "chat.agreed_badge": "இருவரும் ஒப்புக்கொண்டனர்",
+    "chat.call_btn": "அழை",
+    "chat.no_phone": "தொலைபேசி எண் சேர்க்கப்படவில்லை",
+    "chat.placeholder": "நேரடி ஒப்படைப்பிற்கான செய்தியைத் தட்டச்சு செய்க...",
+    "chat.empty_title": "ஒப்படைப்பை ஒருங்கிணைக்கவும்",
+    "chat.empty_desc": "இரு தரப்பினரும் ஒப்புக்கொண்டனர். இங்கே அரட்டை அடிக்கலாம் அல்லது அழைக்கலாம்.",
 
     // Profile View
     "profile.school": "பிஎஸ்ஜி ஐடெக் • 2029 வகுப்பு",

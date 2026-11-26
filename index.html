@@ -180,11 +180,7 @@
           </select>
         </div>
 
-        <!-- Quick Demo Access Button -->
-        <button onclick="handleQuickDemoAccess()" class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-secondary text-xs font-bold transition-all border border-blue-200/60 shadow-xs cursor-pointer" title="Instant access with demo member account (25z295@psgitech.ac.in)">
-          <span class="material-symbols-outlined text-[16px]">bolt</span>
-          <span data-i18n="brand.demo_access">Quick Demo Access</span>
-        </button>
+        <!-- Demo credentials are intentionally not embedded in the client -->
       </div>
     </header>
 
@@ -243,19 +239,19 @@
                 </div>
               </div>
             </div>
-            <button type="button" onclick="fillDemoCredentials()" class="px-2.5 py-1 rounded-xl bg-white border border-blue-200 text-secondary font-bold text-[11px] hover:bg-blue-50 shadow-xs cursor-pointer shrink-0">
-              Auto-Fill
+            <button type="button" onclick="showToast('Enter your registered college email and password to log in.', 'info')" class="px-2.5 py-1 rounded-xl bg-white border border-blue-200 text-secondary font-bold text-[11px] hover:bg-blue-50 shadow-xs cursor-pointer shrink-0">
+              Help
             </button>
           </div>
 
           <form onsubmit="handleGatewayLogin(event)" class="space-y-3.5">
             <!-- Email / Roll No -->
             <div class="space-y-1">
-              <div class="flex items-center justify-between">
+              <div class="flex items-center justify-between gap-2 flex-wrap">
                 <label class="text-xs font-bold text-primary" for="gatewayLoginEmail" data-i18n="login.email_label">
                   College Email / Roll No (@psgitech.ac.in)
                 </label>
-                <span class="text-[11px] text-secondary flex items-center gap-1 font-semibold">
+                <span class="text-[11px] text-secondary flex items-center gap-1 font-semibold whitespace-nowrap">
                   <span class="material-symbols-outlined text-[13px]">domain_verification</span>
                   <span data-i18n="login.campus_domain">Official PSG iTech member</span>
                 </span>
@@ -278,7 +274,7 @@
               </div>
               <div class="relative flex items-center">
                 <span class="material-symbols-outlined absolute left-3.5 text-outline text-[18px] pointer-events-none">lock</span>
-                <input id="gatewayLoginPassword" type="password" required value="sharveshmahi" placeholder="••••••••" class="w-full h-11 pl-10 pr-10 rounded-xl bg-surface-container-low text-on-surface text-xs sm:text-sm border border-transparent focus:border-secondary focus:bg-white focus:ring-2 focus:ring-blue-100 transition-all outline-none font-medium placeholder:text-outline">
+                <input id="gatewayLoginPassword" type="password" required autocomplete="current-password" value="" placeholder="••••••••" class="w-full h-11 pl-10 pr-10 rounded-xl bg-surface-container-low text-on-surface text-xs sm:text-sm border border-transparent focus:border-secondary focus:bg-white focus:ring-2 focus:ring-blue-100 transition-all outline-none font-medium placeholder:text-outline">
                 <button type="button" onclick="togglePasswordVisibility('gatewayLoginPassword', this)" aria-label="Toggle password visibility" class="absolute right-2.5 p-1 rounded-md text-outline hover:text-primary transition-colors flex items-center justify-center cursor-pointer">
                   <span class="material-symbols-outlined text-[18px]">visibility</span>
                 </button>
@@ -355,8 +351,8 @@
                 PSG iTech Email (@psgitech.ac.in)
               </label>
               <div class="flex gap-2">
-                <input id="reg-email" type="email" required value="" placeholder="25z295@psgitech.ac.in" class="flex-1 h-10 px-3 rounded-xl bg-surface-container-low text-on-surface text-xs border border-transparent focus:border-secondary focus:bg-white focus:ring-2 focus:ring-blue-100 outline-none font-medium">
-                <button type="button" id="btn-send-otp" onclick="handleSendOtp()" class="h-10 px-3.5 rounded-xl bg-secondary hover:bg-secondary-hover text-white text-xs font-bold transition-all shrink-0 cursor-pointer flex items-center gap-1 shadow-xs">
+                <input id="reg-email" type="email" required value="" placeholder="25z295@psgitech.ac.in" class="flex-1 min-w-0 h-10 px-3 rounded-xl bg-surface-container-low text-on-surface text-xs border border-transparent focus:border-secondary focus:bg-white focus:ring-2 focus:ring-blue-100 outline-none font-medium">
+                <button type="button" id="btn-send-otp" onclick="handleSendOtp()" class="h-10 px-3.5 rounded-xl bg-secondary hover:bg-secondary-hover text-white text-xs font-bold transition-all shrink-0 cursor-pointer flex items-center gap-1 shadow-xs whitespace-nowrap">
                   <span>Send OTP</span>
                   <span class="material-symbols-outlined text-[15px]">send</span>
                 </button>
@@ -369,7 +365,7 @@
                   <span id="otpCooldownTimer" class="text-secondary font-mono text-[10px]">Valid 5m</span>
                 </div>
                 <div class="flex items-center gap-2">
-                  <input id="reg-otp-code" type="text" maxlength="6" placeholder="• • • • • •" class="flex-1 h-9 px-2 rounded-lg bg-white text-primary text-center tracking-widest font-mono font-bold text-sm border border-blue-200 focus:border-secondary outline-none">
+                  <input id="reg-otp-code" type="text" maxlength="6" placeholder="• • • • • •" class="flex-1 min-w-0 h-9 px-2 rounded-lg bg-white text-primary text-center tracking-widest font-mono font-bold text-sm border border-blue-200 focus:border-secondary outline-none">
                   <button type="button" id="btn-verify-otp" onclick="handleVerifyOtp()" class="h-9 px-4 rounded-lg bg-primary hover:bg-primary-hover text-white text-xs font-bold shrink-0 cursor-pointer flex items-center gap-1">
                     <span>Verify</span>
                     <span class="material-symbols-outlined text-[15px]">check</span>
@@ -394,19 +390,31 @@
               <input type="hidden" id="reg-verification-token" value="">
             </div>
 
-            <!-- Department -->
-            <div class="space-y-1">
-              <label class="text-xs font-bold text-primary" for="reg-dept" data-i18n="reg.dept_label">
-                Department
-              </label>
-              <select id="reg-dept" class="w-full h-10 px-3 rounded-xl bg-surface-container-low text-on-surface text-xs border border-transparent focus:border-secondary focus:bg-white focus:ring-2 focus:ring-blue-100 outline-none cursor-pointer font-medium">
-                <option selected value="cs" data-i18n="reg.dept_cs">Computer Science & Engineering</option>
-                <option value="bio" data-i18n="reg.dept_bio">Biological Sciences & Pre-Med</option>
-                <option value="business" data-i18n="reg.dept_business">Business & Economics</option>
-                <option value="design" data-i18n="reg.dept_design">Product Design & Fine Arts</option>
-                <option value="physics" data-i18n="reg.dept_physics">Physics & Applied Math</option>
-              </select>
+            <!-- Department & Phone Number -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+              <div class="space-y-1">
+                <label class="text-xs font-bold text-primary" for="reg-dept" data-i18n="reg.dept_label">
+                  Department
+                </label>
+                <select id="reg-dept" class="w-full h-10 px-3 rounded-xl bg-surface-container-low text-on-surface text-xs border border-transparent focus:border-secondary focus:bg-white focus:ring-2 focus:ring-blue-100 outline-none cursor-pointer font-medium">
+                  <option selected value="cs" data-i18n="reg.dept_cs">Computer Science & Engineering</option>
+                  <option value="bio" data-i18n="reg.dept_bio">Biological Sciences & Pre-Med</option>
+                  <option value="business" data-i18n="reg.dept_business">Business & Economics</option>
+                  <option value="design" data-i18n="reg.dept_design">Product Design & Fine Arts</option>
+                  <option value="physics" data-i18n="reg.dept_physics">Physics & Applied Math</option>
+                </select>
+              </div>
+              <div class="space-y-1">
+                <label class="text-xs font-bold text-primary" for="reg-phone" data-i18n="reg.phone_label">
+                  Phone Number
+                </label>
+                <input id="reg-phone" type="tel" required value="" placeholder="+91 98765 43210" autocomplete="tel" class="w-full h-10 px-3 rounded-xl bg-surface-container-low text-on-surface text-xs border border-transparent focus:border-secondary focus:bg-white focus:ring-2 focus:ring-blue-100 outline-none font-medium">
+              </div>
             </div>
+            <p class="text-[10px] text-outline -mt-1 flex items-center gap-1">
+              <span class="material-symbols-outlined text-[12px] text-emerald-600">lock</span>
+              <span data-i18n="reg.phone_hint">Only shared after both parties agree</span>
+            </p>
 
             <!-- Year of Study -->
             <div class="space-y-1">
@@ -496,10 +504,10 @@
   <!-- ========================================================================= -->
   <header class="sticky top-0 z-40 w-full liquid-glass transition-all">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between h-16 py-2">
+      <div class="flex items-center justify-between gap-3 h-16 py-2">
         
         <!-- Left: Brand Logo & Campus Selector -->
-        <div class="flex items-center gap-5">
+        <div class="flex items-center gap-3 xl:gap-5 shrink-0">
           <a href="#" onclick="navigateView('marketplace'); return false;" class="flex items-center gap-2 group flex-shrink-0">
             <div class="h-9 w-9 rounded-xl bg-white p-1 shadow-xs border border-black/[0.06] flex items-center justify-center group-hover:scale-105 transition-transform">
               <img src="assets/logo.svg" alt="LendLoop" class="w-full h-full object-contain">
@@ -508,54 +516,54 @@
               <span class="font-display text-xl font-bold tracking-tight text-on-surface leading-none">
                 Lend<span class="text-emerald-brand">Loop</span>
               </span>
-              <span class="text-[10px] font-semibold text-on-surface-variant tracking-wider uppercase mt-0.5" data-i18n="brand.sub">Campus P2P Sharing</span>
+              <span class="text-[10px] font-semibold text-on-surface-variant tracking-wider uppercase mt-0.5 whitespace-nowrap" data-i18n="brand.sub">Campus P2P Sharing</span>
             </div>
           </a>
 
           <!-- Campus Hub Selector Dropdown -->
-          <div class="relative hidden md:block">
-            <button onclick="toggleCampusModal()" class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/[0.04] hover:bg-black/[0.07] text-on-surface text-xs font-semibold border border-black/[0.06] transition-colors">
+          <div class="relative hidden md:block shrink-0">
+            <button onclick="toggleCampusModal()" class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/[0.04] hover:bg-black/[0.07] text-on-surface text-xs font-semibold border border-black/[0.06] transition-colors whitespace-nowrap">
               <span class="material-symbols-outlined text-[15px] text-primary">school</span>
-              <span id="navCampusLabel" class="truncate max-w-[140px]" data-i18n="nav.campus_hub">PSG iTech Campus</span>
+              <span id="navCampusLabel" class="truncate max-w-[115px] xl:max-w-[140px]" data-i18n="nav.campus_hub">PSG iTech Campus</span>
               <span class="material-symbols-outlined text-[13px] text-on-surface-variant">expand_more</span>
             </button>
           </div>
         </div>
 
         <!-- Center: Search Bar on Desktop -->
-        <div class="hidden lg:flex items-center flex-1 max-w-md mx-6">
+        <div class="hidden lg:flex items-center flex-1 min-w-[140px] max-w-md mx-2 xl:mx-6">
           <div class="relative w-full">
-            <span class="material-symbols-outlined absolute left-3.5 top-2.5 text-on-surface-variant text-[18px] pointer-events-none">search</span>
+            <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px] pointer-events-none">search</span>
             <input type="text" id="globalDesktopSearch" oninput="handleSearch(this.value)" placeholder="Search textbooks, graphing calculators, lab gear..." data-i18n-placeholder="nav.search_placeholder" class="w-full h-9 pl-10 pr-9 bg-black/[0.04] hover:bg-black/[0.06] focus:bg-white rounded-full text-xs sm:text-sm border border-transparent focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none font-medium placeholder:text-on-surface-variant">
-            <button onclick="clearSearch()" id="globalSearchClearBtn" class="hidden absolute right-2.5 top-2 p-0.5 rounded-full text-on-surface-variant hover:text-on-surface" aria-label="Clear Search">
+            <button onclick="clearSearch()" id="globalSearchClearBtn" class="hidden absolute right-2.5 top-1/2 -translate-y-1/2 p-0.5 rounded-full text-on-surface-variant hover:text-on-surface flex items-center justify-center" aria-label="Clear Search">
               <span class="material-symbols-outlined text-[16px]">close</span>
             </button>
           </div>
         </div>
 
         <!-- Right: Main Nav Links & Actions -->
-        <div class="flex items-center gap-2.5">
+        <div class="flex items-center gap-2 xl:gap-2.5 shrink-0">
           <nav class="hidden md:flex items-center gap-1 mr-1">
-            <button onclick="navigateView('marketplace')" class="nav-link px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold text-primary bg-primary/10 transition-colors" data-view="marketplace">
+            <button onclick="navigateView('marketplace')" class="nav-link inline-flex items-center px-2.5 xl:px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold text-primary bg-primary/10 transition-colors whitespace-nowrap" data-view="marketplace">
               <span data-i18n="nav.marketplace">Marketplace</span>
             </button>
-            <button onclick="navigateView('my-loans')" class="nav-link relative px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold text-on-surface-variant hover:text-on-surface hover:bg-black/[0.04] transition-colors" data-view="my-loans">
+            <button onclick="navigateView('my-loans')" class="nav-link relative inline-flex items-center px-2.5 xl:px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold text-on-surface-variant hover:text-on-surface hover:bg-black/[0.04] transition-colors whitespace-nowrap" data-view="my-loans">
               <span data-i18n="nav.my_loans">My Loans</span>
               <span id="navLoansCountBadge" class="ml-1.5 px-1.5 py-0.5 rounded-full bg-primary text-white text-[10px] font-bold hidden">0</span>
             </button>
-            <button onclick="navigateView('how-it-works')" class="nav-link px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold text-on-surface-variant hover:text-on-surface hover:bg-black/[0.04] transition-colors" data-view="how-it-works">
+            <button onclick="navigateView('how-it-works')" class="nav-link inline-flex items-center px-2.5 xl:px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold text-on-surface-variant hover:text-on-surface hover:bg-black/[0.04] transition-colors whitespace-nowrap" data-view="how-it-works">
               <span data-i18n="nav.how_it_works">How It Works</span>
             </button>
           </nav>
 
           <!-- Post an Item CTA Button (Apple Prominent Button) -->
-          <button onclick="openAddItemModal()" class="flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-primary hover:bg-primary-hover text-white text-xs sm:text-sm font-semibold shadow-xs hover:shadow transition-all active:scale-[0.98]">
+          <button onclick="openAddItemModal()" class="flex items-center gap-1.5 px-3 xl:px-4 py-1.5 rounded-full bg-primary hover:bg-primary-hover text-white text-xs sm:text-sm font-semibold shadow-xs hover:shadow transition-all active:scale-[0.98] whitespace-nowrap shrink-0">
             <span class="material-symbols-outlined text-[17px]">add_circle</span>
             <span class="hidden sm:inline" data-i18n="nav.post_item">Post an Item</span>
           </button>
 
           <!-- Language Selector Control in App Navbar -->
-          <div class="relative flex items-center">
+          <div class="relative flex items-center shrink-0">
             <div class="flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-black/[0.04] hover:bg-black/[0.07] text-on-surface text-xs font-semibold border border-black/[0.06] transition-colors">
               <span class="material-symbols-outlined text-[15px] text-primary">language</span>
               <select id="appLangSelect" onchange="switchLanguage(this.value)" class="bg-transparent text-on-surface text-xs font-semibold outline-none cursor-pointer pr-1" aria-label="Language Selector">
@@ -634,7 +642,7 @@
   <!-- ========================================================================= -->
   <!-- MAIN WORKSPACE VIEWS CONTAINER                                            -->
   <!-- ========================================================================= -->
-  <main class="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+  <main class="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 pb-24 md:pb-6">
 
     <!-- ========================================================================= -->
     <!-- VIEW 1: MARKETPLACE / EXPLORE CATALOG (HOME)                              -->
@@ -645,26 +653,26 @@
 
       <!-- Category Filter Tabs (Apple Pill Segmented Navigation) -->
       <section class="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar" id="categoryChips">
-        <button onclick="filterCategory('all')" class="cat-pill active px-4 py-1.5 rounded-full text-xs font-semibold transition-all bg-primary text-white shadow-xs flex items-center gap-1.5 active:scale-95 cursor-pointer" data-cat="all">
+        <button onclick="filterCategory('all')" class="cat-pill active px-4 py-1.5 rounded-full text-xs font-semibold transition-all bg-primary text-white shadow-xs flex items-center gap-1.5 active:scale-95 cursor-pointer shrink-0 whitespace-nowrap" data-cat="all">
           <span data-i18n="cat.all">All Items</span>
         </button>
-        <button onclick="filterCategory('books')" class="cat-pill px-4 py-1.5 rounded-full text-xs font-medium transition-all bg-white text-on-surface hover:bg-black/[0.04] border border-black/[0.08] shadow-xs flex items-center gap-1.5 active:scale-95 cursor-pointer" data-cat="books">
+        <button onclick="filterCategory('books')" class="cat-pill px-4 py-1.5 rounded-full text-xs font-medium transition-all bg-white text-on-surface hover:bg-black/[0.04] border border-black/[0.08] shadow-xs flex items-center gap-1.5 active:scale-95 cursor-pointer shrink-0 whitespace-nowrap" data-cat="books">
           <span>📚</span>
           <span data-i18n="cat.books">Textbooks</span>
         </button>
-        <button onclick="filterCategory('tech')" class="cat-pill px-4 py-1.5 rounded-full text-xs font-medium transition-all bg-white text-on-surface hover:bg-black/[0.04] border border-black/[0.08] shadow-xs flex items-center gap-1.5 active:scale-95 cursor-pointer" data-cat="tech">
+        <button onclick="filterCategory('tech')" class="cat-pill px-4 py-1.5 rounded-full text-xs font-medium transition-all bg-white text-on-surface hover:bg-black/[0.04] border border-black/[0.08] shadow-xs flex items-center gap-1.5 active:scale-95 cursor-pointer shrink-0 whitespace-nowrap" data-cat="tech">
           <span>💻</span>
           <span data-i18n="cat.tech">Tech & Electronics</span>
         </button>
-        <button onclick="filterCategory('stationery')" class="cat-pill px-4 py-1.5 rounded-full text-xs font-medium transition-all bg-white text-on-surface hover:bg-black/[0.04] border border-black/[0.08] shadow-xs flex items-center gap-1.5 active:scale-95 cursor-pointer" data-cat="stationery">
+        <button onclick="filterCategory('stationery')" class="cat-pill px-4 py-1.5 rounded-full text-xs font-medium transition-all bg-white text-on-surface hover:bg-black/[0.04] border border-black/[0.08] shadow-xs flex items-center gap-1.5 active:scale-95 cursor-pointer shrink-0 whitespace-nowrap" data-cat="stationery">
           <span>📐</span>
           <span data-i18n="cat.stationery">Calculators & Lab</span>
         </button>
-        <button onclick="filterCategory('sports')" class="cat-pill px-4 py-1.5 rounded-full text-xs font-medium transition-all bg-white text-on-surface hover:bg-black/[0.04] border border-black/[0.08] shadow-xs flex items-center gap-1.5 active:scale-95 cursor-pointer" data-cat="sports">
+        <button onclick="filterCategory('sports')" class="cat-pill px-4 py-1.5 rounded-full text-xs font-medium transition-all bg-white text-on-surface hover:bg-black/[0.04] border border-black/[0.08] shadow-xs flex items-center gap-1.5 active:scale-95 cursor-pointer shrink-0 whitespace-nowrap" data-cat="sports">
           <span>🚲</span>
           <span data-i18n="cat.sports">Sports & Outdoor</span>
         </button>
-        <button onclick="filterCategory('others')" class="cat-pill px-4 py-1.5 rounded-full text-xs font-medium transition-all bg-white text-on-surface hover:bg-black/[0.04] border border-black/[0.08] shadow-xs flex items-center gap-1.5 active:scale-95 cursor-pointer" data-cat="others">
+        <button onclick="filterCategory('others')" class="cat-pill px-4 py-1.5 rounded-full text-xs font-medium transition-all bg-white text-on-surface hover:bg-black/[0.04] border border-black/[0.08] shadow-xs flex items-center gap-1.5 active:scale-95 cursor-pointer shrink-0 whitespace-nowrap" data-cat="others">
           <span>🎒</span>
           <span data-i18n="cat.others">Dorm Living</span>
         </button>
@@ -887,9 +895,9 @@
                   </div>
                 </div>
               </div>
-              <button onclick="showToast('Secure campus chat opened with peer lender', 'info')" class="px-4 py-2 rounded-xl bg-surface-container-low hover:bg-surface-container text-primary font-semibold text-xs flex items-center justify-center gap-1.5 transition-colors">
-                <span class="material-symbols-outlined text-[16px]">chat</span>
-                <span data-i18n="detail.message_peer">Message Peer</span>
+              <button id="detailPeerChatBtn" onclick="handleDetailPeerChat()" class="px-4 py-2 rounded-xl bg-surface-container-low hover:bg-surface-container text-on-surface-variant font-semibold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer shrink-0">
+                <span class="material-symbols-outlined text-[16px]" id="detailPeerChatIcon">lock</span>
+                <span id="detailPeerChatText" data-i18n="detail.chat_locked_btn">Chat & Call After Acceptance</span>
               </button>
             </div>
           </div>
@@ -1030,18 +1038,18 @@
       </div>
 
       <!-- Segmented Tab Navigation for Desktop -->
-      <div class="bg-white rounded-2xl p-2 border border-surface-container shadow-subtle flex items-center gap-2 max-w-xl">
-        <button onclick="switchLoansTab('borrowing')" id="tabBtnBorrowing" class="flex-1 py-2 px-4 rounded-xl text-xs font-bold bg-secondary text-white shadow-sm transition-all flex items-center justify-center gap-2">
+      <div class="bg-white rounded-2xl p-2 border border-surface-container shadow-subtle flex items-center gap-2 max-w-xl overflow-x-auto no-scrollbar">
+        <button onclick="switchLoansTab('borrowing')" id="tabBtnBorrowing" class="flex-1 py-2 px-3 sm:px-4 rounded-xl text-xs font-bold bg-secondary text-white shadow-sm transition-all flex items-center justify-center gap-2 whitespace-nowrap shrink-0">
           <span data-i18n="loans.tab_borrowing">Borrowing</span>
-          <span class="px-1.5 py-0.2 rounded-full bg-white/20 text-white text-[10px]" id="tabBadgeBorrow">0</span>
+          <span class="px-1.5 py-0.5 rounded-full bg-white/20 text-white text-[10px]" id="tabBadgeBorrow">0</span>
         </button>
-        <button onclick="switchLoansTab('lending')" id="tabBtnLending" class="flex-1 py-2 px-4 rounded-xl text-xs font-bold text-on-surface-variant hover:text-primary transition-all flex items-center justify-center gap-2">
+        <button onclick="switchLoansTab('lending')" id="tabBtnLending" class="flex-1 py-2 px-3 sm:px-4 rounded-xl text-xs font-bold text-on-surface-variant hover:text-primary transition-all flex items-center justify-center gap-2 whitespace-nowrap shrink-0">
           <span data-i18n="loans.tab_lending">Lending</span>
-          <span class="px-1.5 py-0.2 rounded-full bg-surface-container-high text-primary text-[10px]" id="tabBadgeLend">0</span>
+          <span class="px-1.5 py-0.5 rounded-full bg-surface-container-high text-primary text-[10px]" id="tabBadgeLend">0</span>
         </button>
-        <button onclick="switchLoansTab('requests')" id="tabBtnRequests" class="flex-1 py-2 px-4 rounded-xl text-xs font-bold text-on-surface-variant hover:text-primary transition-all flex items-center justify-center gap-2">
+        <button onclick="switchLoansTab('requests')" id="tabBtnRequests" class="flex-1 py-2 px-3 sm:px-4 rounded-xl text-xs font-bold text-on-surface-variant hover:text-primary transition-all flex items-center justify-center gap-2 whitespace-nowrap shrink-0">
           <span data-i18n="loans.tab_requests">Incoming Requests</span>
-          <span class="px-1.5 py-0.2 rounded-full bg-amber-100 text-amber-800 text-[10px]" id="tabBadgeReq">0</span>
+          <span class="px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[10px]" id="tabBadgeReq">0</span>
         </button>
       </div>
 
@@ -1108,17 +1116,17 @@
           </div>
 
           <div class="text-left space-y-2.5 pt-3 border-t border-surface-container text-xs">
-            <div class="flex justify-between">
-              <span class="text-outline" data-i18n="profile.label_dorm">Campus Hostel:</span>
-              <span class="font-semibold text-primary" id="profileDormText">Campus Hostel Block A</span>
+            <div class="flex items-start justify-between gap-3">
+              <span class="text-outline shrink-0" data-i18n="profile.label_dorm">Campus Hostel:</span>
+              <span class="font-semibold text-primary text-right" id="profileDormText">Campus Hostel Block A</span>
             </div>
-            <div class="flex justify-between">
-              <span class="text-outline" data-i18n="profile.label_email">College Email:</span>
-              <span class="font-semibold text-secondary" id="profileEmailText">25z295@psgitech.ac.in</span>
+            <div class="flex items-start justify-between gap-3">
+              <span class="text-outline shrink-0" data-i18n="profile.label_email">College Email:</span>
+              <span class="font-semibold text-secondary text-right break-all" id="profileEmailText">25z295@psgitech.ac.in</span>
             </div>
-            <div class="flex justify-between">
-              <span class="text-outline" data-i18n="profile.label_phone">Phone Handover:</span>
-              <span class="font-semibold text-primary" id="profilePhoneText">+91 98400 12345</span>
+            <div class="flex items-start justify-between gap-3">
+              <span class="text-outline shrink-0" data-i18n="profile.label_phone">Phone Handover:</span>
+              <span class="font-semibold text-primary text-right" id="profilePhoneText">Not added yet</span>
             </div>
           </div>
 
@@ -1139,7 +1147,7 @@
 
           <!-- Incoming Lending Requests Section -->
           <div id="profileRequestsSection" class="bg-white rounded-3xl p-6 border border-surface-container shadow-card space-y-4">
-            <div class="flex items-center justify-between pb-1 border-b border-surface-container">
+            <div class="flex items-center justify-between gap-3 pb-2 border-b border-surface-container">
               <div>
                 <h3 class="font-display font-bold text-lg text-primary flex items-center gap-2">
                   <span class="material-symbols-outlined text-amber-600 text-[20px]">pending_actions</span>
@@ -1148,7 +1156,7 @@
                 </h3>
                 <p class="text-xs text-on-surface-variant">Borrow requests from peers waiting for your approval.</p>
               </div>
-              <button onclick="navigateView('my-loans'); switchLoansTab('requests');" class="text-xs font-semibold text-secondary hover:underline flex items-center gap-1 cursor-pointer">
+              <button onclick="navigateView('my-loans'); switchLoansTab('requests');" class="text-xs font-semibold text-secondary hover:underline flex items-center gap-1 cursor-pointer shrink-0 whitespace-nowrap">
                 <span>View all in Loans</span>
                 <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
               </button>
@@ -1162,12 +1170,12 @@
 
           <!-- My Listed Items Section -->
           <div class="bg-white rounded-3xl p-6 border border-surface-container shadow-card space-y-4">
-            <div class="flex items-center justify-between">
+            <div class="flex items-center justify-between gap-3">
               <div>
                 <h3 class="font-display font-bold text-xl text-primary" data-i18n="profile.listings_title">My Listed Items for Rent</h3>
                 <p class="text-xs text-on-surface-variant" data-i18n="profile.listings_subtitle">Manage gear you've made available for campus peers.</p>
               </div>
-              <button onclick="openAddItemModal()" class="px-4 py-2 rounded-xl bg-secondary hover:bg-secondary-hover text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm cursor-pointer">
+              <button onclick="openAddItemModal()" class="px-4 py-2 rounded-xl bg-secondary hover:bg-secondary-hover text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm cursor-pointer shrink-0 whitespace-nowrap">
                 <span class="material-symbols-outlined text-[16px]">add_circle</span> <span data-i18n="profile.add_item_btn">Add New Item</span>
               </button>
             </div>
@@ -1455,9 +1463,67 @@
         </div>
         <div>
           <label class="text-xs font-bold text-outline block mb-1">Handover Phone Number</label>
-          <input type="text" id="editPhoneInput" value="+91 98400 12345" required class="w-full p-2.5 rounded-xl bg-surface-container-low text-xs border border-transparent focus:border-secondary outline-none">
+          <input type="tel" id="editPhoneInput" value="" placeholder="+91 98765 43210" autocomplete="tel" required class="w-full p-2.5 rounded-xl bg-surface-container-low text-xs border border-transparent focus:border-secondary outline-none">
         </div>
         <button type="submit" class="w-full py-2.5 rounded-xl bg-primary text-white text-xs font-bold shadow-sm" data-i18n="modal.profile.save_btn">Save Changes</button>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- ========================================================================= -->
+  <!-- MODAL: AGREED PEER CHAT & DIRECT CALL SHEET                               -->
+  <!-- Unlocked ONLY after both borrower & lender agree on the loan request      -->
+  <!-- ========================================================================= -->
+  <div id="loanChatModal" onclick="if (event.target === this) closeLoanChatModal()" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-200 flex items-center justify-center p-3 sm:p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full h-[min(600px,86vh)] shadow-2xl border border-black/[0.08] flex flex-col overflow-hidden transform scale-95 transition-transform duration-200" id="loanChatModalBox">
+      <!-- Header with Peer Info & Direct Call Pill -->
+      <div class="liquid-glass px-5 py-3.5 flex items-center justify-between gap-3 shrink-0">
+        <div class="flex items-center gap-3 min-w-0">
+          <div class="w-10 h-10 rounded-full bg-primary-container text-primary flex items-center justify-center font-display font-bold text-sm shrink-0" id="chatModalPeerInitials">
+            CL
+          </div>
+          <div class="min-w-0">
+            <div class="flex items-center gap-1.5">
+              <h3 class="font-display font-bold text-sm sm:text-base text-on-surface truncate" id="chatModalPeerName">Peer Chat</h3>
+              <span class="material-symbols-outlined text-[15px] text-primary shrink-0">verified</span>
+            </div>
+            <p class="text-[11px] text-on-surface-variant flex items-center gap-1.5 min-w-0">
+              <span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-brand shrink-0"></span>
+              <span class="text-emerald-dark font-semibold shrink-0 whitespace-nowrap" data-i18n="chat.agreed_badge">Both Parties Agreed</span>
+              <span class="shrink-0">•</span>
+              <span id="chatModalItemSubtitle" class="min-w-0 truncate">Handover</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 shrink-0">
+          <a id="chatModalCallBtn" href="#" class="hidden inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-brand hover:bg-emerald-dark text-white text-xs font-semibold shadow-xs transition-all active:scale-95" aria-label="Call peer phone number">
+            <span class="material-symbols-outlined text-[15px]">call</span>
+            <span data-i18n="chat.call_btn">Call</span>
+            <span id="chatModalPeerPhoneText" class="font-mono text-[11px] opacity-95"></span>
+          </a>
+          <span id="chatModalNoPhoneBadge" class="hidden inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-container-low text-on-surface-variant text-[11px] font-medium">
+            <span class="material-symbols-outlined text-[14px]">phone_disabled</span>
+            <span data-i18n="chat.no_phone">No phone added</span>
+          </span>
+          <button onclick="closeLoanChatModal()" aria-label="Close chat" class="w-8 h-8 rounded-full hover:bg-black/[0.05] text-on-surface-variant hover:text-on-surface flex items-center justify-center transition-colors cursor-pointer">
+            <span class="material-symbols-outlined text-[18px]">close</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Messages List -->
+      <div id="chatModalMessages" class="flex-1 overflow-y-auto px-4 py-4 space-y-2.5 bg-surface/60">
+        <!-- Populated dynamically -->
+      </div>
+
+      <!-- Message Composer -->
+      <form onsubmit="event.preventDefault(); sendLoanChatMessage();" class="p-3 bg-white border-t border-black/[0.06] flex items-center gap-2 shrink-0">
+        <input type="text" id="chatModalInput" maxlength="1000" required placeholder="Type a message to coordinate pickup..." data-i18n-placeholder="chat.placeholder" class="flex-1 min-w-0 h-10 px-4 rounded-full bg-surface-container-low text-on-surface text-xs sm:text-sm border border-transparent focus:border-primary focus:bg-white focus:ring-2 focus:ring-primary/15 outline-none transition-all">
+        <button type="submit" id="chatModalSendBtn" aria-label="Send message" class="w-10 h-10 rounded-full bg-primary hover:bg-primary-hover text-white flex items-center justify-center shadow-xs active:scale-95 transition-all shrink-0 cursor-pointer">
+          <span class="material-symbols-outlined text-[18px]">send</span>
+        </button>
       </form>
     </div>
   </div>
@@ -1472,31 +1538,31 @@
   <!-- APPLE iOS LIQUID GLASS MOBILE BOTTOM TAB BAR                              -->
   <!-- Conforms to Apple HIG tab-bars.md: visible top-level navigation on compact -->
   <!-- ========================================================================= -->
-  <nav id="mobileBottomTabBar" aria-label="Mobile Navigation" class="md:hidden fixed bottom-3 left-4 right-4 z-40 liquid-glass-dock rounded-2xl py-1.5 px-3 flex items-center justify-around shadow-dock transition-transform duration-300">
+  <nav id="mobileBottomTabBar" aria-label="Mobile Navigation" class="md:hidden fixed bottom-3 left-4 right-4 z-40 liquid-glass-dock rounded-2xl py-1.5 px-2 grid grid-cols-5 items-center shadow-dock transition-transform duration-300">
     <!-- Marketplace Tab -->
-    <button onclick="navigateView('marketplace')" class="mobile-nav-btn flex flex-col items-center justify-center py-1 px-3 rounded-xl text-primary font-bold transition-all active:scale-90 cursor-pointer" data-view="marketplace" aria-label="Marketplace">
+    <button onclick="navigateView('marketplace')" class="mobile-nav-btn relative w-full flex flex-col items-center justify-center py-1 px-1 rounded-xl text-primary font-bold transition-all active:scale-90 cursor-pointer" data-view="marketplace" aria-label="Marketplace">
       <span class="material-symbols-outlined text-[22px]">storefront</span>
-      <span class="text-[11px] font-semibold mt-0.5" data-i18n="nav.marketplace">Market</span>
+      <span class="text-[11px] font-semibold mt-0.5 truncate max-w-full" data-i18n="nav.marketplace">Market</span>
     </button>
     <!-- My Loans Tab -->
-    <button onclick="navigateView('my-loans')" class="mobile-nav-btn relative flex flex-col items-center justify-center py-1 px-3 rounded-xl text-on-surface-variant hover:text-primary transition-all active:scale-90 cursor-pointer" data-view="my-loans" aria-label="My Loans">
+    <button onclick="navigateView('my-loans')" class="mobile-nav-btn relative w-full flex flex-col items-center justify-center py-1 px-1 rounded-xl text-on-surface-variant hover:text-primary transition-all active:scale-90 cursor-pointer" data-view="my-loans" aria-label="My Loans">
       <span class="material-symbols-outlined text-[22px]">sync_alt</span>
-      <span class="text-[11px] font-semibold mt-0.5" data-i18n="nav.my_loans">Loans</span>
-      <span id="mobileNavLoansBadge" class="absolute top-1 right-2.5 w-2 h-2 rounded-full bg-primary hidden"></span>
+      <span class="text-[11px] font-semibold mt-0.5 truncate max-w-full" data-i18n="nav.my_loans">Loans</span>
+      <span id="mobileNavLoansBadge" class="absolute top-1 right-1/4 w-2 h-2 rounded-full bg-primary hidden"></span>
     </button>
     <!-- Post Item Action (Center Highlighted Pill) -->
-    <button onclick="openAddItemModal()" class="flex flex-col items-center justify-center -mt-4 bg-primary hover:bg-primary-hover text-white w-12 h-12 rounded-full shadow-md active:scale-95 transition-all cursor-pointer" aria-label="Post an Item">
+    <button onclick="openAddItemModal()" class="justify-self-center flex flex-col items-center justify-center -mt-4 bg-primary hover:bg-primary-hover text-white w-12 h-12 rounded-full shadow-md active:scale-95 transition-all cursor-pointer" aria-label="Post an Item">
       <span class="material-symbols-outlined text-[24px]">add</span>
     </button>
     <!-- How it Works Tab -->
-    <button onclick="navigateView('how-it-works')" class="mobile-nav-btn flex flex-col items-center justify-center py-1 px-3 rounded-xl text-on-surface-variant hover:text-primary transition-all active:scale-90 cursor-pointer" data-view="how-it-works" aria-label="How it works">
+    <button onclick="navigateView('how-it-works')" class="mobile-nav-btn relative w-full flex flex-col items-center justify-center py-1 px-1 rounded-xl text-on-surface-variant hover:text-primary transition-all active:scale-90 cursor-pointer" data-view="how-it-works" aria-label="How it works">
       <span class="material-symbols-outlined text-[22px]">help_outline</span>
-      <span class="text-[11px] font-semibold mt-0.5" data-i18n="nav.how_it_works">Help</span>
+      <span class="text-[11px] font-semibold mt-0.5 truncate max-w-full" data-i18n="nav.how_it_works">Help</span>
     </button>
     <!-- Profile Tab -->
-    <button onclick="navigateView('profile')" class="mobile-nav-btn flex flex-col items-center justify-center py-1 px-3 rounded-xl text-on-surface-variant hover:text-primary transition-all active:scale-90 cursor-pointer" data-view="profile" aria-label="Profile">
+    <button onclick="navigateView('profile')" class="mobile-nav-btn relative w-full flex flex-col items-center justify-center py-1 px-1 rounded-xl text-on-surface-variant hover:text-primary transition-all active:scale-90 cursor-pointer" data-view="profile" aria-label="Profile">
       <span class="material-symbols-outlined text-[22px]">account_circle</span>
-      <span class="text-[11px] font-semibold mt-0.5" data-i18n="nav.profile_tab">Profile</span>
+      <span class="text-[11px] font-semibold mt-0.5 truncate max-w-full" data-i18n="nav.profile_tab">Profile</span>
     </button>
   </nav>
 
@@ -1569,10 +1635,25 @@
         return this.apiRequest("/loans/request", { method: "POST", body: JSON.stringify(body) });
       },
       getBorrowerLoans(borrowerId) {
-        return this.apiRequest(`/loans/borrower/${borrowerId}`, { method: "GET" });
+        return this.apiRequest(`/loans/borrower/${encodeURIComponent(borrowerId)}`, { method: "GET" });
       },
       getLenderLoans(lenderId) {
-        return this.apiRequest(`/loans/lender/${lenderId}`, { method: "GET" });
+        return this.apiRequest(`/loans/lender/${encodeURIComponent(lenderId)}`, { method: "GET" });
+      },
+      updateLoanStatus(loanId, status) {
+        return this.apiRequest(`/loans/${encodeURIComponent(loanId)}/status?status=${encodeURIComponent(status)}`, {
+          method: "PUT",
+          body: JSON.stringify({ status })
+        });
+      },
+      getLoanMessages(loanId) {
+        return this.apiRequest(`/loans/${encodeURIComponent(loanId)}/messages`, { method: "GET" });
+      },
+      sendLoanMessage(loanId, text) {
+        return this.apiRequest(`/loans/${encodeURIComponent(loanId)}/messages`, {
+          method: "POST",
+          body: JSON.stringify({ text })
+        });
       },
       getStudent(id) {
         return this.apiRequest(`/students/${id}`, { method: "GET" });
@@ -1907,18 +1988,18 @@
       // Update Desktop Nav Link highlighters (Apple Pill style)
       document.querySelectorAll(".nav-link").forEach(link => {
         if (link.getAttribute("data-view") === viewName) {
-          link.className = "nav-link px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold text-primary bg-primary/10 transition-colors";
+          link.className = "nav-link inline-flex items-center px-2.5 xl:px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold text-primary bg-primary/10 transition-colors whitespace-nowrap";
         } else {
-          link.className = "nav-link px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold text-on-surface-variant hover:text-on-surface hover:bg-black/[0.04] transition-colors";
+          link.className = "nav-link inline-flex items-center px-2.5 xl:px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold text-on-surface-variant hover:text-on-surface hover:bg-black/[0.04] transition-colors whitespace-nowrap";
         }
       });
 
       // Update Mobile Bottom Tab Bar highlighters (Apple iOS Tab Bar style)
       document.querySelectorAll(".mobile-nav-btn").forEach(btn => {
         if (btn.getAttribute("data-view") === viewName) {
-          btn.className = "mobile-nav-btn flex flex-col items-center justify-center py-1 px-3 rounded-xl text-primary font-bold transition-all active:scale-90 cursor-pointer";
+          btn.className = "mobile-nav-btn relative w-full flex flex-col items-center justify-center py-1 px-1 rounded-xl text-primary font-bold transition-all active:scale-90 cursor-pointer";
         } else {
-          btn.className = "mobile-nav-btn flex flex-col items-center justify-center py-1 px-3 rounded-xl text-on-surface-variant hover:text-primary transition-all active:scale-90 cursor-pointer";
+          btn.className = "mobile-nav-btn relative w-full flex flex-col items-center justify-center py-1 px-1 rounded-xl text-on-surface-variant hover:text-primary transition-all active:scale-90 cursor-pointer";
         }
       });
 
@@ -1926,9 +2007,11 @@
         updateUserDisplay();
         renderProfileListings();
         renderProfileRequests();
+        syncRemoteLoans();
       } else if (viewName === "my-loans") {
         renderLoansDashboard();
         renderNotifications();
+        syncRemoteLoans();
       } else if (viewName === "marketplace") {
         renderMarketplace();
       }
@@ -1990,11 +2073,11 @@
           </div>
 
           <!-- Card Content -->
-          <div class="p-4.5 flex flex-col flex-1 justify-between gap-3">
+          <div class="p-4 flex flex-col flex-1 justify-between gap-3">
             <div>
               <div class="flex items-center justify-between gap-1 mb-1.5">
                 <span class="text-[11px] font-semibold text-primary uppercase tracking-wider">${getCategoryName(item.category)}</span>
-                <span class="text-[12px] text-emerald-brand font-semibold flex items-center gap-1.5">
+                <span class="text-[12px] text-emerald-brand font-semibold flex items-center gap-1.5 shrink-0">
                   <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> ${t('card.available', 'Available')}
                 </span>
               </div>
@@ -2003,16 +2086,16 @@
             </div>
 
             <!-- Footer: Lender info & pickup spot -->
-            <div class="pt-3 border-t border-black/[0.06] flex items-center justify-between text-xs">
-              <div class="flex items-center gap-2">
+            <div class="pt-3 border-t border-black/[0.06] flex items-center justify-between gap-2 text-xs">
+              <div class="flex items-center gap-2 min-w-0">
                 <div class="w-6 h-6 rounded-full overflow-hidden ring-1 ring-black/[0.08] shrink-0">
                   <img src="${item.lenderAvatar}" alt="${item.lenderName}" class="w-full h-full object-cover">
                 </div>
                 <span class="font-medium text-on-surface truncate max-w-[110px]">${item.lenderName}</span>
               </div>
-              <span class="text-on-surface-variant text-[11px] flex items-center gap-1 truncate max-w-[120px]">
-                <span class="material-symbols-outlined text-[13px] text-outline">location_on</span>
-                ${item.location.split('•')[0]}
+              <span class="text-on-surface-variant text-[11px] flex items-center gap-1 max-w-[120px] min-w-0">
+                <span class="material-symbols-outlined text-[13px] text-outline shrink-0">location_on</span>
+                <span class="truncate">${item.location.split('•')[0]}</span>
               </span>
             </div>
           </div>
@@ -2024,9 +2107,9 @@
       selectedCategory = catKey;
       document.querySelectorAll(".cat-pill").forEach(pill => {
         if (pill.getAttribute("data-cat") === catKey) {
-          pill.className = "cat-pill active px-4 py-1.5 rounded-full text-xs font-semibold transition-all bg-primary text-white shadow-xs flex items-center gap-1.5 active:scale-95 cursor-pointer";
+          pill.className = "cat-pill active px-4 py-1.5 rounded-full text-xs font-semibold transition-all bg-primary text-white shadow-xs flex items-center gap-1.5 active:scale-95 cursor-pointer shrink-0 whitespace-nowrap";
         } else {
-          pill.className = "cat-pill px-4 py-1.5 rounded-full text-xs font-medium transition-all bg-white text-on-surface hover:bg-black/[0.04] border border-black/[0.08] shadow-xs flex items-center gap-1.5 active:scale-95 cursor-pointer";
+          pill.className = "cat-pill px-4 py-1.5 rounded-full text-xs font-medium transition-all bg-white text-on-surface hover:bg-black/[0.04] border border-black/[0.08] shadow-xs flex items-center gap-1.5 active:scale-95 cursor-pointer shrink-0 whitespace-nowrap";
         }
       });
       renderMarketplace();
@@ -2139,6 +2222,91 @@
         favIcon.textContent = "favorite_border";
         favIcon.style.fontVariationSettings = "'FILL' 0";
         document.getElementById("detailFavBtn").classList.remove("text-error");
+      }
+
+      updateDetailPeerChatButton(item);
+    }
+
+    // ================= SECURITY, PHONE & MUTUAL AGREEMENT HELPERS =================
+    function escapeHtml(str) {
+      return String(str || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function isValidPhoneNumber(phone) {
+      const text = String(phone || "").trim();
+      if (!/^[0-9+()\-\s]{6,30}$/.test(text)) return false;
+      const digits = text.replace(/\D/g, "");
+      return digits.length >= 7 && digits.length <= 15;
+    }
+
+    function sanitizeTelHref(phone) {
+      const raw = String(phone || "").trim();
+      const cleaned = raw.replace(/[^0-9+]/g, "");
+      const digits = cleaned.replace(/\D/g, "");
+      return digits.length >= 7 ? `tel:${cleaned}` : "#";
+    }
+
+    function isLoanAgreedStatus(status) {
+      return ["ACCEPTED", "ACTIVE", "LENT OUT"].includes(String(status || "").toUpperCase());
+    }
+
+    function findAgreedLoanForItem(itemId) {
+      const borrows = typeof getUserBorrows === "function" ? getUserBorrows() : [];
+      const lends = typeof getUserLends === "function" ? getUserLends() : [];
+      return [...borrows, ...lends].find(l => l && l.itemId === itemId && isLoanAgreedStatus(l.status)) || null;
+    }
+
+    function findAgreedLoanById(loanId) {
+      const borrows = typeof getUserBorrows === "function" ? getUserBorrows() : [];
+      const bMatch = borrows.find(b => b && b.id === loanId && isLoanAgreedStatus(b.status));
+      if (bMatch) return { loan: bMatch, role: "borrower" };
+      const lends = typeof getUserLends === "function" ? getUserLends() : [];
+      const lMatch = lends.find(l => l && (l.id === loanId || l.loanId === loanId) && isLoanAgreedStatus(l.status));
+      if (lMatch) return { loan: lMatch, role: "lender" };
+      return null;
+    }
+
+    function lookupRegisteredPhone(identifier) {
+      const ident = String(identifier || "").trim().toLowerCase();
+      if (!ident || typeof getLocalRegisteredUsers !== "function") return "";
+      const users = getLocalRegisteredUsers();
+      const match = users.find(u =>
+        (u.studentId && String(u.studentId).trim().toLowerCase() === ident) ||
+        (u.email && String(u.email).trim().toLowerCase() === ident)
+      );
+      return match && match.phone ? String(match.phone).trim() : "";
+    }
+
+    function updateDetailPeerChatButton(item) {
+      const btn = document.getElementById("detailPeerChatBtn");
+      const icon = document.getElementById("detailPeerChatIcon");
+      const text = document.getElementById("detailPeerChatText");
+      if (!btn || !icon || !text || !item) return;
+
+      const agreed = findAgreedLoanForItem(item.id);
+      if (agreed) {
+        btn.className = "px-4 py-2 rounded-xl bg-primary text-white hover:bg-primary-hover font-semibold text-xs flex items-center justify-center gap-1.5 transition-colors shadow-xs cursor-pointer shrink-0";
+        icon.textContent = "chat";
+        text.textContent = typeof t === "function" ? t("detail.message_peer", "Chat & Call") : "Chat & Call";
+      } else {
+        btn.className = "px-4 py-2 rounded-xl bg-surface-container-low hover:bg-surface-container text-on-surface-variant font-semibold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer shrink-0";
+        icon.textContent = "lock";
+        text.textContent = typeof t === "function" ? t("detail.chat_locked_btn", "Chat & Call After Acceptance") : "Chat & Call After Acceptance";
+      }
+    }
+
+    function handleDetailPeerChat() {
+      if (!activeItem) return;
+      const agreed = findAgreedLoanForItem(activeItem.id);
+      if (agreed) {
+        openLoanChatModal(agreed.id);
+      } else {
+        showToast("Send a borrow request — Chat & Call unlock once both parties agree (lender accepts).", "info");
       }
     }
 
@@ -2331,50 +2499,70 @@
           `;
         } else {
           borrowingPane.innerHTML = borrows.map(b => {
-            const isPending = b.status === "PENDING";
-            const isOverdue = b.status === "OVERDUE";
-            const borderStyle = isPending ? 'border-2 border-amber-300 shadow-md bg-amber-50/20' : (isOverdue ? 'border-2 border-red-200' : 'border border-surface-container');
-            const badgeColor = isPending ? 'bg-amber-100 text-amber-900 border border-amber-300' : (isOverdue ? 'bg-red-100 text-error border border-red-200' : 'bg-blue-50 text-secondary');
-            const statusLabel = isPending ? 'REQUEST PENDING' : (isOverdue ? 'OVERDUE' : 'BORROWED');
-            const safeTitle = (b.title || '').replace(/'/g, "\\'");
-            const safeLender = (b.lenderName || '').replace(/'/g, "\\'");
-            const safeLoc = (b.location || '').replace(/'/g, "\\'");
+            const st = String(b.status || "PENDING").toUpperCase();
+            const isPending = st === "PENDING";
+            const isDeclined = st === "DECLINED";
+            const isReturned = st === "RETURNED";
+            const isOverdue = st === "OVERDUE";
+            const isAgreed = isLoanAgreedStatus(st);
+            const borderStyle = isPending
+              ? 'border-2 border-amber-300 shadow-md bg-amber-50/20'
+              : (isOverdue || isDeclined ? 'border-2 border-red-200' : 'border border-surface-container');
+            const badgeColor = isPending
+              ? 'bg-amber-100 text-amber-900 border border-amber-300'
+              : (isOverdue || isDeclined
+                ? 'bg-red-100 text-error border border-red-200'
+                : (isReturned ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' : 'bg-blue-50 text-secondary'));
+            const statusLabel = isPending
+              ? 'REQUEST PENDING'
+              : (isDeclined ? 'DECLINED' : (isReturned ? 'RETURNED' : (isOverdue ? 'OVERDUE' : 'AGREED • BORROWED')));
+            const safeTitle = escapeHtml(b.title || '').replace(/'/g, "\\'");
+            const safeLender = escapeHtml(b.lenderName || '').replace(/'/g, "\\'");
+            const safeLoc = escapeHtml(b.location || '').replace(/'/g, "\\'");
+            const safeId = escapeHtml(String(b.id || '').replace(/['"\\]/g, ''));
 
             return `
               <div class="bg-white rounded-3xl p-6 ${borderStyle} shadow-subtle hover:shadow-card transition-all flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
                 <div class="flex items-center gap-4">
                   <div class="w-20 h-20 rounded-2xl overflow-hidden bg-surface-container-low shrink-0 border border-slate-100">
-                    <img src="${b.image}" alt="${b.title}" class="w-full h-full object-cover">
+                    <img src="${escapeHtml(b.image)}" alt="${escapeHtml(b.title)}" class="w-full h-full object-cover">
                   </div>
                   <div>
                     <div class="flex items-center gap-2 mb-1">
                       <span class="px-2.5 py-0.5 rounded-full ${badgeColor} text-[11px] font-bold">${statusLabel}</span>
-                      <span class="text-xs text-outline">${b.location}</span>
+                      <span class="text-xs text-outline">${escapeHtml(b.location)}</span>
                     </div>
-                    <h3 class="font-display font-bold text-lg text-primary">${b.title}</h3>
+                    <h3 class="font-display font-bold text-lg text-primary">${escapeHtml(b.title)}</h3>
                     <p class="text-xs text-on-surface-variant mt-0.5">
-                      Owner: <strong>${b.lenderName}</strong> (${b.lenderDept}) • ₹${Math.round(b.dailyPrice || 50)}/day
+                      Owner: <strong>${escapeHtml(b.lenderName)}</strong> (${escapeHtml(b.lenderDept)}) • ₹${Math.round(b.dailyPrice || 50)}/day
                     </p>
                   </div>
                 </div>
 
                 <div class="flex flex-col md:items-end gap-3 w-full md:w-auto pt-3 md:pt-0 border-t md:border-t-0 border-surface-container">
                   <div class="flex items-center gap-3 text-xs">
-                    <span class="${isPending ? 'text-amber-800 bg-amber-50 font-bold border border-amber-200' : (isOverdue ? 'text-error font-bold' : 'text-secondary font-bold bg-blue-50')} px-2.5 py-1 rounded-full flex items-center gap-1">
+                    <span class="${isPending ? 'text-amber-800 bg-amber-50 font-bold border border-amber-200' : (isOverdue || isDeclined ? 'text-error font-bold' : 'text-secondary font-bold bg-blue-50')} px-2.5 py-1 rounded-full flex items-center gap-1">
                       <span class="material-symbols-outlined text-[14px]">${b.dueBadge || (isPending ? 'schedule' : 'event')}</span>
-                      <span>${b.dueText}</span>
+                      <span>${escapeHtml(b.dueText)}</span>
                     </span>
                     <span class="text-outline font-semibold">₹${Math.round(b.deposit || 200)} Escrow Deposit Held</span>
                   </div>
-                  <div class="flex items-center gap-2 w-full md:w-auto">
-                    <button onclick="showToast('Opened chat with ${safeLender}', 'info')" class="flex-1 md:flex-initial px-3 py-2 rounded-xl bg-surface-container-low hover:bg-surface-container text-primary font-semibold text-xs flex items-center justify-center gap-1 cursor-pointer">
-                      <span class="material-symbols-outlined text-[16px]">chat</span>
-                      <span data-i18n="loans.chat_btn">Chat</span>
-                    </button>
-                    ${isPending ? `
-                      <button onclick="cancelBorrowRequest('${b.id}')" class="flex-1 md:flex-initial px-4 py-2 rounded-xl bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 font-semibold text-xs flex items-center justify-center gap-1.5 shadow-sm cursor-pointer">
+                  <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
+                    ${isAgreed ? `
+                      <button onclick="openLoanChatModal('${safeId}')" class="flex-1 md:flex-initial px-3.5 py-2 rounded-xl bg-emerald-light hover:bg-emerald-100 text-emerald-dark border border-emerald-200 font-semibold text-xs flex items-center justify-center gap-1.5 cursor-pointer transition-colors">
+                        <span class="material-symbols-outlined text-[16px]">chat</span>
+                        <span data-i18n="loans.chat_call_btn">Chat & Call</span>
+                      </button>
+                    ` : `
+                      <span class="flex-1 md:flex-initial px-3 py-2 rounded-xl bg-surface-container-low text-on-surface-variant text-[11px] font-medium flex items-center justify-center gap-1">
+                        <span class="material-symbols-outlined text-[14px]">lock</span>
+                        <span data-i18n="loans.chat_locked">Chat & Call unlock after acceptance</span>
+                      </span>
+                    `}
+                    ${isPending || isDeclined || isReturned ? `
+                      <button onclick="cancelBorrowRequest('${safeId}')" class="flex-1 md:flex-initial px-4 py-2 rounded-xl bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 font-semibold text-xs flex items-center justify-center gap-1.5 shadow-sm cursor-pointer">
                         <span class="material-symbols-outlined text-[16px]">close</span>
-                        <span>Cancel Request</span>
+                        <span>${isPending ? 'Cancel Request' : 'Dismiss'}</span>
                       </button>
                     ` : (isOverdue ? `
                       <button onclick="openReturnModal('${safeTitle}', '${safeLender}', '₹${Math.round(b.deposit || 200)}', '${safeLoc}')" class="flex-1 md:flex-initial px-4 py-2 rounded-xl bg-error hover:bg-red-700 text-white font-semibold text-xs flex items-center justify-center gap-1.5 shadow-sm cursor-pointer">
@@ -2411,31 +2599,30 @@
                 <span class="text-[11px] text-secondary font-semibold bg-blue-50 px-2 py-0.5 rounded-full">Awaiting peer confirmation</span>
               </div>
               ${pendingBorrows.map(pb => {
-                const safeTitle = (pb.title || '').replace(/'/g, "\\'");
-                const safeLender = (pb.lenderName || '').replace(/'/g, "\\'");
+                const safeId = escapeHtml(String(pb.id || '').replace(/['"\\]/g, ''));
                 return `
                   <div class="bg-white rounded-3xl p-6 border-2 border-amber-300 shadow-subtle flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
                     <div class="flex items-center gap-4">
                       <div class="w-20 h-20 rounded-2xl overflow-hidden bg-surface-container-low shrink-0 border border-slate-100">
-                        <img src="${pb.image}" alt="${pb.title}" class="w-full h-full object-cover">
+                        <img src="${escapeHtml(pb.image)}" alt="${escapeHtml(pb.title)}" class="w-full h-full object-cover">
                       </div>
                       <div>
                         <div class="flex items-center gap-2 mb-1">
                           <span class="px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 border border-amber-300 text-[11px] font-bold">OUTGOING REQUEST</span>
                           <span class="text-xs text-primary font-bold">Total Rental: ₹${Math.round(pb.totalFee || 150)}</span>
                         </div>
-                        <h3 class="font-display font-bold text-lg text-primary">${pb.title}</h3>
+                        <h3 class="font-display font-bold text-lg text-primary">${escapeHtml(pb.title)}</h3>
                         <p class="text-xs text-on-surface-variant mt-0.5">
-                          Owner: <strong>${pb.lenderName}</strong> (${pb.lenderDept}) • ${pb.borrowDays || 3} Days rental • ${pb.location}
+                          Owner: <strong>${escapeHtml(pb.lenderName)}</strong> (${escapeHtml(pb.lenderDept)}) • ${pb.borrowDays || 3} Days rental • ${escapeHtml(pb.location)}
                         </p>
                       </div>
                     </div>
-                    <div class="flex items-center gap-2">
-                      <button onclick="showToast('Opened chat with ${safeLender}', 'info')" class="px-3 py-2 rounded-xl bg-surface-container-low hover:bg-surface-container text-primary font-semibold text-xs flex items-center gap-1 cursor-pointer">
-                        <span class="material-symbols-outlined text-[16px]">chat</span>
-                        <span>Chat</span>
-                      </button>
-                      <button onclick="cancelBorrowRequest('${pb.id}')" class="px-4 py-2 rounded-xl bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 font-semibold text-xs shadow-sm cursor-pointer">
+                    <div class="flex flex-wrap items-center gap-2">
+                      <span class="px-3 py-2 rounded-xl bg-surface-container-low text-on-surface-variant text-[11px] font-medium flex items-center gap-1">
+                        <span class="material-symbols-outlined text-[14px]">lock</span>
+                        <span data-i18n="loans.chat_locked">Chat & Call unlock after acceptance</span>
+                      </span>
+                      <button onclick="cancelBorrowRequest('${safeId}')" class="px-4 py-2 rounded-xl bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 font-semibold text-xs shadow-sm cursor-pointer">
                         Cancel Request
                       </button>
                     </div>
@@ -2453,7 +2640,7 @@
                 <span class="material-symbols-outlined text-amber-600 text-[18px]">inbox</span>
                 <span>Incoming Requests for Your Gear (${incomingReqs.length})</span>
               </h3>
-              <span class="text-[11px] text-outline">Action required</span>
+              <span class="text-[11px] text-outline">Accepting unlocks Chat & Call for both parties</span>
             </div>
         `;
 
@@ -2466,30 +2653,31 @@
           `;
         } else {
           reqHtml += incomingReqs.map(r => {
-            const safeTitle = (r.title || '').replace(/'/g, "\\'");
+            const safeTitle = escapeHtml(r.title || '').replace(/'/g, "\\'");
+            const safeId = escapeHtml(String(r.id || '').replace(/['"\\]/g, ''));
             return `
-              <div class="bg-white rounded-3xl p-6 border border-surface-container shadow-subtle flex flex-col md:flex-row items-start md:items-center justify-between gap-6" id="${r.id}">
+              <div class="bg-white rounded-3xl p-6 border border-surface-container shadow-subtle flex flex-col md:flex-row items-start md:items-center justify-between gap-6" id="${safeId}">
                 <div class="flex items-center gap-4">
                   <div class="w-20 h-20 rounded-2xl overflow-hidden bg-surface-container-low shrink-0 border border-slate-100">
-                    <img src="${r.image}" alt="${r.title}" class="w-full h-full object-cover">
+                    <img src="${escapeHtml(r.image)}" alt="${escapeHtml(r.title)}" class="w-full h-full object-cover">
                   </div>
                   <div>
                     <div class="flex items-center gap-2 mb-1">
                       <span class="px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[11px] font-bold" data-i18n="loans.badge_incoming_req">INCOMING REQUEST</span>
-                      <span class="text-xs text-primary font-bold"><span data-i18n="loans.total_earnings">Total Earnings</span>: ${r.earnings}</span>
+                      <span class="text-xs text-primary font-bold"><span data-i18n="loans.total_earnings">Total Earnings</span>: ${escapeHtml(r.earnings)}</span>
                     </div>
-                    <h3 class="font-display font-bold text-lg text-primary">${r.title}</h3>
+                    <h3 class="font-display font-bold text-lg text-primary">${escapeHtml(r.title)}</h3>
                     <p class="text-xs text-on-surface-variant mt-0.5">
-                      <span data-i18n="loans.requested_by">Requested by:</span> <strong>${r.requesterName}</strong> (${r.requesterDept}) • ${r.rentalPeriod}
+                      <span data-i18n="loans.requested_by">Requested by:</span> <strong>${escapeHtml(r.requesterName)}</strong> (${escapeHtml(r.requesterDept)}) • ${escapeHtml(r.rentalPeriod)}
                     </p>
                   </div>
                 </div>
 
                 <div class="flex items-center gap-2">
-                  <button onclick="dismissRequest('${r.id}', '${safeTitle}')" class="px-3 py-2 rounded-xl bg-surface-container-low hover:bg-red-50 text-outline hover:text-error font-semibold text-xs cursor-pointer" data-i18n="loans.decline_btn">
+                  <button onclick="dismissRequest('${safeId}', '${safeTitle}')" class="px-3 py-2 rounded-xl bg-surface-container-low hover:bg-red-50 text-outline hover:text-error font-semibold text-xs cursor-pointer" data-i18n="loans.decline_btn">
                     Decline
                   </button>
-                  <button onclick="acceptRequest('${r.id}', '${safeTitle}')" class="px-4 py-2 rounded-xl bg-secondary hover:bg-secondary-hover text-white font-semibold text-xs shadow-sm cursor-pointer" data-i18n="loans.accept_handover_btn">
+                  <button onclick="acceptRequest('${safeId}', '${safeTitle}')" class="px-4 py-2 rounded-xl bg-secondary hover:bg-secondary-hover text-white font-semibold text-xs shadow-sm cursor-pointer" data-i18n="loans.accept_handover_btn">
                     Accept Handover
                   </button>
                 </div>
@@ -2516,31 +2704,31 @@
           `;
         } else {
           lendingPane.innerHTML = lends.map(l => {
-            const safeBorrower = (l.borrowerName || '').replace(/'/g, "\\'");
+            const safeId = escapeHtml(String(l.loanId || l.id || '').replace(/['"\\]/g, ''));
             return `
               <div class="bg-white rounded-3xl p-6 border border-surface-container shadow-subtle flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
                 <div class="flex items-center gap-4">
                   <div class="w-20 h-20 rounded-2xl overflow-hidden bg-surface-container-low shrink-0 border border-slate-100">
-                    <img src="${l.image}" alt="${l.title}" class="w-full h-full object-cover">
+                    <img src="${escapeHtml(l.image)}" alt="${escapeHtml(l.title)}" class="w-full h-full object-cover">
                   </div>
                   <div>
                     <div class="flex items-center gap-2 mb-1">
-                      <span class="px-2.5 py-0.5 rounded-full ${l.statusBadgeColor || 'bg-emerald-100 text-emerald-800'} text-[11px] font-bold">${l.statusBadge || 'LENT OUT'}</span>
-                      <span class="text-xs text-emerald-700 font-semibold">${l.dueText}</span>
+                      <span class="px-2.5 py-0.5 rounded-full ${l.statusBadgeColor || 'bg-emerald-100 text-emerald-800'} text-[11px] font-bold">${escapeHtml(l.statusBadge || 'LENT OUT')}</span>
+                      <span class="text-xs text-emerald-700 font-semibold">${escapeHtml(l.dueText)}</span>
                     </div>
-                    <h3 class="font-display font-bold text-lg text-primary">${l.title}</h3>
+                    <h3 class="font-display font-bold text-lg text-primary">${escapeHtml(l.title)}</h3>
                     <p class="text-xs text-on-surface-variant mt-0.5">
-                      Borrower: <strong>${l.borrowerName}</strong> (${l.borrowerDept}) • Earned ${l.earnings}
+                      Borrower: <strong>${escapeHtml(l.borrowerName)}</strong> (${escapeHtml(l.borrowerDept)}) • Earned ${escapeHtml(l.earnings)}
                     </p>
                   </div>
                 </div>
 
                 <div class="flex items-center gap-2">
-                  <button onclick="showToast('Sent ping message to ${safeBorrower}', 'info')" class="px-3 py-2 rounded-xl bg-surface-container-low hover:bg-surface-container text-primary font-semibold text-xs flex items-center gap-1 cursor-pointer">
+                  <button onclick="openLoanChatModal('${safeId}')" class="px-3.5 py-2 rounded-xl bg-emerald-light hover:bg-emerald-100 text-emerald-dark border border-emerald-200 font-semibold text-xs flex items-center gap-1.5 cursor-pointer transition-colors">
                     <span class="material-symbols-outlined text-[16px]">chat</span>
-                    <span data-i18n="loans.message_btn">Message</span>
+                    <span data-i18n="loans.chat_call_btn">Chat & Call</span>
                   </button>
-                  <button onclick="markReturned('${l.id}')" class="px-4 py-2 rounded-xl bg-primary hover:bg-primary-hover text-white font-semibold text-xs flex items-center gap-1.5 shadow-sm cursor-pointer">
+                  <button onclick="markReturned('${safeId}')" class="px-4 py-2 rounded-xl bg-primary hover:bg-primary-hover text-white font-semibold text-xs flex items-center gap-1.5 shadow-sm cursor-pointer">
                     <span class="material-symbols-outlined text-[16px]">check_circle</span>
                     <span data-i18n="loans.mark_returned_btn">Mark Returned</span>
                   </button>
@@ -2559,12 +2747,24 @@
         const remoteBorrows = await CampusLendAPI.getBorrowerLoans(uId);
         if (Array.isArray(remoteBorrows)) {
           let localBorrows = getUserBorrows();
-          // Filter to ensure only items for this student are kept
           localBorrows = localBorrows.filter(lb => !lb.borrowerId || String(lb.borrowerId).toUpperCase() === uId.toUpperCase());
 
           remoteBorrows.forEach(rb => {
-            const exists = localBorrows.find(lb => lb.id === rb.id || (lb.itemId === rb.itemId && Math.abs((lb.createdAt || 0) - (rb.createdAt ? rb.createdAt * 1000 : 0)) < 10000));
-            if (!exists) {
+            const st = String(rb.status || "PENDING").toUpperCase();
+            const isAgreed = isLoanAgreedStatus(st);
+            const isDeclined = st === "DECLINED";
+            const isReturned = st === "RETURNED";
+            const statusBadge = isAgreed ? "BORROWED" : (isDeclined ? "DECLINED" : (isReturned ? "RETURNED" : "REQUEST PENDING"));
+            const statusBadgeColor = isAgreed
+              ? "bg-blue-50 text-secondary border border-blue-200"
+              : (isDeclined ? "bg-red-50 text-error border border-red-200" : "bg-amber-100 text-amber-900 border border-amber-300 font-bold");
+            const dueText = isAgreed
+              ? `Due in ${rb.borrowDays || 3} days`
+              : (isDeclined ? "Request declined by owner" : (isReturned ? "Returned" : `Requested for ${rb.borrowDays || 3} days • Awaiting Lender Handover`));
+            const dueBadge = isAgreed ? "event" : "schedule";
+
+            const existing = localBorrows.find(lb => lb.id === rb.id || (lb.itemId === rb.itemId && Math.abs((lb.createdAt || 0) - (rb.createdAt ? rb.createdAt * 1000 : 0)) < 10000));
+            if (!existing) {
               localBorrows.unshift({
                 id: rb.id,
                 itemId: rb.itemId,
@@ -2572,39 +2772,64 @@
                 image: rb.itemImage || (items.find(i => i.id === rb.itemId) || {}).image || "https://lh3.googleusercontent.com/aida-public/AB6AXuCwzEoEAOySUGjNOHtVUJfX4kzk2JoXBWr8O_2W6OlPBOBEyzFpdkwPF9maQ9UpdNsMNhfCUS2r3co300xpXSH1WgDkybFb8GNzCGFQuiKrPsYr-hmZl5O8hYxVk-y9cXuGdkTrUC89_-faqEUSw6bHHB1b3BkIkLNRObwI4vphIge7osJfNg6G1RmPKoEmOoxAuMrEH7yfzjBIMWa_DCjAE0B1vTF0hLqb6MycvIIR",
                 location: rb.location || "PSG iTech Campus",
                 borrowerId: rb.borrowerId || uId,
+                lenderId: rb.lenderId || "",
                 lenderName: rb.lenderName || "PSG iTech Classmate",
                 lenderDept: rb.lenderDept || "PSG iTech",
+                lenderPhone: isAgreed ? (rb.lenderPhone || rb.peerPhone || "") : "",
+                peerPhone: isAgreed ? (rb.peerPhone || rb.lenderPhone || "") : "",
+                chatUnlocked: isAgreed,
                 dailyPrice: rb.dailyPrice || 50.00,
                 deposit: rb.securityDeposit || 200.00,
                 totalFee: rb.totalFee || 150.00,
                 borrowDays: rb.borrowDays || 3,
-                status: rb.status || "PENDING",
-                statusBadge: rb.status === "ACCEPTED" ? "BORROWED" : "REQUEST PENDING",
-                statusBadgeColor: rb.status === "ACCEPTED" ? "bg-blue-50 text-secondary border border-blue-200" : "bg-amber-100 text-amber-900 border border-amber-300 font-bold",
-                dueText: rb.status === "ACCEPTED" ? `Due in ${rb.borrowDays || 3} days` : `Requested for ${rb.borrowDays || 3} days • Awaiting Lender Handover`,
-                dueBadge: rb.status === "ACCEPTED" ? "event" : "schedule",
+                status: st,
+                statusBadge,
+                statusBadgeColor,
+                dueText,
+                dueBadge,
                 createdAt: rb.createdAt ? rb.createdAt * 1000 : Date.now()
               });
+            } else {
+              existing.id = rb.id;
+              existing.status = st;
+              existing.statusBadge = statusBadge;
+              existing.statusBadgeColor = statusBadgeColor;
+              existing.dueText = dueText;
+              existing.dueBadge = dueBadge;
+              existing.chatUnlocked = isAgreed;
+              existing.lenderPhone = isAgreed ? (rb.lenderPhone || rb.peerPhone || existing.lenderPhone || "") : "";
+              existing.peerPhone = isAgreed ? (rb.peerPhone || rb.lenderPhone || existing.peerPhone || "") : "";
             }
           });
           saveUserBorrows(localBorrows);
           renderLoansDashboard();
         }
 
-        // Also fetch incoming requests for items owned by this user
+        // Fetch incoming requests & agreed lends owned by this user
         if (CampusLendAPI.getLenderLoans) {
           const remoteLends = await CampusLendAPI.getLenderLoans(uId);
           if (Array.isArray(remoteLends)) {
             let localReqs = getUserRequests();
+            let localLends = getUserLends();
+            const remoteById = new Map(remoteLends.map(rl => [rl.id, rl]));
+
+            // Remove stale PENDING requests that were accepted/declined on the server
+            localReqs = localReqs.filter(r => {
+              const match = remoteById.get(r.id);
+              return !match || String(match.status || "").toUpperCase() === "PENDING";
+            });
+
             remoteLends.forEach(rl => {
-              if (rl.status === "PENDING") {
-                const exists = localReqs.find(r => r.id === rl.id);
-                if (!exists) {
+              const st = String(rl.status || "PENDING").toUpperCase();
+              if (st === "PENDING") {
+                if (!localReqs.some(r => r.id === rl.id)) {
                   localReqs.unshift({
                     id: rl.id,
                     itemId: rl.itemId,
                     title: rl.itemTitle || "Gear Request",
                     image: rl.itemImage || "https://lh3.googleusercontent.com/aida-public/AB6AXuBw5EJSfzwMOKh7CHb1318qHLtHVHxxCTQU8Kcz-uXwL0-jIbnyKqFL1FQL803NdVQZkLDXXLUkbnn1OAXQHJ1rFFnYXK5aG7pNGpHoBdoZML2e1sIrQ2L99B_CH9X8RSGe4V6oyPCfq73jCP1xW6qpIZ9rSvC8MboAv3TS_vo01sVW1JtUeLmUwrhFL71Exiho87iD-ulGXygtVEMXyWtMAAbyeghydJIDAl8J8mgP",
+                    borrowerId: rl.borrowerId || "",
+                    borrowerEmail: rl.borrowerEmail || "",
                     requesterName: rl.borrowerName || "Classmate",
                     requesterDept: rl.borrowerDept || "Student Peer",
                     rentalPeriod: `${rl.borrowDays || 3} Days rental`,
@@ -2614,35 +2839,114 @@
                     createdAt: rl.createdAt ? rl.createdAt * 1000 : Date.now()
                   });
                 }
+              } else if (isLoanAgreedStatus(st)) {
+                const existingLend = localLends.find(l => l.id === rl.id || l.loanId === rl.id);
+                const lendData = {
+                  id: rl.id,
+                  loanId: rl.id,
+                  itemId: rl.itemId,
+                  title: rl.itemTitle || "Campus Item",
+                  image: rl.itemImage || (items.find(i => i.id === rl.itemId) || {}).image || "",
+                  borrowerId: rl.borrowerId || "",
+                  borrowerEmail: rl.borrowerEmail || "",
+                  borrowerName: rl.borrowerName || "Classmate",
+                  borrowerDept: rl.borrowerDept || "Student Peer",
+                  borrowerPhone: rl.borrowerPhone || rl.peerPhone || "",
+                  peerPhone: rl.peerPhone || rl.borrowerPhone || "",
+                  chatUnlocked: true,
+                  earnings: `₹${Math.round(rl.totalFee || 90)}`,
+                  status: st,
+                  statusBadge: "LENT OUT",
+                  statusBadgeColor: "bg-emerald-100 text-emerald-800 border border-emerald-200",
+                  dueText: `Returns in ${rl.borrowDays || 3} days`,
+                  createdAt: rl.createdAt ? rl.createdAt * 1000 : Date.now()
+                };
+                if (!existingLend) {
+                  localLends.unshift(lendData);
+                } else {
+                  Object.assign(existingLend, lendData);
+                }
+              } else if (st === "RETURNED" || st === "DECLINED") {
+                localLends = localLends.filter(l => l.id !== rl.id && l.loanId !== rl.id);
               }
             });
+
             saveUserRequests(localReqs);
+            saveUserLends(localLends);
             renderLoansDashboard();
+            renderProfileRequests();
+            renderNotifications();
           }
         }
+        if (activeItem) updateDetailPeerChatButton(activeItem);
       } catch (e) {
         console.log("[CampusLend] Remote loan sync notice:", e.message);
       }
     }
 
-    function executeBorrowRequest() {
+    async function executeBorrowRequest() {
       if (!activeItem) return;
+      if (currentUser && currentUser.studentId && activeItem.ownerId &&
+          String(activeItem.ownerId).trim().toUpperCase() === String(currentUser.studentId).trim().toUpperCase()) {
+        showToast("You cannot borrow your own listing.", "error");
+        return;
+      }
+
       const rentalTotal = (activeItem.dailyPrice * borrowDays).toFixed(2);
       const deposit = activeItem.depositHold || activeItem.securityDeposit || 200.00;
+      let loanId = "loan-" + Date.now();
+      let remoteCreated = null;
 
-      // 1. Create borrow record scoped to current user
+      // Sync to backend first when authenticated so borrower & lender share exact server loanId
+      const hasToken = Boolean(localStorage.getItem("campuslend_token"));
+      if (hasToken && window.CampusLendAPI && window.CampusLendAPI.requestLoan) {
+        try {
+          remoteCreated = await window.CampusLendAPI.requestLoan({
+            itemId: activeItem.id,
+            itemTitle: activeItem.title,
+            itemImage: activeItem.image || activeItem.imageUrl,
+            borrowerId: currentUser.studentId || "25Z295",
+            borrowerName: currentUser.name || "Student Peer",
+            borrowerEmail: currentUser.email || "",
+            lenderId: activeItem.ownerId || "",
+            lenderName: activeItem.lenderName || activeItem.ownerName || "PSG iTech Classmate",
+            lenderDept: activeItem.lenderDept || activeItem.ownerDept || "PSG iTech",
+            location: activeItem.location || "PSG iTech Campus",
+            borrowDays: borrowDays,
+            dailyPrice: activeItem.dailyPrice,
+            securityDeposit: deposit,
+            totalFee: parseFloat(rentalTotal)
+          });
+          if (remoteCreated && remoteCreated.id) {
+            loanId = remoteCreated.id;
+          }
+        } catch (err) {
+          const msg = (err && err.message) ? err.message : "";
+          const isNetworkErr = err.name === "TypeError" || msg.includes("Failed to fetch") || msg.includes("NetworkError") || msg.includes("Load failed");
+          if (!isNetworkErr) {
+            showToast(msg || "Could not submit borrow request.", "error");
+            return;
+          }
+          console.log("[CampusLend] Offline borrow request fallback active");
+        }
+      }
+
+      // 1. Create borrow record scoped to current user (phone & chat stay locked until lender accepts)
       const newBorrow = {
-        id: "loan-" + Date.now(),
+        id: loanId,
         itemId: activeItem.id,
         title: activeItem.title,
         image: activeItem.image || activeItem.imageUrl,
         location: activeItem.location || "PSG iTech Campus",
         borrowerId: currentUser.studentId || "25Z295",
-        borrowerName: currentUser.name || "Sharvesh Mahi",
+        borrowerName: currentUser.name || "Student Peer",
         borrowerEmail: currentUser.email || "",
-        lenderId: activeItem.ownerId || "715521104001",
+        lenderId: activeItem.ownerId || "",
         lenderName: activeItem.lenderName || activeItem.ownerName || "PSG iTech Classmate",
         lenderDept: activeItem.lenderDept || activeItem.ownerDept || "PSG iTech",
+        lenderPhone: "",
+        peerPhone: "",
+        chatUnlocked: false,
         dailyPrice: activeItem.dailyPrice,
         deposit: deposit,
         totalFee: parseFloat(rentalTotal),
@@ -2657,12 +2961,14 @@
 
       // 2. Add to user's borrow list & persist in scoped storage
       const borrows = getUserBorrows();
-      borrows.unshift(newBorrow);
-      saveUserBorrows(borrows);
+      if (!borrows.some(b => b.id === newBorrow.id)) {
+        borrows.unshift(newBorrow);
+        saveUserBorrows(borrows);
+      }
 
-      // 3. Add to lender's incoming requests in scoped local storage
+      // 3. Mirror to lender's local request queue only in offline/same-browser fallback
       const lenderKey = (activeItem.ownerId || "").toUpperCase();
-      if (lenderKey) {
+      if (lenderKey && !remoteCreated) {
         try {
           const lenderReqKey = `campuslend_user_requests_${lenderKey}`;
           const existing = JSON.parse(localStorage.getItem(lenderReqKey) || "[]");
@@ -2672,6 +2978,8 @@
               itemId: activeItem.id,
               title: activeItem.title,
               image: activeItem.image || activeItem.imageUrl,
+              borrowerId: currentUser.studentId || "",
+              borrowerEmail: currentUser.email || "",
               requesterName: currentUser.name || "Peer Student",
               requesterDept: currentUser.department || currentUser.dept || "Student Peer",
               rentalPeriod: `${borrowDays} days`,
@@ -2684,32 +2992,12 @@
         } catch (e) {}
       }
 
-      // 4. Immediately render updated dashboard
+      // 4. Immediately render updated dashboard & detail view
       renderLoansDashboard();
-
-      // 5. Send request to backend API (persisting in MongoDB)
-      if (window.CampusLendAPI && window.CampusLendAPI.requestLoan) {
-        window.CampusLendAPI.requestLoan({
-          itemId: activeItem.id,
-          itemTitle: activeItem.title,
-          itemImage: activeItem.image || activeItem.imageUrl,
-          borrowerId: currentUser.studentId || "25Z295",
-          borrowerName: currentUser.name || "Sharvesh Mahi",
-          borrowerEmail: currentUser.email || "",
-          lenderId: activeItem.ownerId || "715521104001",
-          lenderName: activeItem.lenderName || activeItem.ownerName || "PSG iTech Classmate",
-          lenderDept: activeItem.lenderDept || activeItem.ownerDept || "PSG iTech",
-          location: activeItem.location || "PSG iTech Campus",
-          borrowDays: borrowDays,
-          dailyPrice: activeItem.dailyPrice,
-          securityDeposit: deposit,
-          totalFee: parseFloat(rentalTotal)
-        }).catch(e => console.log("[CampusLend] Standalone offline loan request recorded"));
-      }
-
+      if (activeItem) updateDetailPeerChatButton(activeItem);
       showToast(`${t('toast.borrow_request_sent', 'Borrow request sent')} (${activeItem.title} → ${newBorrow.lenderName}, ₹${Math.round(rentalTotal)})!`, "success");
 
-      // 5. Navigate to my-loans and show the borrowing tab where the item is now visible at the very top!
+      // 5. Navigate to my-loans and show borrowing tab
       setTimeout(() => {
         navigateView("my-loans");
         switchLoansTab("borrowing");
@@ -2721,24 +3009,63 @@
       const idx = borrows.findIndex(b => b.id === borrowId);
       if (idx >= 0) {
         const title = borrows[idx].title;
+        const lenderKey = (borrows[idx].lenderId || "").toUpperCase();
         borrows.splice(idx, 1);
         saveUserBorrows(borrows);
-        renderLoansDashboard();
-        if (window.CampusLendAPI && window.CampusLendAPI.apiRequest) {
-          window.CampusLendAPI.apiRequest(`/loans/${borrowId}`, { method: "DELETE" }).catch(() => {});
+
+        if (lenderKey) {
+          try {
+            const reqKey = `campuslend_user_requests_${lenderKey}`;
+            const reqList = JSON.parse(localStorage.getItem(reqKey) || "[]").filter(r => r.id !== borrowId);
+            localStorage.setItem(reqKey, JSON.stringify(reqList));
+          } catch (_) {}
         }
-        showToast(`Borrow request for "${title}" has been cancelled. Escrow hold released.`, "info");
+
+        renderLoansDashboard();
+        if (activeItem) updateDetailPeerChatButton(activeItem);
+        if (window.CampusLendAPI && window.CampusLendAPI.apiRequest) {
+          window.CampusLendAPI.apiRequest(`/loans/${encodeURIComponent(borrowId)}`, { method: "DELETE" }).catch(() => {});
+        }
+        showToast(`Borrow request for "${title}" removed. Escrow hold released.`, "info");
       }
     }
 
-    function markReturned(lendId) {
+    async function markReturned(lendId) {
       let lends = getUserLends();
-      const idx = lends.findIndex(l => l.id === lendId);
+      const idx = lends.findIndex(l => l.id === lendId || l.loanId === lendId);
       if (idx >= 0) {
         const item = lends[idx];
+        const canonicalId = item.loanId || item.id;
         lends.splice(idx, 1);
         saveUserLends(lends);
+
+        // Update matching local borrow record if in same browser
+        try {
+          for (let i = 0; i < localStorage.length; i++) {
+            const k = localStorage.key(i);
+            if (k && k.startsWith("campuslend_user_borrows_")) {
+              const bList = JSON.parse(localStorage.getItem(k) || "[]");
+              let changed = false;
+              bList.forEach(b => {
+                if (b.id === canonicalId) {
+                  b.status = "RETURNED";
+                  b.statusBadge = "RETURNED";
+                  b.dueText = "Returned";
+                  b.chatUnlocked = false;
+                  changed = true;
+                }
+              });
+              if (changed) localStorage.setItem(k, JSON.stringify(bList));
+            }
+          }
+        } catch (_) {}
+
+        if (window.CampusLendAPI && window.CampusLendAPI.updateLoanStatus && localStorage.getItem("campuslend_token")) {
+          CampusLendAPI.updateLoanStatus(canonicalId, "RETURNED").catch(() => {});
+        }
+        if (activeChatLoanId === canonicalId) closeLoanChatModal();
         renderLoansDashboard();
+        if (activeItem) updateDetailPeerChatButton(activeItem);
         showToast(`Return confirmed for "${item.title}". ${item.earnings} transferred to your campus balance!`, "success");
       }
     }
@@ -2751,10 +3078,10 @@
         const btn = document.getElementById(`tabBtn${capitalize(t)}`);
         if (t === tabKey) {
           if (pane) pane.classList.remove("hidden");
-          if (btn) btn.className = "flex-1 py-2 px-4 rounded-xl text-xs font-bold bg-secondary text-white shadow-sm transition-all flex items-center justify-center gap-2";
+          if (btn) btn.className = "flex-1 py-2 px-3 sm:px-4 rounded-xl text-xs font-bold bg-secondary text-white shadow-sm transition-all flex items-center justify-center gap-2 whitespace-nowrap shrink-0";
         } else {
           if (pane) pane.classList.add("hidden");
-          if (btn) btn.className = "flex-1 py-2 px-4 rounded-xl text-xs font-bold text-on-surface-variant hover:text-primary transition-all flex items-center justify-center gap-2";
+          if (btn) btn.className = "flex-1 py-2 px-3 sm:px-4 rounded-xl text-xs font-bold text-on-surface-variant hover:text-primary transition-all flex items-center justify-center gap-2 whitespace-nowrap shrink-0";
         }
       });
     }
@@ -2782,32 +3109,61 @@
       showToast(t("toast.handover_confirmed", "Handover verified! Security deposit refunded to your account ⚡ +50 Karma Points"), "success");
     }
 
-    function acceptRequest(cardId, itemTitle) {
+    async function acceptRequest(cardId, itemTitle) {
       let reqs = getUserRequests();
       const idx = reqs.findIndex(r => r.id === cardId);
       if (idx >= 0) {
         const req = reqs[idx];
+
+        let serverLoan = null;
+        if (window.CampusLendAPI && window.CampusLendAPI.updateLoanStatus && localStorage.getItem("campuslend_token")) {
+          try {
+            const res = await CampusLendAPI.updateLoanStatus(cardId, "ACCEPTED");
+            serverLoan = (res && res.loan) ? res.loan : null;
+          } catch (err) {
+            const msg = (err && err.message) ? err.message : "";
+            const isNetworkErr = err.name === "TypeError" || msg.includes("Failed to fetch") || msg.includes("NetworkError");
+            if (!isNetworkErr) {
+              showToast(msg || "Unable to accept request.", "error");
+              return;
+            }
+          }
+        }
+
         reqs.splice(idx, 1);
         saveUserRequests(reqs);
 
+        const resolvedBorrowerPhone =
+          (serverLoan && (serverLoan.borrowerPhone || serverLoan.peerPhone)) ||
+          lookupRegisteredPhone(req.borrowerId || req.borrowerEmail) ||
+          "";
+
         let lends = getUserLends();
+        const canonicalId = (serverLoan && serverLoan.id) || req.id;
         lends.unshift({
-          id: "lend-" + Date.now(),
+          id: canonicalId,
+          loanId: canonicalId,
           itemId: req.itemId,
           title: req.title,
           image: req.image,
+          borrowerId: req.borrowerId || "",
+          borrowerEmail: req.borrowerEmail || "",
           borrowerName: req.requesterName,
           borrowerDept: req.requesterDept,
+          borrowerPhone: resolvedBorrowerPhone,
+          peerPhone: resolvedBorrowerPhone,
+          chatUnlocked: true,
           earnings: req.earnings,
           status: "LENT OUT",
           statusBadge: "LENT OUT",
           statusBadgeColor: "bg-emerald-100 text-emerald-800 border border-emerald-200",
-          dueText: "Returns in 3 days",
+          dueText: "Agreed • Chat & Call active",
           createdAt: Date.now()
         });
         saveUserLends(lends);
 
-        // Also if borrower has record in local storage, update their status to ACTIVE/BORROWED
+        // If borrower has record in local storage (same-browser fallback), mark ACCEPTED and unlock Chat & Call
+        const lenderPhone = currentUser.phone || lookupRegisteredPhone(currentUser.studentId || currentUser.email) || "";
         try {
           for (let i = 0; i < localStorage.length; i++) {
             const k = localStorage.key(i);
@@ -2815,12 +3171,15 @@
               const bList = JSON.parse(localStorage.getItem(k) || "[]");
               let changed = false;
               bList.forEach(b => {
-                if (b.id === cardId) {
-                  b.status = "ACTIVE";
+                if (b.id === cardId || b.id === canonicalId) {
+                  b.status = "ACCEPTED";
                   b.statusBadge = "BORROWED";
                   b.statusBadgeColor = "bg-blue-50 text-secondary border border-blue-200";
-                  b.dueText = "Due in 3 days";
+                  b.dueText = `Due in ${b.borrowDays || 3} days`;
                   b.dueBadge = "event";
+                  b.chatUnlocked = true;
+                  b.lenderPhone = lenderPhone;
+                  b.peerPhone = lenderPhone;
                   changed = true;
                 }
               });
@@ -2834,14 +3193,18 @@
         renderProfileListings();
         renderNotifications();
         updateUserDisplay();
+        if (activeItem) updateDetailPeerChatButton(activeItem);
       }
-      showToast(`${t('toast.accepted_handover', 'Accepted handover. Chat connected!')} (${itemTitle})`, "success");
+      showToast(`${t('toast.accepted_handover', 'Accepted handover. Chat & Call unlocked!')} (${itemTitle})`, "success");
     }
 
-    function dismissRequest(cardId, itemTitle) {
+    async function dismissRequest(cardId, itemTitle) {
       let reqs = getUserRequests();
       const idx = reqs.findIndex(r => r.id === cardId);
       if (idx >= 0) {
+        if (window.CampusLendAPI && window.CampusLendAPI.updateLoanStatus && localStorage.getItem("campuslend_token")) {
+          CampusLendAPI.updateLoanStatus(cardId, "DECLINED").catch(() => {});
+        }
         reqs.splice(idx, 1);
         saveUserRequests(reqs);
 
@@ -2858,6 +3221,9 @@
                   b.statusBadge = "DECLINED";
                   b.statusBadgeColor = "bg-red-50 text-error border border-red-200";
                   b.dueText = "Request declined by owner";
+                  b.chatUnlocked = false;
+                  b.lenderPhone = "";
+                  b.peerPhone = "";
                   changed = true;
                 }
               });
@@ -2872,6 +3238,232 @@
         updateUserDisplay();
       }
       showToast(`${t('toast.declined_request', 'Declined request')}: "${itemTitle}"`, "info");
+    }
+
+    // ================= AGREED PEER CHAT & DIRECT CALL CONTROLLER =================
+    let activeChatLoanId = null;
+    let activeChatPollTimer = null;
+    let loanAutoSyncTimer = null;
+
+    function getLocalLoanChatMessages(loanId) {
+      try {
+        const stored = localStorage.getItem(`campuslend_loan_chat_${loanId}`);
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (Array.isArray(parsed)) return parsed;
+        }
+      } catch (_) {}
+      return [];
+    }
+
+    function saveLocalLoanChatMessages(loanId, msgs) {
+      try {
+        const trimmed = Array.isArray(msgs) ? msgs.slice(-200) : [];
+        localStorage.setItem(`campuslend_loan_chat_${loanId}`, JSON.stringify(trimmed));
+      } catch (_) {}
+    }
+
+    function updateChatModalPhoneDisplay(peerPhone) {
+      const callBtn = document.getElementById("chatModalCallBtn");
+      const phoneText = document.getElementById("chatModalPeerPhoneText");
+      const noPhoneBadge = document.getElementById("chatModalNoPhoneBadge");
+      if (!callBtn || !phoneText || !noPhoneBadge) return;
+
+      const trimmed = String(peerPhone || "").trim();
+      const telHref = sanitizeTelHref(trimmed);
+      if (trimmed && telHref !== "#") {
+        callBtn.href = telHref;
+        phoneText.textContent = trimmed;
+        callBtn.classList.remove("hidden");
+        noPhoneBadge.classList.add("hidden");
+      } else {
+        callBtn.href = "#";
+        phoneText.textContent = "";
+        callBtn.classList.add("hidden");
+        noPhoneBadge.classList.remove("hidden");
+      }
+    }
+
+    function openLoanChatModal(loanId) {
+      const found = findAgreedLoanById(loanId);
+      if (!found || !isLoanAgreedStatus(found.loan.status)) {
+        showToast("Chat & Call unlock only after both parties agree on the request.", "info");
+        return;
+      }
+
+      const { loan, role } = found;
+      activeChatLoanId = loan.loanId || loan.id;
+
+      const peerName = role === "borrower" ? (loan.lenderName || "Lender") : (loan.borrowerName || "Borrower");
+      const peerId = role === "borrower" ? (loan.lenderId || loan.lenderEmail) : (loan.borrowerId || loan.borrowerEmail);
+      const fallbackPhone = lookupRegisteredPhone(peerId);
+      const peerPhone = (role === "borrower" ? (loan.peerPhone || loan.lenderPhone) : (loan.peerPhone || loan.borrowerPhone)) || fallbackPhone || "";
+
+      const initials = peerName
+        .split(/\s+/)
+        .filter(Boolean)
+        .slice(0, 2)
+        .map(w => w[0].toUpperCase())
+        .join("") || "CL";
+
+      const initialsEl = document.getElementById("chatModalPeerInitials");
+      const nameEl = document.getElementById("chatModalPeerName");
+      const subEl = document.getElementById("chatModalItemSubtitle");
+      if (initialsEl) initialsEl.textContent = initials;
+      if (nameEl) nameEl.textContent = peerName;
+      if (subEl) subEl.textContent = loan.title || "Campus Item";
+
+      updateChatModalPhoneDisplay(peerPhone);
+      renderLoanChatMessages(getLocalLoanChatMessages(activeChatLoanId), true);
+
+      const modal = document.getElementById("loanChatModal");
+      const box = document.getElementById("loanChatModalBox");
+      if (modal) modal.classList.remove("opacity-0", "pointer-events-none");
+      if (box) {
+        box.classList.remove("scale-95");
+        box.classList.add("scale-100");
+      }
+
+      const input = document.getElementById("chatModalInput");
+      if (input) setTimeout(() => input.focus(), 120);
+
+      refreshActiveLoanChat(true);
+      clearInterval(activeChatPollTimer);
+      activeChatPollTimer = setInterval(() => {
+        if (activeChatLoanId) refreshActiveLoanChat(false);
+      }, 3000);
+    }
+
+    function closeLoanChatModal() {
+      clearInterval(activeChatPollTimer);
+      activeChatPollTimer = null;
+      activeChatLoanId = null;
+
+      const modal = document.getElementById("loanChatModal");
+      const box = document.getElementById("loanChatModalBox");
+      if (modal) modal.classList.add("opacity-0", "pointer-events-none");
+      if (box) {
+        box.classList.add("scale-95");
+        box.classList.remove("scale-100");
+      }
+    }
+
+    async function refreshActiveLoanChat(forceScroll) {
+      if (!activeChatLoanId || !window.CampusLendAPI || !localStorage.getItem("campuslend_token")) return;
+      const targetId = activeChatLoanId;
+      try {
+        const res = await CampusLendAPI.getLoanMessages(targetId);
+        if (targetId !== activeChatLoanId || !res) return;
+
+        if (res.peerPhone) {
+          updateChatModalPhoneDisplay(res.peerPhone);
+        }
+        if (Array.isArray(res.messages)) {
+          const prevCount = getLocalLoanChatMessages(targetId).length;
+          saveLocalLoanChatMessages(targetId, res.messages);
+          renderLoanChatMessages(res.messages, forceScroll || res.messages.length > prevCount);
+        }
+      } catch (err) {
+        const msg = (err && err.message) ? err.message : "";
+        if (msg.includes("unlock only after") || msg.includes("403")) {
+          showToast(msg, "error");
+          closeLoanChatModal();
+        }
+      }
+    }
+
+    function renderLoanChatMessages(messages, scrollBottom = true) {
+      const container = document.getElementById("chatModalMessages");
+      if (!container) return;
+
+      if (!Array.isArray(messages) || messages.length === 0) {
+        container.innerHTML = `
+          <div class="h-full min-h-[240px] flex flex-col items-center justify-center text-center px-6 py-8">
+            <div class="w-12 h-12 rounded-2xl bg-emerald-light text-emerald-dark flex items-center justify-center mb-3">
+              <span class="material-symbols-outlined text-[24px]">forum</span>
+            </div>
+            <h4 class="font-display font-bold text-sm text-on-surface" data-i18n="chat.empty_title">${escapeHtml(typeof t === "function" ? t("chat.empty_title", "Coordinate Your Handover") : "Coordinate Your Handover")}</h4>
+            <p class="text-xs text-on-surface-variant max-w-xs mt-1 leading-relaxed" data-i18n="chat.empty_desc">${escapeHtml(typeof t === "function" ? t("chat.empty_desc", "Both parties agreed on this request. Chat right here or tap Call to phone directly.") : "Both parties agreed on this request. Chat right here or tap Call to phone directly.")}</p>
+          </div>
+        `;
+        return;
+      }
+
+      const myId = String(currentUser.studentId || "").trim().toUpperCase();
+      const myEmail = String(currentUser.email || "").trim().toLowerCase();
+
+      container.innerHTML = messages.map(m => {
+        const senderId = String(m.senderId || "").trim().toUpperCase();
+        const senderEmail = String(m.senderEmail || "").trim().toLowerCase();
+        const isMine = (myId && senderId === myId) || (myEmail && senderEmail === myEmail);
+        const timeMs = m.createdAt ? (m.createdAt > 1e12 ? m.createdAt : m.createdAt * 1000) : Date.now();
+        const timeStr = new Date(timeMs).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+
+        return `
+          <div class="flex flex-col ${isMine ? "items-end" : "items-start"}">
+            ${!isMine ? `<span class="text-[10px] font-semibold text-on-surface-variant px-2 mb-0.5">${escapeHtml(m.senderName || "Peer")}</span>` : ""}
+            <div class="max-w-[82%] px-3.5 py-2.5 rounded-2xl text-xs sm:text-sm leading-relaxed shadow-xs ${isMine ? "bg-primary text-white rounded-br-md" : "bg-white text-on-surface border border-black/[0.06] rounded-bl-md"}">
+              <p class="whitespace-pre-wrap break-words">${escapeHtml(m.text)}</p>
+            </div>
+            <span class="text-[10px] text-outline px-1.5 mt-0.5">${escapeHtml(timeStr)}</span>
+          </div>
+        `;
+      }).join("");
+
+      if (scrollBottom) {
+        container.scrollTop = container.scrollHeight;
+      }
+    }
+
+    async function sendLoanChatMessage() {
+      if (!activeChatLoanId) return;
+      const input = document.getElementById("chatModalInput");
+      const sendBtn = document.getElementById("chatModalSendBtn");
+      const text = input ? input.value.trim() : "";
+      if (!text) return;
+
+      const loanId = activeChatLoanId;
+      if (sendBtn) sendBtn.disabled = true;
+
+      try {
+        let savedMsg = null;
+        const hasToken = Boolean(localStorage.getItem("campuslend_token"));
+        if (hasToken && window.CampusLendAPI && window.CampusLendAPI.sendLoanMessage) {
+          try {
+            savedMsg = await CampusLendAPI.sendLoanMessage(loanId, text);
+          } catch (err) {
+            const msg = (err && err.message) ? err.message : "";
+            const isNetworkErr = err.name === "TypeError" || msg.includes("Failed to fetch") || msg.includes("NetworkError");
+            if (!isNetworkErr) {
+              showToast(msg || "Could not send message.", "error");
+              return;
+            }
+          }
+        }
+
+        if (!savedMsg) {
+          savedMsg = {
+            id: `msg-${Date.now()}`,
+            loanId,
+            senderId: currentUser.studentId || "",
+            senderEmail: currentUser.email || "",
+            senderName: currentUser.name || "Me",
+            text,
+            createdAt: Date.now() / 1000
+          };
+        }
+
+        const existing = getLocalLoanChatMessages(loanId);
+        if (!existing.some(m => m.id === savedMsg.id)) {
+          existing.push(savedMsg);
+        }
+        saveLocalLoanChatMessages(loanId, existing);
+        renderLoanChatMessages(existing, true);
+        if (input) input.value = "";
+      } finally {
+        if (sendBtn) sendBtn.disabled = false;
+        if (input) input.focus();
+      }
     }
 
     // ================= PROFILE & LISTINGS =================
@@ -2894,26 +3486,27 @@
       }
 
       container.innerHTML = requests.map(r => {
-        const safeTitle = (r.title || '').replace(/'/g, "\\'");
+        const safeTitle = escapeHtml(r.title || '').replace(/'/g, "\\'");
+        const safeId = escapeHtml(String(r.id || '').replace(/['"\\]/g, ''));
         return `
           <div class="bg-amber-50/40 rounded-2xl p-4 border border-amber-200/80 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div class="flex items-center gap-3">
               <div class="w-14 h-14 rounded-xl overflow-hidden bg-white border border-slate-100 shrink-0">
-                <img src="${r.image}" alt="${r.title}" class="w-full h-full object-cover">
+                <img src="${escapeHtml(r.image)}" alt="${escapeHtml(r.title)}" class="w-full h-full object-cover">
               </div>
               <div>
                 <span class="px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 text-[10px] font-bold uppercase">Borrow Request</span>
-                <h4 class="font-display font-bold text-sm text-primary mt-0.5">${r.title}</h4>
+                <h4 class="font-display font-bold text-sm text-primary mt-0.5">${escapeHtml(r.title)}</h4>
                 <p class="text-xs text-on-surface-variant">
-                  From: <strong>${r.requesterName}</strong> (${r.requesterDept}) • ${r.rentalPeriod} • <strong class="text-emerald-700">${r.earnings}</strong>
+                  From: <strong>${escapeHtml(r.requesterName)}</strong> (${escapeHtml(r.requesterDept)}) • ${escapeHtml(r.rentalPeriod)} • <strong class="text-emerald-700">${escapeHtml(r.earnings)}</strong>
                 </p>
               </div>
             </div>
             <div class="flex items-center gap-2 self-end sm:self-center">
-              <button onclick="dismissRequest('${r.id}', '${safeTitle}');" class="px-3 py-1.5 rounded-xl bg-white hover:bg-red-50 text-outline hover:text-error text-xs font-semibold border border-surface-container cursor-pointer">
+              <button onclick="dismissRequest('${safeId}', '${safeTitle}');" class="px-3 py-1.5 rounded-xl bg-white hover:bg-red-50 text-outline hover:text-error text-xs font-semibold border border-surface-container cursor-pointer">
                 Decline
               </button>
-              <button onclick="acceptRequest('${r.id}', '${safeTitle}');" class="px-3.5 py-1.5 rounded-xl bg-secondary hover:bg-secondary-hover text-white text-xs font-semibold shadow-sm cursor-pointer">
+              <button onclick="acceptRequest('${safeId}', '${safeTitle}');" class="px-3.5 py-1.5 rounded-xl bg-secondary hover:bg-secondary-hover text-white text-xs font-semibold shadow-sm cursor-pointer">
                 Accept Handover
               </button>
             </div>
@@ -3007,9 +3600,9 @@
       const nameInput = document.getElementById("editNameInput");
       const dormInput = document.getElementById("editDormInput");
       const phoneInput = document.getElementById("editPhoneInput");
-      if (nameInput) nameInput.value = currentUser.name || "Sharvesh Mahi";
+      if (nameInput) nameInput.value = currentUser.name || "";
       if (dormInput) dormInput.value = currentUser.dorm || "PSG iTech Campus Hostel Block A";
-      if (phoneInput) phoneInput.value = currentUser.phone || "+91 98400 12345";
+      if (phoneInput) phoneInput.value = currentUser.phone || "";
       document.getElementById("editProfileModal").classList.remove("opacity-0", "pointer-events-none");
     }
 
@@ -3028,9 +3621,14 @@
         return;
       }
 
+      if (!isValidPhoneNumber(phone)) {
+        showToast("Please enter a valid phone number (7-15 digits)", "error");
+        return;
+      }
+
       currentUser.name = name;
       currentUser.dorm = dorm || "PSG iTech Campus Hostel Block A";
-      if (phone) currentUser.phone = phone;
+      currentUser.phone = phone;
 
       // Update UI elements across page immediately
       updateUserDisplay();
@@ -3215,6 +3813,7 @@
       department: "",
       year: "",
       dorm: "",
+      phone: "",
       campus: "PSG Institute of Technology and Applied Research"
     };
 
@@ -3341,81 +3940,38 @@
       }
     }
 
-    const DEFAULT_REGISTERED_MEMBERS = [
-      {
-        name: "Sharvesh Mahi",
-        email: "25z295@psgitech.ac.in",
-        studentId: "25Z295",
-        password: "sharveshmahi",
-        department: "Computer Science & Engineering",
-        year: "Freshman",
-        dorm: "PSG iTech Campus Hostel Block A",
-        campus: "PSG Institute of Technology and Applied Research"
-      },
-      {
-        name: "Karthik Raja",
-        email: "715521104001@psgitech.ac.in",
-        studentId: "715521104001",
-        password: "password123",
-        department: "Computer Science & Engineering",
-        year: "Junior",
-        dorm: "PSG iTech Boys Hostel",
-        campus: "PSG Institute of Technology and Applied Research"
-      },
-      {
-        name: "Divya M.",
-        email: "715521104002@psgitech.ac.in",
-        studentId: "715521104002",
-        password: "password123",
-        department: "Electronics & Communication Engineering",
-        year: "Sophomore",
-        dorm: "PSG iTech Girls Hostel",
-        campus: "PSG Institute of Technology and Applied Research"
-      }
-    ];
-
+    // Local member cache intentionally contains no credentials. Passwords are
+    // only ever verified by the server (PBKDF2/BCrypt).
     function getLocalRegisteredUsers() {
       try {
         const stored = localStorage.getItem("campuslend_registered_users");
         if (stored) {
           const parsed = JSON.parse(stored);
-          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+          if (Array.isArray(parsed)) return parsed;
         }
       } catch (e) {}
-      localStorage.setItem("campuslend_registered_users", JSON.stringify(DEFAULT_REGISTERED_MEMBERS));
-      return DEFAULT_REGISTERED_MEMBERS;
+      return [];
     }
 
     function saveLocalRegisteredUser(user) {
       const users = getLocalRegisteredUsers();
+      // Never persist password-like fields in localStorage.
+      const safeUser = { ...user };
+      delete safeUser.password;
+      delete safeUser.passwordHash;
       const existingIdx = users.findIndex(u => 
         (u.email && u.email.toLowerCase() === (user.email || "").toLowerCase()) ||
         (u.studentId && u.studentId.toUpperCase() === (user.studentId || "").toUpperCase())
       );
       if (existingIdx >= 0) {
-        users[existingIdx] = { ...users[existingIdx], ...user };
+        users[existingIdx] = { ...users[existingIdx], ...safeUser };
       } else {
-        users.push(user);
+        users.push(safeUser);
       }
       localStorage.setItem("campuslend_registered_users", JSON.stringify(users));
     }
 
-    // Helper to auto-fill demo credentials
-    function fillDemoCredentials() {
-      const emailInput = document.getElementById("gatewayLoginEmail");
-      const passInput = document.getElementById("gatewayLoginPassword");
-      if (emailInput) emailInput.value = "25z295@psgitech.ac.in";
-      if (passInput) passInput.value = "sharveshmahi";
-      showToast("Pre-authorized demo credentials loaded (25z295@psgitech.ac.in / sharveshmahi)", "info");
-    }
-
-    // Helper for 1-click quick demo access from header
-    function handleQuickDemoAccess() {
-      fillDemoCredentials();
-      setTimeout(() => {
-        handleGatewayLogin();
-      }, 150);
-    }
+    // Demo auto-fill was removed: credentials must never be embedded in the client.
 
     function initAuth() {
       // Clean up legacy non-user-scoped storage so old shared borrows don't leak across accounts
@@ -3456,11 +4012,17 @@
         renderLoansDashboard();
         renderNotifications();
         syncRemoteLoans();
+        clearInterval(loanAutoSyncTimer);
+        loanAutoSyncTimer = setInterval(() => {
+          if (isAuthenticated && !document.hidden) syncRemoteLoans();
+        }, 8000);
         window.scrollTo({ top: 0, behavior: "smooth" });
         if (showNotification) {
           showToast(`${t("toast.welcome_user", "Welcome to LendLoop")}, ${currentUser.name.split(' ')[0]}!`, "success");
         }
       } else {
+        clearInterval(loanAutoSyncTimer);
+        loanAutoSyncTimer = null;
         if (gateway) gateway.classList.remove("hidden");
         if (appShell) appShell.classList.add("hidden");
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -3578,10 +4140,11 @@
           currentUser.department = studentData.department || currentUser.department || "Computer Science & Engineering";
           currentUser.dorm = studentData.dormLocation || studentData.dorm || "PSG iTech Campus Hostel Block A";
           currentUser.campus = studentData.campus || "PSG Institute of Technology and Applied Research";
-          currentUser.phone = studentData.phone || "+91 98400 12345";
+          currentUser.phone = studentData.phone || "";
           currentUser.year = studentData.yearOfStudy || studentData.year || "Class of '29";
           currentUser.trustRating = studentData.trustScore ? `${(studentData.trustScore / 20).toFixed(1)} ★` : "5.0 ★";
 
+          saveLocalRegisteredUser(currentUser);
           sessionStorage.setItem("campuslend_current_user", JSON.stringify(currentUser));
           sessionStorage.setItem("lendloop_authenticated", "true");
           setAuthenticated(true, true);
@@ -3602,6 +4165,7 @@
       const studentIdInput = document.getElementById("reg-studentid");
       const emailInput = document.getElementById("reg-email");
       const deptInput = document.getElementById("reg-dept");
+      const phoneInput = document.getElementById("reg-phone");
       const yearInput = document.getElementById("selected-year");
       const passInput = document.getElementById("reg-pass");
       const confirmPassInput = document.getElementById("reg-confirm-pass");
@@ -3611,6 +4175,7 @@
       const studentId = studentIdInput ? studentIdInput.value.trim().toUpperCase() : "";
       const email = emailInput ? emailInput.value.trim().toLowerCase() : "";
       const dept = deptInput ? deptInput.options[deptInput.selectedIndex].text : "Computer Science & Engineering";
+      const phone = phoneInput ? phoneInput.value.trim() : "";
       const year = yearInput ? yearInput.value : "Freshman";
       const password = passInput ? passInput.value : "";
       const confirmPass = confirmPassInput ? confirmPassInput.value : "";
@@ -3638,8 +4203,13 @@
         return;
       }
 
-      if (password.length < 6) {
-        showToast("Password must be at least 6 characters long", "error");
+      if (!isValidPhoneNumber(phone)) {
+        showToast("Please enter a valid phone number (7-15 digits)", "error");
+        return;
+      }
+
+      if (password.length < 8) {
+        showToast("Password must be at least 8 characters long", "error");
         return;
       }
 
@@ -3655,12 +4225,12 @@
       }
 
       try {
-        let registerSuccess = false;
         try {
           const res = await CampusLendAPI.register({
             name,
             studentId,
             email,
+            phone,
             password,
             department: dept,
             yearOfStudy: year,
@@ -3669,6 +4239,16 @@
           });
           const data = res.data || res;
           if (data.token) localStorage.setItem("campuslend_token", data.token);
+
+          saveLocalRegisteredUser({
+            name,
+            studentId,
+            email,
+            phone,
+            department: dept,
+            yearOfStudy: year,
+            dormLocation: "PSG iTech Campus Hostel Block A"
+          });
 
           // Populate login form so user can now log in with their real account
           const loginEmail = document.getElementById("gatewayLoginEmail");
@@ -3707,10 +4287,11 @@
           currentUser.department = student.department;
           currentUser.dorm = student.dormLocation || "PSG iTech Campus Hostel Block A";
           currentUser.campus = student.campus || "PSG Institute of Technology and Applied Research";
-          currentUser.phone = student.phone || "+91 98400 12345";
+          currentUser.phone = student.phone || "";
           currentUser.year = student.yearOfStudy || student.year || "Class of '29";
           currentUser.trustRating = student.trustScore ? `${(student.trustScore / 20).toFixed(1)} ★` : "5.0 ★";
 
+          saveLocalRegisteredUser(currentUser);
           sessionStorage.setItem("campuslend_current_user", JSON.stringify(currentUser));
           sessionStorage.setItem("lendloop_authenticated", "true");
           setAuthenticated(true, true);
@@ -3730,6 +4311,9 @@
     }
 
     function handleLogout() {
+      closeLoanChatModal();
+      clearInterval(loanAutoSyncTimer);
+      loanAutoSyncTimer = null;
       sessionStorage.removeItem("lendloop_authenticated");
       sessionStorage.removeItem("campuslend_current_user");
       localStorage.removeItem("campuslend_token");
@@ -3794,7 +4378,7 @@
       if (profileDept) profileDept.textContent = `${currentUser.department || "Department of Computer Science & Engineering"}${currentUser.studentId ? " • #" + currentUser.studentId : ""}`;
       if (profileDorm) profileDorm.textContent = currentUser.dorm || "PSG iTech Campus Hostel Block A";
       if (profileSchool) profileSchool.textContent = `PSG Institute of Technology • ${currentUser.year || "Class of '29"}`;
-      if (profilePhone) profilePhone.textContent = currentUser.phone || "+91 98400 12345";
+      if (profilePhone) profilePhone.textContent = currentUser.phone || "Not added yet";
 
       if (profileAvatar && currentUser.avatar) profileAvatar.src = currentUser.avatar;
       if (topNavAvatar && currentUser.avatar) topNavAvatar.src = currentUser.avatar;
